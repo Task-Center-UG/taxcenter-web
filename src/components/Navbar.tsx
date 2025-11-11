@@ -223,7 +223,7 @@ export default function Navbar() {
                 >
                   <span
                     className={[
-                      "inline-flex items-center gap-1",                        // ikon sejajar teks
+                      "inline-flex items-center gap-1",
                       "font-bold text-sm cursor-default",
                       "transition-colors duration-200",
                       isOpen ? "text-[#F1C40F]" : "text-[#2A176F] hover:text-[#F1C40F]",
