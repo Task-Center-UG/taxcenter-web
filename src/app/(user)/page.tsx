@@ -490,7 +490,8 @@ export default function HomePage() {
                       alt={title}
                       fill
                       style={{ objectFit: "cover" }}
-                      priority={idx === 0}
+                      // priority={idx === 0}
+                      loading="lazy"
                     />
                   </div>
                   <p className="mt-3 text-sm text-black">{date}</p>

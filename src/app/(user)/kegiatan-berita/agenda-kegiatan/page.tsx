@@ -45,6 +45,20 @@ const dummyData = [
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
   },
+  {
+    image: "/assets/images/foto4.png",
+    date: "12 April 2025",
+    title: "What Is Lorem Ipsum?",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+  },
+  {
+    image: "/assets/images/foto4.png",
+    date: "12 April 2025",
+    title: "What Is Lorem Ipsum?",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+  },
 ];
 
 export default function AgendaKegiatan() {

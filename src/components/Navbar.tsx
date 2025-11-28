@@ -40,7 +40,7 @@ const menuItems = [
     subItems: [
       { title: "MATERI PAJAK", href: "/edukasi-pajak/materi-pajak" },
       { title: "BINCANG SORE", href: "/edukasi-pajak/bincang-sore" },
-      { title: "VIDEO PEMBELAJARAN PAJAK", href: "/edukasi-pajak/video-pembelajaran-pajak" },
+      { title: "VIDEO PEMBELAJARAN PAJAK", href: "/edukasi-pajak/video-pembelajaran" },
     ],
   },
   {
@@ -212,6 +212,7 @@ export default function Navbar() {
             <ul className="flex space-x-[60px]">
               {menuItems.map((item, index) => {
                 const open = activeMenu === item.title;
+                const isOpen = activeMenu === item.title;
                 return (
                 <li
                   key={index}
@@ -222,14 +223,24 @@ export default function Navbar() {
                 >
                   <span
                     className={[
-                      "font-bold text-sm cursor-default transition-colors duration-200",
-                      activeMenu === item.title
-                        ? "text-[#F1C40F]"
-                        : "text-[#2A176F] hover:text-[#F1C40F]",
+                      "inline-flex items-center gap-1",
+                      "font-bold text-sm cursor-default",
+                      "transition-colors duration-200",
+                      isOpen ? "text-[#F1C40F]" : "text-[#2A176F] hover:text-[#F1C40F]",
                       "group-hover:text-[#F1C40F] group-focus-within:text-[#F1C40F]",
                     ].join(" ")}
                   >
-                    {item.title}
+                    <span>{item.title}</span>
+                    <FontAwesomeIcon
+                      icon={faChevronDown} 
+                      className={[
+                        "h-3.5 w-3.5 transition-transform duration-500 ease-out",
+                        "transform-gpu will-change-transform",
+                        isOpen ? "rotate-180" : "",
+                        "group-hover:rotate-180 group-focus-within:rotate-180",
+                        "motion-reduce:transition-none"
+                      ].join(" ")}
+                    />
                   </span>
 
                   {activeMenu === item.title && (
