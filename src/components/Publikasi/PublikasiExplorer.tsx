@@ -100,7 +100,7 @@ export default function PublikasiExplorer() {
         </Select>
       </div>
 
-      {/* List */}
+      {/* List Publikasi */}
       <div className="mt-7 overflow-hidden rounded-xl border border-slate-300">
         {items.map((item, idx) => (
           <article
@@ -127,7 +127,7 @@ export default function PublikasiExplorer() {
           </article>
         ))}
 
-        {/* Garis pemisah antar item */}
+        {/* Garis pemisah */}
         <div className="hidden" />
       </div>
 
