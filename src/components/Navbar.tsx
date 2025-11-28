@@ -40,7 +40,7 @@ const menuItems = [
     subItems: [
       { title: "MATERI PAJAK", href: "/edukasi-pajak/materi-pajak" },
       { title: "BINCANG SORE", href: "/edukasi-pajak/bincang-sore" },
-      { title: "VIDEO PEMBELAJARAN PAJAK", href: "/edukasi-pajak/video-pembelajaran-pajak" },
+      { title: "VIDEO PEMBELAJARAN PAJAK", href: "/edukasi-pajak/video-pembelajaran" },
     ],
   },
   {

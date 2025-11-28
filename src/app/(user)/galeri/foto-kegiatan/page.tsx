@@ -11,47 +11,47 @@ const dummyData = [
   {
     title: "Kegiatan 1",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "/assets/images/foto1.png",
+    image: "/",
   },
   {
     title: "Kegiatan 2",
     description: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    image: "/assets/images/foto2.png",
+    image: "/",
   },
   {
     title: "Kegiatan 3",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "/assets/images/foto3.png",
+    image: "/",
   },
   {
     title: "Kegiatan 4",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "/assets/images/foto4.png",
+    image: "/",
   },
   {
     title: "Kegiatan 5",
     description: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    image: "/assets/images/foto5.png",
+    image: "/",
   },
   {
     title: "Kegiatan 6",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "/assets/images/foto6.png",
+    image: "/",
   },
   {
     title: "Kegiatan 7",
     description: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    image: "/assets/images/foto7.png",
+    image: "/",
   },
   {
     title: "Kegiatan 8",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "/assets/images/foto8.png",
+    image: "/",
   },
   {
     title: "Kegiatan 9",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "/assets/images/foto9.png",
+    image: "/",
   },
 ];
 
