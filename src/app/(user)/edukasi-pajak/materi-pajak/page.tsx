@@ -1,93 +1,110 @@
-import React from "react";
-import { Metadata } from "next";
+"use client";
+
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Search, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { useGetData } from "@/hooks/use-get-data";
 
-export const metadata: Metadata = {
-  title: "Materi Pajak",
-  description: "Materi Pajak",
+type Creator = {
+  id: number;
+  username: string;
+  full_name: string;
 };
 
-interface MateriItem {
+type TaxMaterialItem = {
   id: number;
   title: string;
   description: string;
-  image: string;
-  slug: string;
+  image_url: string;
+  file_url: string;
+  file_download_url: string;
+  created_at: string;
+  created_by: Creator;
+};
+
+type PagingInfo = {
+  page: number;
+  total_pages: number;
+  total_items: number;
+};
+
+type TaxMaterialResponse = {
+  mappedMaterials: TaxMaterialItem[];
+  paging: PagingInfo;
+};
+
+const API_BASE_URL = "https://dev.api.taxcenterug.com";
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+  React.useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
 }
 
-const materiList: MateriItem[] = [
-  {
-    id: 1,
-    image: "/",
-    title: "Materi 1",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-1",
-  },
-  {
-    id: 2,
-    image: "/",
-    title: "Materi 2",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-2",
-  },
-  {
-    id: 3,
-    image: "/",
-    title: "Materi 3",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-3",
-  },
-  {
-    id: 4,
-    image: "/",
-    title: "Materi 4",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-4",
-  },
-  {
-    id: 5,
-    image: "/",
-    title: "Materi 5",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-5",
-  },
-  {
-    id: 6,
-    image: "/",
-    title: "Materi 6",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-6",
-  },
-  {
-    id: 7,
-    image: "/",
-    title: "Materi 7",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-7",
-  },
-  {
-    id: 8,
-    image: "/",
-    title: "Materi 8",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since...",
-    slug: "materi-8",
-  },
-];
-
 const MateriPajak = () => {
+  const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 500);
+  const [sort, setSort] = useState("terbaru");
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
+
+  React.useEffect(() => {
+    setPage(1);
+  }, [debouncedQuery, sort]);
+
+  const apiParams = useMemo(() => {
+    let sort_by = "created_at";
+    let order = "desc";
+
+    if (sort === "terlama") {
+      order = "asc";
+    } else if (sort === "az") {
+      sort_by = "title";
+      order = "asc";
+    } else if (sort === "za") {
+      sort_by = "title";
+      order = "desc";
+    }
+
+    return {
+      page,
+      size: pageSize,
+      search: debouncedQuery || undefined,
+      sort_by,
+      order,
+    };
+  }, [page, debouncedQuery, sort]);
+
+  const { data, isLoading, isError } = useGetData<TaxMaterialResponse>({
+    key: ["tax-material", JSON.stringify(apiParams)],
+    url: "/tax-material",
+    params: apiParams,
+  });
+
+  const items = data?.mappedMaterials || [];
+  const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
+
+  const getImageUrl = (path: string) => {
+    if (!path) return "/placeholder.png";
+    if (path.startsWith("http")) return path;
+    return `${API_BASE_URL}/${path}`;
+  };
+
   return (
     <>
-      {/* Header Section */}
       <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
         <div className="relative w-full h-[250px] lg:h-[280px] flex flex-col items-center justify-center text-slate-900">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 tracking-tight">
@@ -101,46 +118,82 @@ const MateriPajak = () => {
             the 1500s, when an unknown printer took.
           </p>
 
-          {/* Filter Buttons */}
-          <div className="flex justify-center mt-5 gap-4 md:gap-6">
-            {[1, 2, 3].map((item) => (
-              <Link href="/" key={item} passHref>
-                <Button className="rounded-full px-6 md:px-7 h-8 md:h-9 bg-[#2A176F] text-white hover:opacity-30 cursor-pointer">
-                  Filter {item}
-                </Button>
-              </Link>
-            ))}
+          <div className="flex justify-center items-center mt-5 gap-3 w-full max-w-xl px-4">
+            <div className="relative w-full md:w-2/3">
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Cari materi..."
+                className="rounded-full h-9 bg-white border-slate-300 text-sm pl-4 pr-9"
+              />
+              <div className="absolute right-3 top-2 text-slate-400">
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+              </div>
+            </div>
+
+            <div className="w-[140px]">
+              <Select value={sort} onValueChange={setSort}>
+                <SelectTrigger className="rounded-full h-9 bg-[#2A176F] text-white border-none hover:opacity-90">
+                  <SelectValue placeholder="Urutkan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="terbaru">Terbaru</SelectItem>
+                  <SelectItem value="terlama">Terlama</SelectItem>
+                  <SelectItem value="az">A - Z</SelectItem>
+                  <SelectItem value="za">Z - A</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Materi List */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 pb-16">
+        {isError && (
+          <div className="text-center text-red-500 py-10">
+            Gagal memuat data.
+          </div>
+        )}
+        {!isLoading && !isError && items.length === 0 && (
+          <div className="text-center text-slate-500 py-10">
+            Data tidak ditemukan.
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-8">
-          {materiList.map((item) => (
+          {items.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all overflow-hidden"
+              className="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all overflow-hidden flex flex-col h-full"
             >
-              <Image
-                src={item.image}
-                alt={item.title}
-                className="w-auto object-contain bg-[#D9D9D9]"
-                width={150}
-                height={100}
-                loading="lazy"
-              />
+              <div className="w-full h-[150px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
+                <Image
+                  src={getImageUrl(item.image_url)}
+                  alt={item.title}
+                  className="w-auto h-full object-contain"
+                  width={150}
+                  height={100}
+                  loading="lazy"
+                />
+              </div>
 
-              {/* Content */}
-              <div className="p-5">
-                <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-2">
+              <div className="p-5 flex flex-col flex-1">
+                <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-2 line-clamp-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-slate-600 mb-4 leading-relaxed line-clamp-3">
+                <p className="text-sm text-slate-600 mb-4 leading-relaxed line-clamp-3 flex-1">
                   {item.description}
                 </p>
-                <div className="flex justify-end">
-                  <Link href="/" passHref>
+                <div className="flex justify-end mt-auto">
+                  <Link
+                    href={item.file_download_url || item.file_url}
+                    target="_blank"
+                    passHref
+                  >
                     <Button className="rounded-full cursor-pointer px-6 bg-[#F1C40F] text-black text-sm font-medium hover:bg-[#f7c933]">
                       Lihat Materi
                     </Button>
@@ -150,6 +203,32 @@ const MateriPajak = () => {
             </div>
           ))}
         </div>
+
+        {!isLoading && paging.total_pages > 1 && (
+          <div className="mt-10 flex items-center justify-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={page === 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="h-9 w-9 rounded-full"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-sm font-medium text-slate-600 px-2">
+              Page {page} of {paging.total_pages}
+            </span>
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={page >= paging.total_pages}
+              onClick={() => setPage((p) => p + 1)}
+              className="h-9 w-9 rounded-full"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );
