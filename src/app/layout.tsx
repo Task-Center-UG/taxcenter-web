@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "../styles/globals.css";
+import TanStackProvider from "@/providers/tanstack-query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
   description: "Tax Center Gunadarma",
   icons: {
     icon: "/assets/images/favicon.ico",
-  }
+  },
 };
 
 const poppins = Poppins({
@@ -27,7 +29,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        {children}
+        <TanStackProvider>
+          {children}
+          <Toaster position="top-center" />
+        </TanStackProvider>
       </body>
     </html>
   );

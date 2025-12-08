@@ -31,13 +31,13 @@ export default function RelawanPajak() {
 
             <div className="flex flex-wrap gap-3 text-center">
               <Link
-                href="/relawan-pajak/mbkm"
+                href="/program-layanan/relawan-pajak/mbkm"
                 className="inline-flex items-center justify-center rounded-md bg-[#FF8A00] hover:bg-[#E67A00] text-white text-xs md:text-sm font-semibold px-4 py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#FF8A00]"
               >
                 Daftar Relawan Pajak <br /> MBKM
               </Link>
               <Link
-                href="/relawan-pajak/non-mbkm"
+                href="/program-layanan/relawan-pajak/non-mbkm"
                 className="inline-flex items-center justify-center rounded-md bg-[#FF8A00] hover:bg-[#E67A00] text-white text-xs md:text-sm font-semibold px-4 py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#FF8A00]"
               >
                 Daftar Relawan Pajak <br /> Non-MBKM
@@ -102,10 +102,10 @@ export default function RelawanPajak() {
               Fungsi Kehumasan
             </h3>
             <p className="text-sm md:text-base text-slate-700 leading-relaxed mx-auto md:mx-0 text-center md:text-left mb-10">
-              Kegiatan Fungsi Kehumasan memberikan pemahaman mengenai Kehumasan 
-              dan branding instansi Direktorat Jenderal Pajak kepada masyarakat 
-              luas yang dapat terimplementasi oleh Relawan Pajak sebagai agen 
-              kehumasan dengan melakukan kegiatan kehumasan secara langsung dan 
+              Kegiatan Fungsi Kehumasan memberikan pemahaman mengenai Kehumasan
+              dan branding instansi Direktorat Jenderal Pajak kepada masyarakat
+              luas yang dapat terimplementasi oleh Relawan Pajak sebagai agen
+              kehumasan dengan melakukan kegiatan kehumasan secara langsung dan
               tidak langsung (online).
             </p>
           </div>
@@ -152,10 +152,11 @@ export default function RelawanPajak() {
               SUPPORTING ACTIVITIES
             </h3>
             <p className="text-sm md:text-base text-slate-700 leading-relaxed mx-auto md:mx-0 text-center md:text-left mb-10">
-              Kegiatan Supporting Activities bertujuan membantu Wajib Pajak dalam 
-              memberikan pengetahuan perpajakan yang diperlukan atau kegiatan lain 
-              yang dilakukan selain kegiatan diatas yang berhubungan dengan kegiatan 
-              memberikan edukasi kepada masyarakat luas.
+              Kegiatan Supporting Activities bertujuan membantu Wajib Pajak
+              dalam memberikan pengetahuan perpajakan yang diperlukan atau
+              kegiatan lain yang dilakukan selain kegiatan diatas yang
+              berhubungan dengan kegiatan memberikan edukasi kepada masyarakat
+              luas.
             </p>
           </div>
 
@@ -188,11 +189,11 @@ export default function RelawanPajak() {
               Business Development Services (BDS)
             </h3>
             <p className="text-sm md:text-base text-slate-700 leading-relaxed mx-auto md:mx-0 text-center md:text-left mb-10">
-              Kegiatan Asistensi Business Development Services bertujuan memberikan 
-              pemahaman konseptual dan pengalaman praktek mengenai aspek bisnis Usaha 
-              Mikro, Kecil, dan Menengah (UMKM) kepada pelaku usaha binaan DJP, Tax 
-              Center maupun Pelaku Usaha lainnya yang memerlukan bantuan untuk 
-              pengembangan usahanya.
+              Kegiatan Asistensi Business Development Services bertujuan
+              memberikan pemahaman konseptual dan pengalaman praktek mengenai
+              aspek bisnis Usaha Mikro, Kecil, dan Menengah (UMKM) kepada pelaku
+              usaha binaan DJP, Tax Center maupun Pelaku Usaha lainnya yang
+              memerlukan bantuan untuk pengembangan usahanya.
             </p>
           </div>
 
