@@ -31,7 +31,15 @@ export const usePatchData = <T, D, TContext = unknown>({
     mutationFn: async ({ slug, data: payload }) => {
       const finalUrl = slug ? `${url}/${slug}` : url;
 
-      const { data } = await axiosInstance.patch(finalUrl, payload);
+      const isFormData = payload instanceof FormData;
+
+      const { data } = await axiosInstance.patch(finalUrl, payload, {
+        headers: {
+          "Content-Type": isFormData
+            ? "multipart/form-data"
+            : "application/json",
+        },
+      });
       return data.data;
     },
     onSuccess: (...args) => {

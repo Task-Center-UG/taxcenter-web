@@ -24,7 +24,15 @@ export const usePostData = <T, D, TContext = unknown>({
 
   return useMutation<T, Error, D, TContext>({
     mutationFn: async (payload) => {
-      const { data } = await axiosInstance.post(url, payload);
+      const isFormData = payload instanceof FormData;
+
+      const { data } = await axiosInstance.post(url, payload, {
+        headers: {
+          "Content-Type": isFormData
+            ? "multipart/form-data"
+            : "application/json",
+        },
+      });
       return data.data;
     },
     onSuccess: (...args) => {

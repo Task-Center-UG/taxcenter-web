@@ -30,7 +30,16 @@ export const usePutData = <T, D, TContext = unknown>({
   return useMutation<T, Error, PutVariables<D>, TContext>({
     mutationFn: async ({ slug, data: payload }) => {
       const finalUrl = slug ? `${url}/${slug}` : url;
-      const { data } = await axiosInstance.put(finalUrl, payload);
+
+      const isFormData = payload instanceof FormData;
+
+      const { data } = await axiosInstance.put(finalUrl, payload, {
+        headers: {
+          "Content-Type": isFormData
+            ? "multipart/form-data"
+            : "application/json",
+        },
+      });
       return data.data;
     },
     onSuccess: (...args) => {
