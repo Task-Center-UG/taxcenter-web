@@ -1,75 +1,111 @@
 "use client";
 
 import * as React from "react";
-import { Search } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useGetData } from "@/hooks/use-get-data";
 
-type PublikasiItem = {
+type UserInfo = {
   id: number;
-  title: string;
-  author: string;
-  description: string;
-  year: number;
+  username: string;
+  full_name: string;
 };
 
-const DUMMY: PublikasiItem[] = Array.from({ length: 50 }).map((_, i) => ({
-  id: i + 1,
-  title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  author: "John Doe",
-  description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  year: 2025 - ((i % 6) as number),
-}));
+type PublicationItem = {
+  id: number;
+  title: string;
+  description: string;
+  year: number;
+  created_at: string;
+  updated_at: string;
+  created_by: UserInfo;
+  updated_by: UserInfo;
+};
 
-/* ==== Helper sorters ==== */
+type PagingInfo = {
+  page: number;
+  total_pages: number;
+  total_items: number;
+};
+
+type PublicationResponse = {
+  publications: PublicationItem[];
+  paging: PagingInfo;
+};
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 type SortKey = "terbaru" | "terlama" | "az" | "za";
 
-function sortData(data: PublikasiItem[], mode: SortKey) {
-  const arr = [...data];
-  switch (mode) {
+function getSortParams(sort: SortKey) {
+  switch (sort) {
     case "terbaru":
-      return arr.sort((a, b) => b.year - a.year);
+      return { sort_by: "year", order: "desc" };
     case "terlama":
-      return arr.sort((a, b) => a.year - b.year);
+      return { sort_by: "year", order: "asc" };
     case "az":
-      return arr.sort((a, b) => a.title.localeCompare(b.title));
+      return { sort_by: "title", order: "asc" };
     case "za":
-      return arr.sort((a, b) => b.title.localeCompare(a.title));
+      return { sort_by: "title", order: "desc" };
     default:
-      return arr;
+      return { sort_by: "created_at", order: "desc" };
   }
 }
 
 export default function PublikasiExplorer() {
+  // State UI
   const [query, setQuery] = React.useState("");
+  const debouncedQuery = useDebounce(query, 500);
   const [sort, setSort] = React.useState<SortKey>("terbaru");
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(5);
 
-  // Filter + sort
-  const filtered = React.useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const base = q
-      ? DUMMY.filter((d) => d.title.toLowerCase().includes(q))
-      : DUMMY;
-    return sortData(base, sort);
-  }, [query, sort]);
-
-  // Pagination
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   React.useEffect(() => {
-    if (page > totalPages) setPage(1);
-  }, [totalPages, page]);
+    setPage(1);
+  }, [debouncedQuery, sort, pageSize]);
 
-  const start = (page - 1) * pageSize;
-  const items = filtered.slice(start, start + pageSize);
+  const apiParams = React.useMemo(() => {
+    const { sort_by, order } = getSortParams(sort);
+    return {
+      page,
+      size: pageSize,
+      search: debouncedQuery || undefined,
+      sort_by,
+      order,
+    };
+  }, [page, pageSize, debouncedQuery, sort]);
+
+  const { data, isLoading, isError } = useGetData<PublicationResponse>({
+    key: ["publications", JSON.stringify(apiParams)],
+    url: "/publication",
+    params: apiParams,
+  });
+
+  const items = data?.publications || [];
+  const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
 
   return (
     <section className="w-full">
-      {/* Top controls: search input, sort, search button */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
         <div className="relative flex-1">
           <Input
@@ -80,10 +116,14 @@ export default function PublikasiExplorer() {
           />
           <Button
             aria-label="Cari"
-            onClick={() => void 0}
+            disabled={isLoading}
             className="absolute right-2 top-1.5 h-8 w-8 rounded-lg bg-[#FE8100] hover:bg-[#e26100] p-0 cursor-pointer"
           >
-            <Search className="h-4 w-4 text-white" />
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 text-white animate-spin" />
+            ) : (
+              <Search className="h-4 w-4 text-white" />
+            )}
           </Button>
         </div>
 
@@ -100,8 +140,25 @@ export default function PublikasiExplorer() {
         </Select>
       </div>
 
-      {/* List Publikasi */}
-      <div className="mt-7 overflow-hidden rounded-xl border border-slate-300">
+      <div className="mt-7 overflow-hidden rounded-xl border border-slate-300 min-h-[200px] relative">
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/60 z-10 flex items-center justify-center">
+            <Loader2 className="h-8 w-8 text-[#FE8100] animate-spin" />
+          </div>
+        )}
+
+        {isError && (
+          <div className="p-10 text-center text-red-500">
+            Terjadi kesalahan saat memuat data. Silakan coba lagi.
+          </div>
+        )}
+
+        {!isLoading && !isError && items.length === 0 && (
+          <div className="p-10 text-center text-slate-500">
+            Tidak ada publikasi ditemukan.
+          </div>
+        )}
+
         {items.map((item, idx) => (
           <article
             key={item.id}
@@ -114,26 +171,22 @@ export default function PublikasiExplorer() {
               {item.title}
             </h3>
 
-            {/* Subheader */}
             <div className="flex flex-col gap-1 text-sm">
-              <div className="font-semibold text-slate-500">John Doe</div>
-              <p className="max-w-5xl text-slate-600 leading-relaxed">
+              <div className="font-semibold text-slate-500">
+                {item.created_by?.full_name || "Unknown Author"}
+              </div>
+              <p className="max-w-5xl text-slate-600 leading-relaxed line-clamp-3">
                 {item.description}
               </p>
-              <div className="text-[13px] font-semibold text-[#2A176F]">
+              <div className="text-[13px] font-semibold text-[#2A176F] mt-2">
                 {item.year}
               </div>
             </div>
           </article>
         ))}
-
-        {/* Garis pemisah */}
-        <div className="hidden" />
       </div>
 
-      {/* Bottom controls: page size + pagination */}
       <div className="mt-7 flex items-center justify-between">
-        {/* Page size */}
         <div className="flex items-center gap-2 text-sm">
           <Select
             value={String(pageSize)}
@@ -153,17 +206,16 @@ export default function PublikasiExplorer() {
           <span className="text-slate-600">per halaman</span>
         </div>
 
-        {/* Pagination */}
         <nav aria-label="Pagination" className="flex items-center gap-1">
           <PageButton
-            disabled={page === 1}
+            disabled={page === 1 || isLoading}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             label="Sebelumnya"
           >
             ‹
           </PageButton>
 
-          {renderPageNumbers(page, totalPages).map((p, i) =>
+          {renderPageNumbers(page, paging.total_pages).map((p, i) =>
             typeof p === "number" ? (
               <PageNumber
                 key={`${p}-${i}`}
@@ -178,8 +230,8 @@ export default function PublikasiExplorer() {
           )}
 
           <PageButton
-            disabled={page === totalPages}
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page >= paging.total_pages || isLoading}
+            onClick={() => setPage((p) => Math.min(paging.total_pages, p + 1))}
             label="Berikutnya"
           >
             ›
@@ -190,26 +242,28 @@ export default function PublikasiExplorer() {
   );
 }
 
-/* ===== Pagination bits (custom agar mirip desain) ===== */
-
 function renderPageNumbers(current: number, total: number): (number | "...")[] {
-  // tampilkan pertama, terakhir, current, tetangga + ellipsis
   const delta = 1;
   const pages: (number | "...")[] = [];
-
   const range = [];
-  for (let i = Math.max(1, current - delta); i <= Math.min(total, current + delta); i++) {
+  for (
+    let i = Math.max(1, current - delta);
+    i <= Math.min(total, current + delta);
+    i++
+  ) {
     range.push(i);
   }
-
-  const withBoundaries = Array.from(new Set([1, ...range, total])).sort((a, b) => a - b);
-
+  const withBoundaries = Array.from(new Set([1, ...range, total])).sort(
+    (a, b) => a - b
+  );
   let last = 0;
   for (const p of withBoundaries) {
     if (last && p - last > 1) pages.push("...");
     pages.push(p);
     last = p;
   }
+  if (total === 0) return [1];
+
   return withBoundaries.length <= 5 ? withBoundaries : pages;
 }
 
@@ -218,7 +272,11 @@ function PageButton({
   disabled,
   onClick,
   label,
-}: React.PropsWithChildren<{ disabled?: boolean; onClick?: () => void; label: string }>) {
+}: React.PropsWithChildren<{
+  disabled?: boolean;
+  onClick?: () => void;
+  label: string;
+}>) {
   return (
     <button
       type="button"
@@ -226,7 +284,7 @@ function PageButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "h-9 min-w-9 rounded-md border px-3 text-sm",
+        "h-9 min-w-9 rounded-md border px-3 text-sm transition-colors",
         disabled
           ? "cursor-not-allowed border-slate-200 text-slate-400"
           : "border-slate-300 text-slate-700 hover:bg-slate-50"
@@ -247,7 +305,7 @@ function PageNumber({
       type="button"
       onClick={onClick}
       className={cn(
-        "h-9 min-w-9 rounded-md border px-3 text-sm",
+        "h-9 min-w-9 rounded-md border px-3 text-sm transition-colors",
         active
           ? "border-transparent bg-[#FF8A00] text-white"
           : "border-slate-300 text-slate-700 hover:bg-slate-50"

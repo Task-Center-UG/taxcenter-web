@@ -1,13 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
+import { usePostData } from "@/hooks/use-post-data";
+import { useGetData } from "@/hooks/use-get-data";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
-// Checkbox import dihapus karena tidak digunakan
 import {
   Form,
   FormControl,
@@ -26,13 +29,43 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+interface Major {
+  id: number;
+  name: string;
+}
+
+interface Region {
+  id: number;
+  name: string;
+}
 
 const formSchema = z.object({
   namaLengkap: z.string().min(2, { message: "Nama lengkap wajib diisi." }),
   kelas: z.string().min(1, { message: "Kelas wajib diisi." }),
   npm: z.string().min(8, { message: "NPM wajib diisi." }),
-  programStudi: z.string().min(1, { message: "Program studi wajib diisi." }),
-  bagianKampus: z.string({ error: "Pilih lokasi kampus." }),
+
+  programStudi: z
+    .string({ error: "Program studi wajib dipilih." })
+    .min(1, "Pilih program studi."),
+
+  bagianKampus: z
+    .string({ error: "Pilih lokasi kampus." })
+    .min(1, "Pilih lokasi kampus."),
+
   alamatDomisili: z
     .string()
     .min(10, { message: "Alamat domisili terlalu pendek." }),
@@ -76,6 +109,19 @@ const formSchema = z.object({
 });
 
 const FormRelawanPajakNonMBKM = () => {
+  const [openProdi, setOpenProdi] = useState(false);
+  const [openRegion, setOpenRegion] = useState(false);
+
+  const { data: majors, isLoading: isLoadingMajors } = useGetData<Major[]>({
+    key: ["majors"],
+    url: "/majors",
+  });
+
+  const { data: regions, isLoading: isLoadingRegions } = useGetData<Region[]>({
+    key: ["regions"],
+    url: "/regions",
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -83,18 +129,55 @@ const FormRelawanPajakNonMBKM = () => {
       kelas: "",
       npm: "",
       programStudi: "",
+      bagianKampus: "",
       alamatDomisili: "",
       nomorWhatsapp: "",
       email: "",
       usernameInstagram: "",
+      pernahIkutRelawan: "",
+    },
+  });
+
+  const { mutate, isPending } = usePostData({
+    url: "/tax-volunteer/non-mbkm-registration",
+    successMessage: "Pendaftaran Non-MBKM berhasil dikirim!",
+    options: {
+      onSuccess: () => {
+        form.reset();
+      },
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    console.log("File KRS:", values.krsFile[0]);
-    console.log("File Twibbon:", values.buktiTwibbonFile[0]);
-    alert("Form Non-MBKM berhasil disubmit!");
+    console.log("--- SUBMITTING NON-MBKM ---");
+    const formData = new FormData();
+
+    formData.append("full_name", values.namaLengkap);
+    formData.append("class", values.kelas);
+    formData.append("npm", values.npm);
+    formData.append("address", values.alamatDomisili);
+    formData.append("phone_number", values.nomorWhatsapp);
+    formData.append("email", values.email);
+    formData.append("tax_volunteer_activities", values.pernahIkutRelawan);
+    formData.append("username_ig", values.usernameInstagram);
+    formData.append("major_id", values.programStudi);
+    formData.append("region_id", values.bagianKampus);
+
+    if (values.krsFile && values.krsFile[0]) {
+      formData.append("krs", values.krsFile[0]);
+    }
+    if (values.transkripFile && values.transkripFile[0]) {
+      formData.append("transcripts", values.transkripFile[0]);
+    }
+    if (values.buktiTwibbonFile && values.buktiTwibbonFile[0]) {
+      formData.append("screenshot", values.buktiTwibbonFile[0]);
+    }
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    mutate(formData as any);
   }
 
   const fileInputClass =
@@ -111,13 +194,11 @@ const FormRelawanPajakNonMBKM = () => {
               Pendaftaran Relawan Pajak Non MBKM
             </h1>
             <p className="text-gray-500 text-sm md:text-base leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&apos;s standard dummy
-              text ever since the 1500s.
+              Silakan lengkapi formulir di bawah ini dengan data yang
+              sebenar-benarnya.
             </p>
           </div>
 
-          {/* Form Section */}
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -140,46 +221,107 @@ const FormRelawanPajakNonMBKM = () => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="kelas"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Kelas</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Contoh: 3IA01" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="kelas"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Kelas</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Contoh: 3IA01" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="npm"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>NPM</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Contoh: 50422xxx" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="npm"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>NPM</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Contoh: 50422xxx" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
                 name="programStudi"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex flex-col">
                     <FormLabel>Program Studi</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Contoh: Teknik Informatika"
-                        {...field}
-                      />
-                    </FormControl>
+                    <Popover open={openProdi} onOpenChange={setOpenProdi}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={openProdi}
+                            disabled={isLoadingMajors}
+                            className={cn(
+                              "w-full justify-between font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {isLoadingMajors ? (
+                              <span className="flex items-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Memuat Data...
+                              </span>
+                            ) : field.value ? (
+                              majors?.find(
+                                (major) => major.id.toString() === field.value
+                              )?.name
+                            ) : (
+                              "Pilih Program Studi"
+                            )}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+                        <Command>
+                          <CommandInput placeholder="Cari Program Studi..." />
+                          <CommandList>
+                            <CommandEmpty>
+                              Program studi tidak ditemukan.
+                            </CommandEmpty>
+                            <CommandGroup>
+                              {majors?.map((major) => (
+                                <CommandItem
+                                  key={major.id}
+                                  value={major.name}
+                                  onSelect={() => {
+                                    form.setValue(
+                                      "programStudi",
+                                      major.id.toString()
+                                    );
+                                    setOpenProdi(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      field.value === major.id.toString()
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {major.name}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -189,26 +331,71 @@ const FormRelawanPajakNonMBKM = () => {
                 control={form.control}
                 name="bagianKampus"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex flex-col">
                     <FormLabel>Bagian Kampus</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kampus" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Depok">Depok</SelectItem>
-                        <SelectItem value="Kalimalang">Kalimalang</SelectItem>
-                        <SelectItem value="Karawaci">Karawaci</SelectItem>
-                        <SelectItem value="Cengkareng">Cengkareng</SelectItem>
-                        <SelectItem value="Simatupang">Simatupang</SelectItem>
-                        <SelectItem value="Salemba">Salemba</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Popover open={openRegion} onOpenChange={setOpenRegion}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={openRegion}
+                            disabled={isLoadingRegions}
+                            className={cn(
+                              "w-full justify-between font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {isLoadingRegions ? (
+                              <span className="flex items-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Memuat Data...
+                              </span>
+                            ) : field.value ? (
+                              regions?.find(
+                                (region) => region.id.toString() === field.value
+                              )?.name
+                            ) : (
+                              "Pilih Lokasi Kampus"
+                            )}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+                        <Command>
+                          <CommandInput placeholder="Cari Kampus..." />
+                          <CommandList>
+                            <CommandEmpty>Kampus tidak ditemukan.</CommandEmpty>
+                            <CommandGroup>
+                              {regions?.map((region) => (
+                                <CommandItem
+                                  key={region.id}
+                                  value={region.name}
+                                  onSelect={() => {
+                                    form.setValue(
+                                      "bagianKampus",
+                                      region.id.toString()
+                                    );
+                                    setOpenRegion(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      field.value === region.id.toString()
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {region.name}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -232,41 +419,43 @@ const FormRelawanPajakNonMBKM = () => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="nomorWhatsapp"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nomor WhatsApp Aktif</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="tel"
-                        placeholder="Contoh: 0812-3456-7890"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="nomorWhatsapp"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nomor WhatsApp Aktif</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder="Contoh: 0812-3456-7890"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email Aktif</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="email@student.gunadarma.ac.id"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Aktif</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="email@student.gunadarma.ac.id"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
@@ -286,8 +475,15 @@ const FormRelawanPajakNonMBKM = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Sudah">Sudah</SelectItem>
-                        <SelectItem value="Belum">Belum</SelectItem>
+                        <SelectItem value="BELUM_PERNAH">
+                          Belum Pernah
+                        </SelectItem>
+                        <SelectItem value="SUDAH_TAHUN_INI">
+                          Sudah (Tahun Ini)
+                        </SelectItem>
+                        <SelectItem value="SUDAH_TAHUN_LALU">
+                          Sudah (Tahun Lalu)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -406,27 +602,22 @@ const FormRelawanPajakNonMBKM = () => {
 
                 <div className="bg-gray-50 p-4 rounded-md border border-gray-100 space-y-4 select-text">
                   <p className="font-bold">Halo Sobat Pajak!</p>
-
                   <p>
                     Perkenalkan nama saya [nama lengkap] dari Universitas
                     Gunadarma Fakultas [...] Program Studi [...] siap mengikuti
                     seleksi Relawan Pajak Untuk Negeri 2026.
                   </p>
-
                   <p>
                     Kami siap melayani Wajib Pajak dan memberikan pelayanan
                     terbaik serta ikut dalam menyukseskan penerimaan pajak
                     tahunan 2025.
                   </p>
-
                   <p className="font-bold">Generasi Muda Sadar Pajak!</p>
-
                   <p>
                     Yuk [tag minimal 3 teman kalian] perbanyak pengalaman dan
                     raih kesempatan emasmu bersama Relawan Pajak Untuk Negeri
                     2026.
                   </p>
-
                   <p className="font-semibold text-blue-600">
                     #TaxCenterUniversitasGunadarma <br />
                     #RelawanPajak2026
@@ -436,9 +627,10 @@ const FormRelawanPajakNonMBKM = () => {
 
               <Button
                 type="submit"
+                disabled={isPending}
                 className="w-full bg-[#4F46E5] hover:bg-[#4338ca] text-white font-semibold py-6 rounded-md transition-all mt-8"
               >
-                Submit Pendaftaran
+                {isPending ? "Mengirim Data..." : "Submit Pendaftaran"}
               </Button>
             </form>
           </Form>
