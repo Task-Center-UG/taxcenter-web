@@ -1,13 +1,13 @@
+"use client";
+
 import React from "react";
-import { Metadata } from "next";
+import { useGetData } from "@/hooks/use-get-data";
 import CarouselAgenda from "@/components/CarouselAgenda";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  title: "Agenda Kegiatan",
-  description: "Agenda Kegiatan",
-};
+const API_BASE_URL = "https://dev.api.taxcenterug.com";
 
 const carouselImages = [
   "/assets/images/carousel-bg.png",
@@ -16,52 +16,37 @@ const carouselImages = [
   "/assets/images/carousel-bg.png",
 ];
 
-const dummyData = [
-  {
-    image: "/assets/images/foto1.png", 
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  },
-  {
-    image: "/assets/images/foto2.png", 
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  },
-  {
-    image: "/assets/images/foto3.png",
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  },
-  {
-    image: "/assets/images/foto4.png",
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  },
-  {
-    image: "/assets/images/foto4.png",
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  },
-  {
-    image: "/assets/images/foto4.png",
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  },
-];
+interface News {
+  id: number;
+  title: string;
+  description: string;
+  picture_url: string;
+  created_at: string;
+}
+
+interface NewsResponse {
+  news: News[];
+  paging: {
+    page: number;
+    total_pages: number;
+    total_items: number;
+  };
+}
 
 export default function AgendaKegiatan() {
+  const { data, isLoading } = useGetData<NewsResponse>({
+    key: ["news-list"],
+    url: "/news",
+    params: {
+      page: 1,
+      size: 6,
+      sort_by: "created_at",
+      order: "desc",
+    },
+  });
+
+  const newsData = data?.news || [];
+
   return (
     <>
       {/* Header Section */}
@@ -71,9 +56,9 @@ export default function AgendaKegiatan() {
             AGENDA KEGIATAN
           </h1>
           <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. <br /> Lorem Ipsum has been the industry&rsquo;s standard dummy
-            text ever since <br /> the 1500s, when an unknown printer took.
+            Informasi lengkap mengenai kegiatan dan berita terbaru dari Tax
+            Center Universitas Gunadarma. <br /> Ikuti perkembangan dan update
+            terkini seputar perpajakan dan kegiatan akademik.
           </p>
         </div>
       </div>
@@ -92,33 +77,74 @@ export default function AgendaKegiatan() {
       {/* Kegiatan dan Berita Terbaru Section */}
       <div className="pt-4 pb-12 px-4 md:px-16 xl:px-32">
         <div className="container mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold">Kegiatan dan Berita Terbaru</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">
+            Kegiatan dan Berita Terbaru
+          </h2>
           <div className="flex justify-end mt-2">
-            <Link href="/">
-              <p className="text-[#F1C40F] text-lg font-semibold">Liat Semua</p>
+            <Link href="/kegiatan-berita/agenda-kegiatan">
+              <p className="text-[#F1C40F] text-lg font-semibold hover:underline">
+                Lihat Semua
+              </p>
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
-            {dummyData.map((item, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="relative w-full h-[200px] bg-[#D9D9D9]">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-t-lg"
-                    loading="lazy"
-                  />
+
+          {isLoading ? (
+            <div className="flex justify-center items-center min-h-[400px]">
+              <p className="text-neutral-500">Memuat data...</p>
+            </div>
+          ) : newsData.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
+              {newsData.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                >
+                  <div className="relative w-full h-[200px] bg-[#D9D9D9]">
+                    {item.picture_url ? (
+                      <Image
+                        src={`${API_BASE_URL}/${item.picture_url}`}
+                        alt={item.title}
+                        fill
+                        className="object-cover rounded-t-lg"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        No Image
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <p className="text-sm text-gray-500">
+                      {new Date(item.created_at).toLocaleDateString("id-ID", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                    <h3 className="text-xl font-bold mt-2 line-clamp-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-2 text-justify line-clamp-3">
+                      {item.description}
+                    </p>
+                    <Link href={`/kegiatan-berita/agenda-kegiatan/${item.id}`}>
+                      <Button
+                        variant="link"
+                        className="text-[#2A176F] font-semibold p-0 mt-3 hover:underline"
+                      >
+                        Selengkapnya →
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-                <div className="p-6">
-                  <p className="text-sm text-gray-500">{item.date}</p>
-                  <h3 className="text-xl font-bold mt-2">{item.title}</h3>
-                  <p className="text-sm text-gray-600 mt-2 text-justify">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center min-h-[400px]">
+              <p className="text-neutral-500">Belum ada berita tersedia.</p>
+            </div>
+          )}
         </div>
       </div>
     </>
