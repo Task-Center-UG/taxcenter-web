@@ -8,13 +8,7 @@ export const metadata: Metadata = {
   description: "Riset",
 };
 
-function CategoryItem({
-  label,
-  href,
-}: {
-  label: string;
-  href: string;
-}) {
+function CategoryItem({ label, href }: { label: string; href: string }) {
   return (
     <div className="flex items-center justify-between rounded-lg border border-slate-700 bg-white px-5 md:px-6 py-4 md:py-5 shadow-[0_0_0_1px_rgba(0,0,0,0.01)]">
       <span className="text-[17px] md:text-lg font-medium text-slate-900">
@@ -44,8 +38,9 @@ export default function Riset() {
           </h1>
           <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
             Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. <br />  Lorem Ipsum has been the industry&rsquo;s standard dummy
-            text ever since <br /> the 1500s, when an unknown printer took.
+            industry. <br /> Lorem Ipsum has been the industry&rsquo;s standard
+            dummy text ever since <br /> the 1500s, when an unknown printer
+            took.
           </p>
         </div>
       </div>
@@ -61,8 +56,14 @@ export default function Riset() {
 
         <div className="space-y-5 md:space-y-6">
           <CategoryItem label="Kategori 1" href="/riset/kategori-1" />
-          <CategoryItem label="Kerjasama Riset" href="/riset/kategori-2" />
-          <CategoryItem label="Program dan Kegiatan Riset" href="/riset/kategori-3" />
+          <CategoryItem
+            label="Kerjasama Riset"
+            href="/program-layanan/riset/kerjasama-riset"
+          />
+          <CategoryItem
+            label="Program dan Kegiatan Riset"
+            href="/program-layanan/riset/program-kegiatan"
+          />
           <CategoryItem label="Kategori 4" href="/riset/kategori-4" />
         </div>
       </section>
