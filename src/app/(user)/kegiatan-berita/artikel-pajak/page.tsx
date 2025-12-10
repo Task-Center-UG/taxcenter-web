@@ -40,11 +40,10 @@ export default function ArtikelPajak() {
     }
   }, [data, error]);
 
-  const articles =
-    data?.articles ||
+  const articles = (data?.articles ||
     data?.data ||
     data?.items ||
-    (Array.isArray(data) ? data : []);
+    (Array.isArray(data) ? data : [])) as Article[];
 
   return (
     <>
