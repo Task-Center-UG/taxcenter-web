@@ -83,7 +83,7 @@ export default function PengabdianMasyarakat() {
             </div>
 
             <div className="relative rounded-2xl bg-[#D9D9D9] h-[240px] md:h-auto md:min-h-[360px]">
-            {/* 
+              {/* 
               Jika ada aset gambar, Anda bisa ganti div ini dengan <Image fill src="/images/abdimas.jpg" className="object-cover rounded-2xl" alt="Pengabdian Masyarakat" />
               Menggunakan div abu-abu agar sesuai mockup ketika belum ada gambar.
             */}
@@ -109,7 +109,7 @@ export default function PengabdianMasyarakat() {
                   </>
                 }
                 description="Bantu UMKM mengembangkan usaha"
-                href="/pengabdian/pendampingan-umkm"
+                href="/program-layanan/pengabdian-masyarakat/pendampingan-umkm"
               />
 
               <ProgramCard
@@ -121,7 +121,7 @@ export default function PengabdianMasyarakat() {
                   </>
                 }
                 description="Pelatihan langsung untuk pelaku usaha"
-                href="/pengabdian/workshop-umkm"
+                href="/program-layanan/pengabdian-masyarakat/workshop-umkm"
               />
 
               <ProgramCard
@@ -133,7 +133,7 @@ export default function PengabdianMasyarakat() {
                   </>
                 }
                 description="Foto profesional untuk branding produk"
-                href="/pengabdian/foto-produk-umkm"
+                href="/program-layanan/pengabdian-masyarakat/foto-produk"
               />
             </div>
           </div>
