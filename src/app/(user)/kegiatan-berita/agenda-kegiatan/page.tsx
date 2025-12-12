@@ -20,7 +20,7 @@ interface News {
   id: number;
   title: string;
   description: string;
-  picture_url: string;
+  image_url: string;
   created_at: string;
 }
 
@@ -32,6 +32,14 @@ interface NewsResponse {
     total_items: number;
   };
 }
+
+const getImageUrl = (url: string) => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
+  return `${API_BASE_URL}/uploads/news/${url}`;
+};
 
 export default function AgendaKegiatan() {
   const { data, isLoading } = useGetData<NewsResponse>({
@@ -51,21 +59,21 @@ export default function AgendaKegiatan() {
     <>
       {/* Header Section */}
       <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-        <div className="relative w-full h-[200px] lg:h-[220px] bg-[#D9D9D9] flex flex-col items-center justify-center text-slate-900">
+        <div className="relative w-full h-[200px] lg:h-[220px] flex flex-col items-center justify-center text-slate-900">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 tracking-tight">
             AGENDA KEGIATAN
           </h1>
           <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
             Informasi lengkap mengenai kegiatan dan berita terbaru dari Tax
-            Center Universitas Gunadarma. <br /> Ikuti perkembangan dan update
-            terkini seputar perpajakan dan kegiatan akademik.
+            Center Universitas Gunadarma. Ikuti perkembangan dan update
+            terkini seputar <br /> perpajakan dan kegiatan akademik.
           </p>
         </div>
       </div>
 
       {/* Carousel Section */}
-      <section className="py-16 px-4 md:px-16 xl:px-32">
-        <div className="container mx-auto">
+      <section className="mt-6 mb-16 px-4 md:px-16 xl:px-32 overflow-hidden">
+        <div className="container mx-auto ove">
           <div className="flex justify-center">
             <div className="relative w-full max-w-6xl">
               <CarouselAgenda images={carouselImages} />
@@ -100,13 +108,14 @@ export default function AgendaKegiatan() {
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   <div className="relative w-full h-[200px] bg-[#D9D9D9]">
-                    {item.picture_url ? (
+                    {item.image_url ? (
                       <Image
-                        src={`${API_BASE_URL}/${item.picture_url}`}
+                        src={getImageUrl(item.image_url)}
                         alt={item.title}
                         fill
                         className="object-cover rounded-t-lg"
                         loading="lazy"
+                        unoptimized // Bypass optimasi server-side untuk menghindari error private IP
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full text-gray-400">
@@ -125,17 +134,21 @@ export default function AgendaKegiatan() {
                     <h3 className="text-xl font-bold mt-2 line-clamp-2">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-gray-600 mt-2 text-justify line-clamp-3">
+                    <p className="text-sm text-gray-600 mt-2 mb-3 text-justify line-clamp-3">
                       {item.description}
                     </p>
-                    <Link href={`/kegiatan-berita/agenda-kegiatan/${item.id}`}>
-                      <Button
-                        variant="link"
-                        className="text-[#2A176F] font-semibold p-0 mt-3 hover:underline"
+                    <div className="flex justify-end">
+                      <Link
+                        href={`/kegiatan-berita/agenda-kegiatan/${item.id}`}
                       >
-                        Selengkapnya →
-                      </Button>
-                    </Link>
+                        <Button
+                          variant="link"
+                          className="text-[#2A176F] font-semibold p-0 hover:underline hover:text-[#2A176F] cursor-pointer"
+                        >
+                          Selengkapnya →
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}

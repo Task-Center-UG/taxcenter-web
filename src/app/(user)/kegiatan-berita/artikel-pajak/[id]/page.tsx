@@ -12,23 +12,31 @@ interface Article {
   title: string;
   description: string;
   content: string;
-  picture_url: string;
+  image_url: string;
   created_at: string;
   updated_at: string;
   author?: string;
   category?: string;
 }
 
+const getImageUrl = (url: string) => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
+  return `${API_BASE_URL}/uploads/article/${url}`;
+};
+
 export default function ArticleDetailPage() {
   const params = useParams();
   const id = params?.id as string;
 
-  const { data, isLoading, error } = useGetData<{ article: Article }>({
+  const { data, isLoading, error } = useGetData<any>({
     key: ["article-detail", id],
     url: `/article/${id}`,
   });
 
-  const article = data?.article;
+  const article = data?.article || data;
 
   if (isLoading) {
     return (
@@ -40,7 +48,7 @@ export default function ArticleDetailPage() {
 
   if (error || !article) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[120px] gap-4">
+      <div className="min-h-screen flex flex-col items-center justify-center pt-[100px] lg:pt-[180px] gap-4">
         <p className="text-neutral-500">Artikel tidak ditemukan.</p>
         <Link
           href="/kegiatan-berita/artikel-pajak"
@@ -53,76 +61,13 @@ export default function ArticleDetailPage() {
   }
 
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] pb-20">
-      {/* Header Section */}
-      <div className="w-full bg-[#D9D9D9] py-12 md:py-16">
-        <div className="max-w-5xl mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-black">
-            {article.title}
-          </h1>
-          <div className="flex items-center justify-center gap-4 mt-4 text-sm md:text-base text-gray-700">
-            <span>
-              {new Date(article.created_at).toLocaleDateString("id-ID", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-            {article.author && (
-              <>
-                <span>•</span>
-                <span>Oleh: {article.author}</span>
-              </>
-            )}
-            {article.category && (
-              <>
-                <span>•</span>
-                <span className="px-3 py-1 bg-[#2A176F] text-white rounded-full text-xs">
-                  {article.category}
-                </span>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Content Section */}
-      <div className="mx-auto max-w-5xl px-4 sm:px-8 mt-12 md:mt-16">
-        {/* Featured Image */}
-        {article.picture_url && (
-          <div className="relative w-full aspect-video mb-8 rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src={`${API_BASE_URL}/${article.picture_url}`}
-              alt={article.title}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        )}
-
-        {/* Description */}
-        {article.description && (
-          <div className="mb-8 p-6 bg-gray-50 border-l-4 border-[#2A176F] rounded">
-            <p className="text-lg text-gray-700 font-medium leading-relaxed italic">
-              {article.description}
-            </p>
-          </div>
-        )}
-
-        {/* Main Content */}
-        <div
-          className="prose prose-lg max-w-none text-neutral-700 leading-relaxed text-justify"
-          dangerouslySetInnerHTML={{
-            __html: article.content || article.description,
-          }}
-        />
-
-        {/* Back Button */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
+    <div className="relative pt-[100px] lg:pt-[170px] pb-16 min-h-screen bg-[#F8F9FD]">
+      <div className="mx-auto max-w-5xl px-6 sm:px-8">
+        {/* Back Button - Top Left */}
+        <div className="mb-8">
           <Link
             href="/kegiatan-berita/artikel-pajak"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-[#2A176F] font-medium transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -138,6 +83,74 @@ export default function ArticleDetailPage() {
             </svg>
             Kembali ke Artikel Pajak
           </Link>
+        </div>
+
+        {/* Header Title Section */}
+        <div className="text-center mb-12 max-w-4xl mx-auto">
+          {article.category && (
+            <span className="inline-block px-3 py-1 bg-[#2A176F] text-white rounded-full text-xs font-semibold mb-4 tracking-wider uppercase">
+              {article.category}
+            </span>
+          )}
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black mb-4 capitalize">
+            {article.title}
+          </h1>
+        </div>
+
+        {/* Metadata Section */}
+        <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-8">
+          <div className="flex flex-col">
+            <span className="font-bold text-lg text-black">
+              {article.author || "Admin Tax Center"}
+            </span>
+            <span className="text-sm text-gray-500 mt-1">
+              {new Date(article.created_at).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 text-gray-600 cursor-pointer hover:text-black transition-colors">
+            <span className="text-sm font-medium">Share</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="bi bi-share-fill"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Featured Image */}
+        {article.image_url && (
+          <div className="relative w-full aspect-video mb-12 rounded-xl overflow-hidden shadow-sm">
+            <Image
+              src={getImageUrl(article.image_url)}
+              alt={article.title}
+              fill
+              className="object-cover"
+              priority
+              unoptimized
+            />
+          </div>
+        )}
+
+        {/* Descriptions & Content */}
+        <div className="mx-auto">
+          {article.description && (
+            <div className="p-6 bg-white border-l-4 border-[#2A176F] rounded shadow-sm">
+              <p className="text-sm md:text-base text-gray-700 font-medium leading-relaxed">
+                {article.description}
+              </p>
+            </div>
+          )}
+
         </div>
       </div>
     </div>
