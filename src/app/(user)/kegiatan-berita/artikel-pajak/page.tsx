@@ -12,10 +12,18 @@ interface Article {
   id: number;
   title: string;
   description: string;
-  picture_url: string;
+  image_url: string;
   created_at: string;
   category?: string;
 }
+
+const getImageUrl = (url: string) => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
+  return `${API_BASE_URL}/uploads/article/${url}`;
+};
 
 export default function ArtikelPajak() {
   const { data, isLoading, error } = useGetData<any>({
@@ -55,8 +63,8 @@ export default function ArtikelPajak() {
           </h1>
           <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
             Koleksi artikel perpajakan terkini yang membahas berbagai topik
-            seputar perpajakan di Indonesia. <br /> Dapatkan wawasan dan
-            pengetahuan mendalam dari para ahli pajak.
+            seputar perpajakan di Indonesia. Dapatkan wawasan dan
+            pengetahuan mendalam <br /> dari para ahli pajak.
           </p>
           <div className="flex justify-center mt-4">
             <Link href="/" passHref>
@@ -82,14 +90,15 @@ export default function ArtikelPajak() {
                   key={item.id}
                   className="rounded-lg shadow-md overflow-hidden bg-white hover:shadow-lg transition-shadow"
                 >
-                  <div className="bg-[#D9D9D9] w-full h-[200px] relative">
-                    {item.picture_url ? (
+                  <div className="bg-[#D9D9D9] w-full h-[220px] relative">
+                    {item.image_url ? (
                       <Image
-                        src={`${API_BASE_URL}/${item.picture_url}`}
+                        src={getImageUrl(item.image_url)}
                         alt={item.title}
                         fill
                         className="object-cover rounded-t-lg"
                         loading="lazy"
+                        unoptimized
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full text-gray-400">
@@ -118,19 +127,21 @@ export default function ArtikelPajak() {
                     <h3 className="text-2xl font-bold line-clamp-2">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-gray-600 mt-2 text-justify line-clamp-3">
+                    <p className="text-sm text-gray-600 mt-2 mb-3 text-justify line-clamp-3">
                       {item.description}
                     </p>
 
                     {/* Button Selengkapnya */}
-                    <Link href={`/kegiatan-berita/artikel-pajak/${item.id}`}>
-                      <Button
-                        variant="link"
-                        className="text-[#2A176F] font-semibold p-0 mt-3 hover:underline"
-                      >
-                        Selengkapnya →
-                      </Button>
-                    </Link>
+                    <div className="flex justify-end">
+                      <Link href={`/kegiatan-berita/artikel-pajak/${item.id}`}>
+                        <Button
+                          variant="link"
+                          className="text-[#2A176F] font-semibold p-0 hover:underline hover:text-[#2A176F] cursor-pointer"
+                          >
+                          Selengkapnya →
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}
