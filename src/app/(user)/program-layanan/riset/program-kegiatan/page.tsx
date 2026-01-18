@@ -1,155 +1,231 @@
+"use client";
+
 import React from "react";
-import { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, Calendar } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { useGetData } from "@/hooks/use-get-data";
 
-export const metadata: Metadata = {
-  title: "Program dan Kegiatan Riset",
-  description: "Program dan Kegiatan Riset Tax Center",
-};
-
-type ProgramKegiatanProps = {
+type Creator = {
   id: number;
-  category: string;
-  items: {
-    id: number;
-    name: string;
-    description: string;
-  }[];
+  username: string;
+  full_name: string;
 };
 
-// Data dummy dalam format JSON
-const programKegiatanData: ProgramKegiatanProps[] = [
-  {
-    id: 1,
-    category: "Pelatihan / Workshop",
-    items: [
-      {
-        id: 1,
-        name: "Workshop Perpajakan untuk Startup",
-        description:
-          "Workshop intensif yang membahas aspek perpajakan khusus untuk startup dan perusahaan rintisan, mencakup insentif pajak dan kewajiban pelaporan.",
-      },
-      {
-        id: 2,
-        name: "Pelatihan E-Filing & E-Faktur",
-        description:
-          "Pelatihan praktis penggunaan sistem e-Filing dan e-Faktur untuk meningkatkan kepatuhan perpajakan secara digital.",
-      },
-      {
-        id: 3,
-        name: "Workshop Transfer Pricing",
-        description:
-          "Pelatihan mendalam tentang konsep dan aplikasi transfer pricing untuk perusahaan multinasional dan transaksi afiliasi.",
-      },
-    ],
-  },
-  {
-    id: 2,
-    category: "FGD",
-    items: [
-      {
-        id: 4,
-        name: "FGD Kebijakan Pajak Digital",
-        description:
-          "Diskusi kelompok terfokus membahas implementasi kebijakan perpajakan untuk ekonomi digital dan e-commerce.",
-      },
-      {
-        id: 5,
-        name: "FGD Tax Amnesty",
-        description:
-          "Forum diskusi mengenai program pengampunan pajak, evaluasi implementasi, dan dampaknya terhadap kepatuhan wajib pajak.",
-      },
-      {
-        id: 6,
-        name: "FGD Reformasi Perpajakan",
-        description:
-          "Diskusi komprehensif tentang reformasi sistem perpajakan Indonesia dan tantangan dalam implementasinya.",
-      },
-    ],
-  },
-  {
-    id: 3,
-    category: "Seminar",
-    items: [
-      {
-        id: 7,
-        name: "Seminar Nasional Perpajakan",
-        description:
-          "Seminar nasional dengan tema terkini perpajakan, menghadirkan narasumber dari DJP, akademisi, dan praktisi pajak.",
-      },
-      {
-        id: 8,
-        name: "Seminar Pajak Internasional",
-        description:
-          "Seminar khusus membahas perpajakan internasional, BEPS, dan perjanjian penghindaran pajak berganda (P3B).",
-      },
-      {
-        id: 9,
-        name: "Seminar Tax Planning",
-        description:
-          "Seminar praktis tentang perencanaan pajak yang efektif dan efisien sesuai dengan ketentuan peraturan perpajakan.",
-      },
-    ],
-  },
-];
-
-function ProgramKegiatanCard({
-  name,
-  description,
-}: {
-  name: string;
+type ProgramItem = {
+  id: number;
+  title: string;
   description: string;
-}) {
-  return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      {/* Dummy Image - Gray Background */}
-      <div className="w-full h-40 bg-gray-300"></div>
+  image_url: string;
+  created_at: string;
+  created_by: Creator;
+};
 
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{name}</h3>
-        <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
+type TrainingResponse = {
+  trainings: ProgramItem[];
+};
+
+type FgdResponse = {
+  fgds: ProgramItem[];
+};
+
+type SeminarResponse = {
+  seminars: ProgramItem[];
+};
+
+const API_BASE_URL = "https://dev.api.taxcenterug.com";
+
+function ProgramCard({ item, href }: { item: ProgramItem; href: string }) {
+  const getImageUrl = (path: string) => {
+    if (!path) return null;
+    if (path.startsWith("http")) return path;
+    return `${API_BASE_URL}/${path}`;
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  console.log(getImageUrl(item.image_url));
+
+  return (
+    <Card className="flex flex-col h-full bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+      <div className="relative h-48 bg-gray-200 overflow-hidden">
+        {item.image_url ? (
+          <Image
+            src={getImageUrl(item.image_url) || ""}
+            alt={item.title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            unoptimized
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-400">
+            <span className="text-sm">No Image</span>
+          </div>
+        )}
       </div>
-    </div>
+
+      <div className="flex flex-col flex-1 p-5">
+        <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+          <Calendar className="w-3 h-3 text-[#F97316]" />
+          <span>{formatDate(item.created_at)}</span>
+        </div>
+
+        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#F97316] transition-colors">
+          {item.title}
+        </h3>
+
+        <p className="text-sm text-gray-600 line-clamp-3 mb-4 flex-1 leading-relaxed">
+          {item.description}
+        </p>
+
+        <div className="mt-auto pt-4 border-t border-gray-50">
+          <span className="text-xs font-medium text-gray-500">
+            Oleh: {item.created_by?.full_name}
+          </span>
+        </div>
+      </div>
+    </Card>
   );
 }
 
-function CategorySection({ category, items }: ProgramKegiatanProps) {
+function SectionWrapper({
+  title,
+  linkHref,
+  isLoading,
+  isEmpty,
+  children,
+}: {
+  title: string;
+  linkHref: string;
+  isLoading: boolean;
+  isEmpty: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="mb-12">
-      <h2 className="text-2xl font-bold mb-6">{category}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => (
-          <ProgramKegiatanCard
-            key={item.id}
-            name={item.name}
-            description={item.description}
-          />
-        ))}
+    <div className="mb-16 last:mb-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 border-l-4 border-[#F97316] pl-4">
+          {title}
+        </h2>
+        <Link
+          href={linkHref}
+          className="inline-flex items-center gap-2 text-[#F97316] font-semibold hover:text-orange-700 transition-colors group text-sm md:text-base"
+        >
+          Lihat Selengkapnya
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
       </div>
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-[350px] bg-gray-100 rounded-xl animate-pulse"
+            />
+          ))}
+        </div>
+      ) : isEmpty ? (
+        <div className="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-gray-500">
+          Belum ada data untuk kategori ini.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function ProgramKegiatan() {
+  const commonParams = {
+    page: 1,
+    size: 3,
+    sort_by: "created_at",
+    order: "desc",
+  };
+
+  const { data: trainingData, isLoading: loadTraining } =
+    useGetData<TrainingResponse>({
+      key: ["training-home"],
+      url: "/training",
+      params: commonParams,
+    });
+
+  const { data: fgdData, isLoading: loadFgd } = useGetData<FgdResponse>({
+    key: ["fgd-home"],
+    url: "/fgd",
+    params: commonParams,
+  });
+
+  const { data: seminarData, isLoading: loadSeminar } =
+    useGetData<SeminarResponse>({
+      key: ["seminar-home"],
+      url: "/seminar",
+      params: commonParams,
+    });
+
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-      {/* Header */}
-      <div className="relative w-full h-[150px] md:h-[200px] bg-[#D9D9D9] flex items-center justify-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-center px-4">
+    <div className="relative pt-[70px] lg:pt-[120px] w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
+      <div className="w-full h-[200px] bg-[#E5E5E5] flex items-center justify-center mb-10">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-wide uppercase text-black text-center px-4">
           PROGRAM DAN KEGIATAN RISET
         </h1>
       </div>
 
-      {/* Konten */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16 bg-white bg-opacity-50">
-        {programKegiatanData.map((category) => (
-          <CategorySection
-            key={category.id}
-            id={category.id}
-            category={category.category}
-            items={category.items}
-          />
-        ))}
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <SectionWrapper
+          title="Workshop & Pelatihan"
+          linkHref="/program-layanan/riset/program-kegiatan/workshop"
+          isLoading={loadTraining}
+          isEmpty={!trainingData?.trainings?.length}
+        >
+          {trainingData?.trainings?.map((item) => (
+            <ProgramCard
+              key={item.id}
+              item={item}
+              href="/program-layanan/riset/program-kegiatan/workshop"
+            />
+          ))}
+        </SectionWrapper>
+
+        <SectionWrapper
+          title="Focus Group Discussion (FGD)"
+          linkHref="/program-layanan/riset/program-kegiatan/fgd"
+          isLoading={loadFgd}
+          isEmpty={!fgdData?.fgds?.length}
+        >
+          {fgdData?.fgds?.map((item) => (
+            <ProgramCard
+              key={item.id}
+              item={item}
+              href="/program-layanan/riset/program-kegiatan/fgd"
+            />
+          ))}
+        </SectionWrapper>
+
+        <SectionWrapper
+          title="Seminar Nasional & Internasional"
+          linkHref="/program-layanan/riset/program-kegiatan/seminar"
+          isLoading={loadSeminar}
+          isEmpty={!seminarData?.seminars?.length}
+        >
+          {seminarData?.seminars?.map((item) => (
+            <ProgramCard
+              key={item.id}
+              item={item}
+              href="/program-layanan/riset/program-kegiatan/seminar"
+            />
+          ))}
+        </SectionWrapper>
       </div>
     </div>
   );

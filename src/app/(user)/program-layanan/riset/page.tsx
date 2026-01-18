@@ -55,7 +55,10 @@ export default function Riset() {
         </h2>
 
         <div className="space-y-5 md:space-y-6">
-          <CategoryItem label="Kategori 1" href="/riset/kategori-1" />
+          <CategoryItem
+            label="Kategori Penelitian"
+            href="/program-layanan/riset/kategori-penelitian"
+          />
           <CategoryItem
             label="Kerjasama Riset"
             href="/program-layanan/riset/kerjasama-riset"
@@ -64,7 +67,6 @@ export default function Riset() {
             label="Program dan Kegiatan Riset"
             href="/program-layanan/riset/program-kegiatan"
           />
-          <CategoryItem label="Kategori 4" href="/riset/kategori-4" />
         </div>
       </section>
     </main>
