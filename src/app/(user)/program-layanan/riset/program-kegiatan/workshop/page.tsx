@@ -2,19 +2,21 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Search,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Loader2,
   Calendar,
-  Tag,
   User,
   ArrowRight,
+  ChevronDown,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useGetData } from "@/hooks/use-get-data";
+
+const API_BASE_URL = "https://dev.api.taxcenterug.com";
 
 type Creator = {
   id: number;
@@ -22,20 +24,12 @@ type Creator = {
   full_name: string;
 };
 
-type ResearchCategory = {
-  id: number;
-  title: string;
-};
-
-type ResearchItem = {
+type TrainingItem = {
   id: number;
   title: string;
   description: string;
-  cta_url: string;
+  image_url: string;
   created_at: string;
-  updated_at: string;
-  research_category_id: number;
-  ResearchCategory: ResearchCategory;
   created_by: Creator;
 };
 
@@ -45,8 +39,8 @@ type PagingInfo = {
   total_items: number;
 };
 
-type ResearchResponse = {
-  research: ResearchItem[];
+type TrainingListResponse = {
+  trainings: TrainingItem[];
   paging: PagingInfo;
 };
 
@@ -61,16 +55,12 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-export default function KerjasamaRiset() {
+export default function WorkshopListPage() {
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const [sort, setSort] = useState("terbaru");
   const [page, setPage] = useState(1);
-  const pageSize = 5;
-
-  React.useEffect(() => {
-    setPage(1);
-  }, [debouncedQuery, sort]);
+  const pageSize = 6;
 
   const apiParams = useMemo(() => {
     let sort_by = "created_at";
@@ -95,17 +85,22 @@ export default function KerjasamaRiset() {
     };
   }, [page, debouncedQuery, sort]);
 
-  const { data, isLoading, isError } = useGetData<ResearchResponse>({
-    key: ["research-list", JSON.stringify(apiParams)],
-    url: "/research",
+  const { data, isLoading, isError } = useGetData<TrainingListResponse>({
+    key: ["list-training", JSON.stringify(apiParams)],
+    url: "/training",
     params: apiParams,
   });
 
-  const items = data?.research || [];
+  const items = data?.trainings || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
 
+  const getImageUrl = (path: string) => {
+    if (!path) return null;
+    if (path.startsWith("http")) return path;
+    return `${API_BASE_URL}/${path}`;
+  };
+
   const formatDate = (dateString: string) => {
-    if (!dateString) return "-";
     return new Date(dateString).toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
@@ -117,7 +112,7 @@ export default function KerjasamaRiset() {
     <div className="relative pt-[70px] lg:pt-[120px] w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
       <div className="w-full h-[200px] bg-[#E5E5E5] flex items-center justify-center mb-10">
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-wide uppercase text-black">
-          KERJASAMA RISET
+          WORKSHOP & PELATIHAN
         </h1>
       </div>
 
@@ -125,9 +120,12 @@ export default function KerjasamaRiset() {
         <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
           <input
             type="text"
-            placeholder="Cari kerjasama riset..."
+            placeholder="Cari topik workshop..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
             className="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400 w-full"
           />
 
@@ -135,8 +133,11 @@ export default function KerjasamaRiset() {
             <div className="relative w-full sm:w-auto">
               <select
                 value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="appearance-none bg-transparent py-3 pl-4 pr-10 outline-none text-gray-600 cursor-pointer w-full sm:w-auto"
+                onChange={(e) => {
+                  setSort(e.target.value);
+                  setPage(1);
+                }}
+                className="appearance-none bg-transparent py-3 pl-4 pr-10 outline-none text-gray-600 cursor-pointer w-full sm:w-auto hover:bg-gray-50 transition-colors"
               >
                 <option value="terbaru">Terbaru...</option>
                 <option value="terlama">Terlama...</option>
@@ -146,48 +147,54 @@ export default function KerjasamaRiset() {
               <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
-            <button className="bg-[#F97316] hover:bg-orange-600 text-white p-3 sm:rounded-r-md transition-colors w-full sm:w-auto flex justify-center items-center">
+            <div className="bg-[#F97316] text-white p-3 sm:rounded-r-md w-full sm:w-auto flex justify-center items-center">
               {isLoading ? (
-                <Loader2 className="w-6 h-6 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                <Search className="w-6 h-6" />
+                <Search className="w-5 h-5" />
               )}
-            </button>
+            </div>
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {isError && (
-            <div className="text-center text-red-500 py-20 bg-white rounded-lg border border-red-100">
-              Gagal memuat data riset. Silakan coba lagi nanti.
+            <div className="col-span-full text-center py-20 text-red-500 bg-white rounded-xl border border-red-100">
+              Gagal memuat data workshop.
             </div>
           )}
 
           {!isLoading && !isError && items.length === 0 && (
-            <div className="text-center py-20 text-gray-500 bg-white rounded-lg border border-gray-100">
-              Tidak ada data kerjasama riset yang ditemukan.
+            <div className="col-span-full text-center py-20 text-gray-500 bg-white rounded-xl border border-gray-100">
+              Tidak ada workshop yang ditemukan.
             </div>
           )}
 
           {items.map((item) => (
             <Card
               key={item.id}
-              className="group flex flex-col md:flex-row bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+              className="flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group h-full"
             >
-              <div className="p-4 md:p-6 flex-shrink-0 flex items-center justify-center bg-gray-50 md:border-r border-gray-100">
-                <div className="w-full h-40 md:w-48 md:h-40 bg-[#D9D9D9] rounded-lg flex items-center justify-center text-gray-400">
-                  <span className="text-xs font-medium">Image Placeholder</span>
-                </div>
+              <div className="relative h-52 bg-gray-200 overflow-hidden">
+                {item.image_url ? (
+                  <Image
+                    src={getImageUrl(item.image_url)!}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">
+                    <span className="text-sm font-medium">No Image</span>
+                  </div>
+                )}
               </div>
 
-              <div className="flex-1 py-5 px-5 md:px-8 flex flex-col">
-                <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-3">
-                  <span className="flex items-center gap-1 bg-orange-50 text-orange-700 px-2 py-1 rounded-md font-medium">
-                    <Tag className="w-3 h-3" />
-                    {item.ResearchCategory?.title || "Umum"}
-                  </span>
+              <div className="p-6 flex flex-col flex-1">
+                <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
                   <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
+                    <Calendar className="w-3 h-3 text-[#F97316]" />
                     {formatDate(item.created_at)}
                   </span>
                   <span className="flex items-center gap-1">
@@ -196,18 +203,18 @@ export default function KerjasamaRiset() {
                   </span>
                 </div>
 
-                <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#F97316] transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#F97316] transition-colors">
                   {item.title}
-                </h2>
+                </h3>
 
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-2">
+                <p className="text-sm text-gray-600 line-clamp-3 mb-6 flex-1 leading-relaxed">
                   {item.description}
                 </p>
 
-                <div className="mt-auto">
+                <div className="mt-auto pt-4 border-t border-gray-50">
                   <Link
-                    href={`/program-layanan/riset/kerjasama-riset/${item.id}`}
-                    className="inline-flex items-center gap-2 bg-[#F97316] hover:bg-orange-600 text-white font-medium text-sm py-2 px-6 rounded-full transition-colors"
+                    href={`/program-layanan/riset/program-kegiatan/workshop/${item.id}`}
+                    className="inline-flex items-center gap-2 text-[#F97316] font-semibold text-sm hover:text-orange-700 transition-colors"
                   >
                     Lihat Detail <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -228,15 +235,9 @@ export default function KerjasamaRiset() {
               Sebelumnya
             </button>
 
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-900">
-                Halaman {page}
-              </span>
-              <span className="text-sm text-gray-400">/</span>
-              <span className="text-sm font-medium text-gray-500">
-                {paging.total_pages}
-              </span>
-            </div>
+            <span className="text-sm font-medium text-gray-600">
+              Halaman {page} dari {paging.total_pages}
+            </span>
 
             <button
               onClick={() =>

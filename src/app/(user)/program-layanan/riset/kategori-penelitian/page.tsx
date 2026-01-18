@@ -8,10 +8,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
-  Calendar,
-  Tag,
-  User,
-  ArrowRight,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useGetData } from "@/hooks/use-get-data";
@@ -22,20 +18,12 @@ type Creator = {
   full_name: string;
 };
 
-type ResearchCategory = {
+type ResearchCategoryItem = {
   id: number;
   title: string;
-};
-
-type ResearchItem = {
-  id: number;
-  title: string;
-  description: string;
-  cta_url: string;
+  description?: string;
   created_at: string;
   updated_at: string;
-  research_category_id: number;
-  ResearchCategory: ResearchCategory;
   created_by: Creator;
 };
 
@@ -45,23 +33,21 @@ type PagingInfo = {
   total_items: number;
 };
 
-type ResearchResponse = {
-  research: ResearchItem[];
+type ResearchCategoryResponse = {
+  researchCategory: ResearchCategoryItem[];
   paging: PagingInfo;
 };
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
-
   React.useEffect(() => {
     const handler = setTimeout(() => setDebouncedValue(value), delay);
     return () => clearTimeout(handler);
   }, [value, delay]);
-
   return debouncedValue;
 }
 
-export default function KerjasamaRiset() {
+export default function KategoriPenelitian() {
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
   const [sort, setSort] = useState("terbaru");
@@ -95,29 +81,20 @@ export default function KerjasamaRiset() {
     };
   }, [page, debouncedQuery, sort]);
 
-  const { data, isLoading, isError } = useGetData<ResearchResponse>({
-    key: ["research-list", JSON.stringify(apiParams)],
-    url: "/research",
+  const { data, isLoading, isError } = useGetData<ResearchCategoryResponse>({
+    key: ["research-category", JSON.stringify(apiParams)],
+    url: "/research-category",
     params: apiParams,
   });
 
-  const items = data?.research || [];
+  const items = data?.researchCategory || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
 
   return (
     <div className="relative pt-[70px] lg:pt-[120px] w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
       <div className="w-full h-[200px] bg-[#E5E5E5] flex items-center justify-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-wide uppercase text-black">
-          KERJASAMA RISET
+        <h1 className="text-4xl font-extrabold tracking-wide uppercase text-black">
+          KATEGORI PENELITIAN
         </h1>
       </div>
 
@@ -125,7 +102,7 @@ export default function KerjasamaRiset() {
         <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
           <input
             type="text"
-            placeholder="Cari kerjasama riset..."
+            placeholder="Pencarian berdasarkan judul penelitian.."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400 w-full"
@@ -158,58 +135,41 @@ export default function KerjasamaRiset() {
 
         <div className="space-y-6">
           {isError && (
-            <div className="text-center text-red-500 py-20 bg-white rounded-lg border border-red-100">
-              Gagal memuat data riset. Silakan coba lagi nanti.
+            <div className="text-center text-red-500 py-20">
+              Gagal memuat data penelitian.
             </div>
           )}
 
           {!isLoading && !isError && items.length === 0 && (
-            <div className="text-center py-20 text-gray-500 bg-white rounded-lg border border-gray-100">
-              Tidak ada data kerjasama riset yang ditemukan.
+            <div className="text-center py-20 text-gray-500">
+              Tidak ada hasil penelitian yang ditemukan.
             </div>
           )}
 
           {items.map((item) => (
             <Card
               key={item.id}
-              className="group flex flex-col md:flex-row bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+              className="flex flex-col md:flex-row bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="p-4 md:p-6 flex-shrink-0 flex items-center justify-center bg-gray-50 md:border-r border-gray-100">
-                <div className="w-full h-40 md:w-48 md:h-40 bg-[#D9D9D9] rounded-lg flex items-center justify-center text-gray-400">
-                  <span className="text-xs font-medium">Image Placeholder</span>
-                </div>
+              <div className="p-4 md:p-6 flex-shrink-0 flex items-center justify-center bg-white">
+                <div className="w-full h-48 md:w-56 md:h-48 bg-[#D9D9D9] rounded-md"></div>
               </div>
 
-              <div className="flex-1 py-5 px-5 md:px-8 flex flex-col">
-                <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-3">
-                  <span className="flex items-center gap-1 bg-orange-50 text-orange-700 px-2 py-1 rounded-md font-medium">
-                    <Tag className="w-3 h-3" />
-                    {item.ResearchCategory?.title || "Umum"}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    {formatDate(item.created_at)}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <User className="w-3 h-3" />
-                    {item.created_by?.full_name}
-                  </span>
-                </div>
-
-                <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#F97316] transition-colors">
+              <div className="flex-1 py-4 px-4 md:py-6 md:pr-8 flex flex-col justify-center">
+                <h2 className="text-xl md:text-2xl font-bold mb-3 text-gray-900">
                   {item.title}
                 </h2>
-
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-2">
-                  {item.description}
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed text-justify mb-4 line-clamp-3">
+                  {item.description
+                    ? item.description
+                    : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. It has survived not only five centuries, but also the leap into electronic typesetting."}
                 </p>
-
-                <div className="mt-auto">
+                <div>
                   <Link
-                    href={`/program-layanan/riset/kerjasama-riset/${item.id}`}
-                    className="inline-flex items-center gap-2 bg-[#F97316] hover:bg-orange-600 text-white font-medium text-sm py-2 px-6 rounded-full transition-colors"
+                    href={`/program-layanan/riset/kategori-penelitian/${item.id}`}
+                    className="inline-block bg-[#F97316] hover:bg-orange-600 text-white font-medium text-sm py-2 px-8 rounded-full transition-colors"
                   >
-                    Lihat Detail <ArrowRight className="w-4 h-4" />
+                    Lihat
                   </Link>
                 </div>
               </div>
@@ -218,35 +178,27 @@ export default function KerjasamaRiset() {
         </div>
 
         {!isLoading && paging.total_pages > 1 && (
-          <div className="flex items-center justify-center gap-4 mt-12">
+          <div className="flex items-center justify-center space-x-2 mt-10">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+              className="p-2 rounded hover:bg-gray-100 disabled:opacity-50"
             >
-              <ChevronLeft className="w-4 h-4" />
-              Sebelumnya
+              <ChevronLeft className="w-5 h-5" />
             </button>
 
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-900">
-                Halaman {page}
-              </span>
-              <span className="text-sm text-gray-400">/</span>
-              <span className="text-sm font-medium text-gray-500">
-                {paging.total_pages}
-              </span>
-            </div>
+            <span className="text-sm font-medium text-gray-600 px-4">
+              Halaman {page} dari {paging.total_pages}
+            </span>
 
             <button
               onClick={() =>
                 setPage((p) => Math.min(paging.total_pages, p + 1))
               }
               disabled={page === paging.total_pages}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+              className="p-2 rounded hover:bg-gray-100 disabled:opacity-50"
             >
-              Selanjutnya
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         )}
