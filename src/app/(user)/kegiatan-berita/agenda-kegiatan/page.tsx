@@ -107,7 +107,7 @@ export default function AgendaKegiatan() {
         innerClassName="min-h-[220px] lg:min-h-[240px]"
       />
 
-      <section className="px-4 md:px-6 xl:px-20 pb-16">
+      <section className="px-4 md:px-6 xl:px-20 pb-16 py-12">
         <div className="mx-auto max-w-6xl">
           <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
             <input
