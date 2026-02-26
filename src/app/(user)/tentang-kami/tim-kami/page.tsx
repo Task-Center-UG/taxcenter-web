@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Metadata } from "next";
 import DivisionList from "@/components/Accordion/DivisionList";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 export const metadata: Metadata = {
   title: "Tim Kami",
@@ -25,21 +26,25 @@ type TeamCardProps = {
   }>;
 };
 
-const PRESET: Record<SizeKey, {
-  width: number;
-  height: number;
-  avatar: number;
-  avatarLeftPct: number;
-  textLeftPct: number;
-  nameClass: string;
-  roleClass: string;
-}> = {
+// Pengaturan posisi default
+const PRESET: Record<
+  SizeKey,
+  {
+    width: number;
+    height: number;
+    avatar: number;
+    avatarLeftPct: number;
+    textLeftPct: number;
+    nameClass: string;
+    roleClass: string;
+  }
+> = {
   xl: {
     width: 400,
     height: 140,
     avatar: 105,
-    avatarLeftPct: 19,
-    textLeftPct: 36,
+    avatarLeftPct: 21, // Posisi horizontal pusat lingkaran
+    textLeftPct: 38,
     nameClass: "text-[14px]",
     roleClass: "text-[12px]",
   },
@@ -47,8 +52,8 @@ const PRESET: Record<SizeKey, {
     width: 400,
     height: 140,
     avatar: 105,
-    avatarLeftPct: 19,
-    textLeftPct: 36,
+    avatarLeftPct: 21,
+    textLeftPct: 38,
     nameClass: "text-[14px]",
     roleClass: "text-[12px]",
   },
@@ -77,6 +82,7 @@ function TeamCard({
   return (
     <div className="flex items-center justify-center w-full">
       <div className="relative" style={{ ...widthStyle, height: cfg.height }}>
+        {/* Background Kapsul Ungu/Putih */}
         <Image
           src={bgCapsule}
           alt="Tim Kami"
@@ -84,19 +90,30 @@ function TeamCard({
           className="object-fill select-none pointer-events-none"
           loading="lazy"
         />
+
+        {/* --- AREA FOTO --- */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 z-10"
+          className="absolute top-1/2 z-10"
           style={{
             left: `${cfg.avatarLeftPct}%`,
-            transform: "translate(-50%)",
+            transform: "translate(-50%, -50%)",
             width: cfg.avatar,
             height: cfg.avatar,
           }}
         >
-          <div className="relative w-full h-full rounded-full overflow-hidden bg-[#BCBCBC] border-8 border-[#DBDBDB] shadow">
-            <Image src={photo} alt={name} fill className="object-contain" sizes={`${cfg.avatar}px`} />
+          <div className="relative w-full h-full rounded-full overflow-hidden">
+            <Image
+              src={photo}
+              alt={name}
+              fill
+              className="object-cover"
+              sizes={`${cfg.avatar}px`}
+            />
           </div>
         </div>
+        {/* --- AKHIR AREA FOTO --- */}
+
+        {/* Container Teks */}
         <div
           className="absolute top-1/2 -translate-y-1/2 min-w-0 z-10 pr-3"
           style={{
@@ -104,10 +121,14 @@ function TeamCard({
             width: `calc(100% - ${cfg.textLeftPct}% - 12px)`,
           }}
         >
-          <h3 className={`${cfg.nameClass} font-semibold text-neutral-900 leading-tight truncate`}>
+          <h3
+            className={`${cfg.nameClass} font-semibold text-neutral-900 leading-tight truncate`}
+          >
             {name}
           </h3>
-          <p className={`${cfg.roleClass} text-neutral-600 leading-snug truncate`}>
+          <p
+            className={`${cfg.roleClass} text-neutral-600 leading-snug truncate`}
+          >
             {role}
           </p>
         </div>
@@ -117,16 +138,16 @@ function TeamCard({
 }
 
 export default function TimKami() {
-  const CAPSULE = "/assets/images/tim/container-tim.png";
-
+  const CAPSULE = "/assets/images/tentang-kami/tim/container-tim.png";
   const HR_STYLE = { width: `min(100%, ${PRESET.xl.width}px)` };
 
   return (
     <div className="relative pt-[70px] lg:pt-[120px]">
-      {/* Header */}
-      <div className="w-full h-[150px] md:h-[200px] bg-[#D9D9D9] flex items-center justify-center">
-        <h1 className="text-3xl md:text-4xl font-bold">STRUKTUR ORGANISASI</h1>
-      </div>
+      <PageHeaderHero
+        title="STRUKTUR ORGANISASI"
+        className="pt-0 lg:pt-0"
+        innerClassName="min-h-[200px] md:min-h-[240px]"
+      />
 
       <section>
         <div className="mx-auto max-w-7xl px-4 sm:px-8 py-12 md:py-16 space-y-12">
@@ -134,52 +155,53 @@ export default function TimKami() {
             <TeamCard
               name="Prof. Dr. E. S. Margianti, SE., MM."
               role="Rektor Universitas Gunadarma"
-              photo="/assets/images/tim/Rektor.webp"
+              photo="/assets/images/tentang-kami/tim/01-bu-margianti.png"
               bgCapsule={CAPSULE}
               size="xl"
-              overrides={{ avatarLeftPct: 18, textLeftPct: 36, avatar: 105 }}
             />
           </div>
 
-          <hr className="border-t-2 border-[#D9D9D9] mx-auto" style={HR_STYLE} />
+          <hr
+            className="border-t-2 border-[#D9D9D9] mx-auto"
+            style={HR_STYLE}
+          />
 
           <div className="grid place-items-center">
             <TeamCard
               name="Dr. Beny Susanti, SE., MM."
               role="Ketua Tax Center"
-              photo="/assets/images/tim/busanti.webp"
+              photo="/assets/images/tentang-kami/tim/02-bu-santi.png"
               bgCapsule={CAPSULE}
               size="xl"
-              overrides={{ avatarLeftPct: 18, textLeftPct: 36, avatar: 105 }}
             />
           </div>
 
-          <hr className="border-t-2 border-[#D9D9D9] mx-auto" style={HR_STYLE} />
+          <hr
+            className="border-t-2 border-[#D9D9D9] mx-auto"
+            style={HR_STYLE}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 md:gap-12 lg:gap-16 justify-items-center">
             <TeamCard
               name="Dr. Feni Andriani, S.Si, M.Si."
               role="Divisi Riset dan Pengembangan IT"
-              photo="/assets/images/tim/bufeni.webp"
+              photo="/assets/images/tentang-kami/tim/03-bu-feni.png"
               bgCapsule={CAPSULE}
               size="lg3"
-              overrides={{ avatarLeftPct: 19, textLeftPct: 36 }}
             />
             <TeamCard
               name="Dr. Dewi Putrie Lestari, S.Si., M.Si."
               role="Divisi Relawan Pajak"
-              photo="/assets/images/tim/budewi.webp"
+              photo="/assets/images/tentang-kami/tim/04-bu-dewi.png"
               bgCapsule={CAPSULE}
               size="lg3"
-              overrides={{ avatarLeftPct: 19, textLeftPct: 34 }}
             />
             <TeamCard
               name="Dr. Nola Marina, S.Si, M.Si"
               role="Divisi Pengabdian Masyarakat"
-              photo="/assets/images/tim/bunola.webp"
+              photo="/assets/images/tentang-kami/tim/05-bu-nola.png"
               bgCapsule={CAPSULE}
               size="lg3"
-              overrides={{ avatarLeftPct: 19, textLeftPct: 36 }}
             />
           </div>
         </div>

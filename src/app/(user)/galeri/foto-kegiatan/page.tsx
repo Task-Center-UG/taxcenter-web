@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 type Creator = {
   id: number;
@@ -60,13 +61,7 @@ export default function FotoKegiatan() {
 
   return (
     <>
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-        <div className="relative w-full h-[150px] md:h-[200px] bg-[#D9D9D9] flex items-center justify-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
-            FOTO KEGIATAN
-          </h1>
-        </div>
-      </div>
+      <PageHeaderHero title="FOTO KEGIATAN" />
 
       <section className="py-16 px-4 md:px-16 xl:px-32">
         <div className="container mx-auto">

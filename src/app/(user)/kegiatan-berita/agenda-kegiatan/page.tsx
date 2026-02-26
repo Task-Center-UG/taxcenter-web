@@ -6,6 +6,7 @@ import CarouselAgenda from "@/components/CarouselAgenda";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 const API_BASE_URL = "https://dev.api.taxcenterug.com";
 
@@ -58,18 +59,17 @@ export default function AgendaKegiatan() {
   return (
     <>
       {/* Header Section */}
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-        <div className="relative w-full h-[200px] lg:h-[220px] flex flex-col items-center justify-center text-slate-900">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 tracking-tight">
-            AGENDA KEGIATAN
-          </h1>
-          <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
+      <PageHeaderHero
+        title="AGENDA KEGIATAN"
+        subtitle={
+          <>
             Informasi lengkap mengenai kegiatan dan berita terbaru dari Tax
             Center Universitas Gunadarma. Ikuti perkembangan dan update
             terkini seputar <br /> perpajakan dan kegiatan akademik.
-          </p>
-        </div>
-      </div>
+          </>
+        }
+        innerClassName="min-h-[220px] lg:min-h-[240px]"
+      />
 
       {/* Carousel Section */}
       <section className="mt-6 mb-16 px-4 md:px-16 xl:px-32 overflow-hidden">
@@ -163,3 +163,4 @@ export default function AgendaKegiatan() {
     </>
   );
 }
+

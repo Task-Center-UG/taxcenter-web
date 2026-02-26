@@ -20,6 +20,7 @@ import {
   PlayCircle,
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 type Creator = {
   id: number;
@@ -110,19 +111,20 @@ const VideoPembelajaran = () => {
 
   return (
     <>
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-        <div className="relative w-full h-[250px] lg:h-[280px] flex flex-col items-center justify-center text-slate-900">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 tracking-tight">
-            Video Pembelajaran Pajak
-          </h1>
-
-          <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. <br /> Lorem Ipsum has been the industry’s standard dummy
-            text ever since <br /> the 1500s, when an unknown printer took.
-          </p>
-
-          <div className="flex justify-center items-center mt-5 gap-3 w-full max-w-xl px-4">
+      <div className="relative max-w-full overflow-hidden select-none">
+        <PageHeaderHero
+          title="VIDEO PEMBELAJARAN PAJAK"
+          subtitle={
+            <>
+              Menyediakan penjelasan konsep serta informasi seputar pajak dalam
+              format audiovisual. Video ini dapat dimanfaatkan sebagai media
+              pendukung untuk menambah wawasan dan pemahaman bagi mahasiswa dan
+              masyarakat.
+            </>
+          }
+          innerClassName="min-h-[260px] lg:min-h-[300px]"
+        >
+          <div className="flex justify-center items-center mt-5 gap-3 w-full max-w-xl">
             <div className="relative w-full md:w-2/3">
               <Input
                 value={query}
@@ -153,7 +155,7 @@ const VideoPembelajaran = () => {
               </Select>
             </div>
           </div>
-        </div>
+        </PageHeaderHero>
       </div>
 
       <div className="max-w-7xl mx-auto px-5 md:px-10 pb-16">

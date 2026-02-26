@@ -5,6 +5,7 @@ import { useGetData } from "@/hooks/use-get-data";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 const API_BASE_URL = "https://dev.api.taxcenterug.com";
 
@@ -56,25 +57,17 @@ export default function ArtikelPajak() {
   return (
     <>
       {/* Header Section */}
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-        <div className="relative w-full h-[250px] lg:h-[280px] flex flex-col items-center justify-center text-slate-900">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 tracking-tight">
-            ARTIKEL PAJAK
-          </h1>
-          <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
+      <PageHeaderHero
+        title="ARTIKEL PAJAK"
+        subtitle={
+          <>
             Koleksi artikel perpajakan terkini yang membahas berbagai topik
-            seputar perpajakan di Indonesia. Dapatkan wawasan dan
-            pengetahuan mendalam <br /> dari para ahli pajak.
-          </p>
-          <div className="flex justify-center mt-4">
-            <Link href="/" passHref>
-              <Button className="rounded-full px-6 md:px-7 h-8 md:h-9 bg-[#2A176F] text-white hover:opacity-30">
-                Sort
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
+            seputar perpajakan di Indonesia. Dapatkan wawasan dan pengetahuan
+            mendalam <br /> dari para ahli pajak.
+          </>
+        }
+        innerClassName="min-h-[260px] lg:min-h-[300px]"
+      ></PageHeaderHero>
 
       {/* Content Section */}
       <section className="px-4 md:px-6 xl:px-40 mb-16">
@@ -137,7 +130,7 @@ export default function ArtikelPajak() {
                         <Button
                           variant="link"
                           className="text-[#2A176F] font-semibold p-0 hover:underline hover:text-[#2A176F] cursor-pointer"
-                          >
+                        >
                           Selengkapnya →
                         </Button>
                       </Link>

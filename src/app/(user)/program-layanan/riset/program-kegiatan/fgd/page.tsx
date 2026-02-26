@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useGetData } from "@/hooks/use-get-data";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 const API_BASE_URL = "https://dev.api.taxcenterug.com";
 
@@ -109,12 +110,12 @@ export default function FgdListPage() {
   };
 
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
-      <div className="w-full h-[200px] bg-[#E5E5E5] flex items-center justify-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-wide uppercase text-black">
-          FOCUS GROUP DISCUSSION (FGD)
-        </h1>
-      </div>
+    <div className="relative w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
+      <PageHeaderHero
+        title="FOCUS GROUP DISCUSSION (FGD)"
+        innerClassName="min-h-[200px] md:min-h-[240px]"
+        titleClassName="text-3xl md:text-4xl"
+      />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
@@ -255,3 +256,5 @@ export default function FgdListPage() {
     </div>
   );
 }
+
+

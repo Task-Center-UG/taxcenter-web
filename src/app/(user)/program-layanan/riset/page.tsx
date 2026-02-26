@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 export const metadata: Metadata = {
   title: "Riset",
@@ -31,19 +32,19 @@ export default function Riset() {
   return (
     <main className="md:min-h-screen w-full bg-[#EFF4F7]">
       {/* Header Section */}
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-        <div className="relative w-full h-[200px] lg:h-[220px] bg-[#D9D9D9] flex flex-col items-center justify-center text-slate-900">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 tracking-tight">
-            KATEGORI PENELITIAN
-          </h1>
-          <p className="text-sm md:text-base text-center mx-4 md:mx-0 max-w-3xl font-normal leading-relaxed">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. <br /> Lorem Ipsum has been the industry&rsquo;s standard
-            dummy text ever since <br /> the 1500s, when an unknown printer
-            took.
-          </p>
-        </div>
-      </div>
+      <PageHeaderHero
+        title="RISET"
+        subtitle={
+          <>
+            Riset Tax Center Universitas Gunadarma merupakan bagian dari
+            kegiatan akademik yang melibatkan dosen dan mahasiswa dalam
+            menghasilkan kajian serta analisis yang bermanfaat bagi pengembangan
+            ilmu pengetahuan dan masyarakat, baik terkait perpajakan maupun
+            bidang lainnya.
+          </>
+        }
+        innerClassName="min-h-[220px] lg:min-h-[240px]"
+      />
 
       {/* Kategori List */}
       <section
@@ -59,10 +60,11 @@ export default function Riset() {
             label="Kategori Penelitian"
             href="/program-layanan/riset/kategori-penelitian"
           />
-          <CategoryItem
+          {/* TODO: KOMENTARIN DULU */}
+          {/* <CategoryItem
             label="Kerjasama Riset"
             href="/program-layanan/riset/kerjasama-riset"
-          />
+          /> */}
           <CategoryItem
             label="Program dan Kegiatan Riset"
             href="/program-layanan/riset/program-kegiatan"

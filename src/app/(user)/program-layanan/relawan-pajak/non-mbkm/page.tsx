@@ -42,6 +42,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 interface Major {
   id: number;
@@ -185,7 +186,10 @@ const FormRelawanPajakNonMBKM = () => {
 
   return (
     <>
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none"></div>
+      <PageHeaderHero
+        title="PENDAFTARAN RELAWAN PAJAK NON MBKM"
+        subtitle="Silakan lengkapi formulir pendaftaran relawan pajak Non-MBKM di bawah ini."
+      />
 
       <div className="w-full min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">

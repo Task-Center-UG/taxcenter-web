@@ -1,5 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 export const metadata: Metadata = {
   title: "Foto Produk UMKM",
@@ -133,12 +134,11 @@ function CategorySection({ category, items }: FotoProdukProps) {
 export default function FotoProduk() {
   return (
     <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-      {/* Header */}
-      <div className="relative w-full h-[150px] md:h-[200px] bg-[#D9D9D9] flex items-center justify-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-center px-4">
-          FOTO PRODUK UMKM
-        </h1>
-      </div>
+      <PageHeaderHero
+        title="FOTO PRODUK UMKM"
+        className="pt-0 lg:pt-0"
+        innerClassName="min-h-[200px] md:min-h-[240px]"
+      />
 
       {/* Konten */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16 bg-white bg-opacity-50">

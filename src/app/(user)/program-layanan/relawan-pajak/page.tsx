@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 export const metadata: Metadata = {
   title: "Relawan Pajak",
@@ -12,7 +13,10 @@ export default function RelawanPajak() {
   return (
     <>
       {/* Header Section */}
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none"></div>
+      <PageHeaderHero
+        title="RELAWAN PAJAK"
+        subtitle="Program relawan pajak yang melibatkan mahasiswa untuk memberikan asistensi perpajakan kepada masyarakat."
+      />
 
       {/* Kegiatan Relpak */}
       <section className="w-full bg-[#2A176F]">

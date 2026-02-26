@@ -10,6 +10,7 @@ import {
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 export const metadata: Metadata = {
   title: "Pengabdian Masyarakat",
@@ -63,7 +64,12 @@ export default function PengabdianMasyarakat() {
   return (
     <>
       {/* Header Section */}
-      <div className="pt-[70px] lg:pt-[120px] overflow-hidden">
+      <div className="overflow-hidden">
+        <PageHeaderHero
+          title="PENGABDIAN MASYARAKAT"
+          subtitle="Program kontribusi nyata untuk membantu masyarakat melalui edukasi, pendampingan, dan pengembangan UMKM."
+          innerClassName="min-h-[220px] md:min-h-[260px]"
+        />
         <section className="w-full bg-[#EFF4F7] py-16 md:py-10 xl:py-18">
           <div className="mx-auto max-w-6xl px-4 md:px-6 py-9 md:py-16 grid md:grid-cols-2 gap-8 md:gap-12 items-center justify-center text-center">
             <div className="flex flex-col md:text-left">

@@ -4,6 +4,7 @@ import { useGetData } from "@/hooks/use-get-data";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 const API_BASE_URL = "https://dev.api.taxcenterug.com";
 
@@ -82,11 +83,12 @@ export default function DivisionDetailPage() {
 
   return (
     <div className="relative pt-[70px] lg:pt-[120px] pb-20">
-      <div className="w-full h-[150px] md:h-[200px] bg-[#E5E5E5] flex items-center justify-center text-center px-4">
-        <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-black">
-          {division.name}
-        </h1>
-      </div>
+      <PageHeaderHero
+        title={division.name}
+        className="pt-0 lg:pt-0"
+        innerClassName="min-h-[200px] md:min-h-[240px]"
+        titleClassName="text-3xl md:text-4xl"
+      />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-8 mt-12 md:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">

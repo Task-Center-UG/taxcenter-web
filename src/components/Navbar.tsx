@@ -7,7 +7,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClock,
+  faChevronDown,
+  faChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const menuItems = [
   {
@@ -22,9 +26,13 @@ const menuItems = [
     title: "PROGRAM & LAYANAN",
     subItems: [
       { title: "RELAWAN PAJAK", href: "/program-layanan/relawan-pajak" },
-      { title: "PENGABDIAN MASYARAKAT", href: "/program-layanan/pengabdian-masyarakat" },
+      {
+        title: "PENGABDIAN MASYARAKAT",
+        href: "/program-layanan/pengabdian-masyarakat",
+      },
       { title: "RISET", href: "/program-layanan/riset" },
       { title: "TAX CLINIC", href: "/program-layanan/tax-clinic" },
+      { title: "BREVET", href: "/program-layanan/brevet" },
     ],
   },
   {
@@ -40,7 +48,10 @@ const menuItems = [
     subItems: [
       { title: "MATERI PAJAK", href: "/edukasi-pajak/materi-pajak" },
       { title: "BINCANG SORE", href: "/edukasi-pajak/bincang-sore" },
-      { title: "VIDEO PEMBELAJARAN PAJAK", href: "/edukasi-pajak/video-pembelajaran" },
+      {
+        title: "VIDEO PEMBELAJARAN PAJAK",
+        href: "/edukasi-pajak/video-pembelajaran",
+      },
     ],
   },
   {
@@ -113,7 +124,9 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   // state untuk accordion mobile
-  const [mobileOpenIndex, setMobileOpenIndex] = React.useState<number | null>(null);
+  const [mobileOpenIndex, setMobileOpenIndex] = React.useState<number | null>(
+    null,
+  );
   React.useEffect(() => {
     if (!isOpen) setMobileOpenIndex(null);
   }, [isOpen]);
@@ -161,7 +174,9 @@ export default function Navbar() {
 
       <div
         className={`fixed inset-0 bg-black/60 transition-opacity duration-300 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 40 }}
       />
@@ -206,7 +221,7 @@ export default function Navbar() {
               </SheetContent>
             </Sheet>
           </div>
-          
+
           {/* Navbar Dekstop */}
           <nav className="hidden xl:block relative">
             <ul className="flex space-x-[60px]">
@@ -214,63 +229,66 @@ export default function Navbar() {
                 const open = activeMenu === item.title;
                 const isOpen = activeMenu === item.title;
                 return (
-                <li
-                  key={index}
-                  ref={(el) => { menuRefs.current[index] = el }}
-                  className="relative group"
-                  onMouseEnter={() => handleMouseEnter(item.title)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <span
-                    className={[
-                      "inline-flex items-center gap-1",
-                      "font-bold text-sm cursor-default",
-                      "transition-colors duration-200",
-                      isOpen ? "text-[#F1C40F]" : "text-[#2A176F] hover:text-[#F1C40F]",
-                      "group-hover:text-[#F1C40F] group-focus-within:text-[#F1C40F]",
-                    ].join(" ")}
+                  <li
+                    key={index}
+                    ref={(el) => {
+                      menuRefs.current[index] = el;
+                    }}
+                    className="relative group"
+                    onMouseEnter={() => handleMouseEnter(item.title)}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    <span>{item.title}</span>
-                    <FontAwesomeIcon
-                      icon={faChevronDown} 
+                    <span
                       className={[
-                        "h-3.5 w-3.5 transition-transform duration-500 ease-out",
-                        "transform-gpu will-change-transform",
-                        isOpen ? "rotate-180" : "",
-                        "group-hover:rotate-180 group-focus-within:rotate-180",
-                        "motion-reduce:transition-none"
+                        "inline-flex items-center gap-1",
+                        "font-bold text-sm cursor-default",
+                        "transition-colors duration-200",
+                        isOpen
+                          ? "text-[#F1C40F]"
+                          : "text-[#2A176F] hover:text-[#F1C40F]",
+                        "group-hover:text-[#F1C40F] group-focus-within:text-[#F1C40F]",
                       ].join(" ")}
-                    />
-                  </span>
-
-                  {activeMenu === item.title && (
-                    <ul 
-                    className={[
-                      "absolute -left-10 mt-5.5 w-60 bg-white border-t-3 border-t-yellow-300 shadow-lg",
-                      "origin-top will-change-[opacity,transform] transition-all duration-200 ease-out",
-                        open
-                          ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
-                          : "opacity-0 -translate-y-2 scale-95 pointer-events-none",
-                          "border-t-4 border-t-yellow-300"
-                    ].join(" ")}
                     >
-                      {item.subItems.map((sub) => (
-                        <li key={sub.href} className="group/item">
-                          <Link
-                            href={sub.href}
-                            className="block pl-3 py-3 text-sm font-bold text-[#2A176F] border-b border-[#D9D9D9] hover:text-[#F1C40F] hover:bg-[#D9D9D9]/20"
-                          >
-                            <span className="block transition-all duration-250 transform hover:translate-x-1.5">
-                              <span className="absolute left-[-10px] opacity-0 hover:opacity-100 hover:before:content-['-'] transition-opacity duration-250">
+                      <span>{item.title}</span>
+                      <FontAwesomeIcon
+                        icon={faChevronDown}
+                        className={[
+                          "h-3.5 w-3.5 transition-transform duration-500 ease-out",
+                          "transform-gpu will-change-transform",
+                          isOpen ? "rotate-180" : "",
+                          "group-hover:rotate-180 group-focus-within:rotate-180",
+                          "motion-reduce:transition-none",
+                        ].join(" ")}
+                      />
+                    </span>
+
+                    {activeMenu === item.title && (
+                      <ul
+                        className={[
+                          "absolute -left-10 mt-5.5 w-60 bg-white border-t-3 border-t-yellow-300 shadow-lg",
+                          "origin-top will-change-[opacity,transform] transition-all duration-200 ease-out",
+                          open
+                            ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+                            : "opacity-0 -translate-y-2 scale-95 pointer-events-none",
+                          "border-t-4 border-t-yellow-300",
+                        ].join(" ")}
+                      >
+                        {item.subItems.map((sub) => (
+                          <li key={sub.href} className="group/item">
+                            <Link
+                              href={sub.href}
+                              className="block pl-3 py-3 text-sm font-bold text-[#2A176F] border-b border-[#D9D9D9] hover:text-[#F1C40F] hover:bg-[#D9D9D9]/20"
+                            >
+                              <span className="block transition-all duration-250 transform hover:translate-x-1.5">
+                                <span className="absolute left-[-10px] opacity-0 hover:opacity-100 hover:before:content-['-'] transition-opacity duration-250"></span>
+                                {sub.title}
                               </span>
-                              {sub.title}
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
                 );
               })}
             </ul>

@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 interface TaxClinicService {
   id: number;
@@ -85,28 +86,23 @@ export default function TaxClinic() {
 
   return (
     <>
-      <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-        <div className="relative w-full h-[150px] md:h-[200px] bg-[#D9D9D9] flex items-center justify-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-            TAX CLINIC
-          </h1>
-        </div>
-      </div>
+      <PageHeaderHero title="TAX CLINIC" />
 
       <section className="py-12 px-4 md:px-16 xl:px-32">
         <div className="container mx-auto flex flex-col-reverse md:flex-row items-center gap-10">
           <div className="md:w-3/4">
             <p className="text-sm md:text-base lg:text-lg text-gray-700 text-justify">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Blanditiis alias, beatae sunt aut labore error quas dignissimos
-              perspiciatis, quidem minus veritatis dolorum in facilis laudantium
-              voluptas! Adipisci eum expedita perspiciatis iste voluptatum eius.
-              Distinctio odio aperiam corrupti! Voluptates, deserunt quae?
+              Tax Clinic merupakan layanan konsultasi dan pendampingan yang
+              diselenggarakan oleh Tax Center Universitas Gunadarma bagi dosen,
+              mahasiswa serta masyarakat dalam memahami dan melaksanakan
+              kewajiban perpajakan. Layanan ini memberikan informasi dan arahan
+              terkait ketentuan perpajakan sebagai bentuk dukungan terhadap
+              peningkatan kesadaran dan kepatuhan pajak.
             </p>
           </div>
           <div className="md:w-1/3 flex justify-center">
             <Image
-              src="/assets/images/tax-clinic.png"
+              src="/assets/images/program-dan-layanan/tax-clinic/01-tax-clinic.jpg"
               alt="Tax Clinic"
               className="w-auto h-auto"
               width={350}
@@ -133,7 +129,7 @@ export default function TaxClinic() {
           <Accordion type="single" collapsible className="w-full space-y-4">
             {categoriesData?.taxClinicCategories.map((category, index) => {
               const relevantVideos = serviceData?.taxClinicServices.filter(
-                (service) => service.category === category
+                (service) => service.category === category,
               );
 
               return (
@@ -144,7 +140,7 @@ export default function TaxClinic() {
                 >
                   <AccordionTrigger
                     className={cn(
-                      "bg-[#2A176F] text-white px-6 py-4 rounded-lg hover:bg-[#20115b] hover:no-underline transition-all [&[data-state=open]]:rounded-b-none"
+                      "bg-[#2A176F] text-white px-6 py-4 rounded-lg hover:bg-[#20115b] hover:no-underline transition-all [&[data-state=open]]:rounded-b-none",
                     )}
                   >
                     <span className="text-base md:text-lg font-semibold">

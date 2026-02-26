@@ -8,6 +8,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import PageHeaderHero from "@/components/PageHeaderHero";
 
 type PendampinganItem = {
   id: number;
@@ -114,19 +115,12 @@ function PendampinganCard({ title, description, images }: PendampinganItem) {
 export default function PendampinganUMKM() {
   return (
     <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
-      {/* Header */}
-      <div className="relative w-full bg-[#D9D9D9] py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            PENDAMPINGAN UMKM
-          </h1>
-          <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-            Program pendampingan komprehensif untuk membantu UMKM berkembang
-            melalui bimbingan langsung dari para ahli di berbagai bidang, mulai
-            dari manajemen, keuangan, pemasaran, hingga legalitas usaha.
-          </p>
-        </div>
-      </div>
+      <PageHeaderHero
+        title="PENDAMPINGAN UMKM"
+        className="pt-0 lg:pt-0"
+        innerClassName="min-h-[220px] md:min-h-[260px]"
+        subtitle="Program pendampingan komprehensif untuk membantu UMKM berkembang melalui bimbingan langsung dari para ahli di berbagai bidang, mulai dari manajemen, keuangan, pemasaran, hingga legalitas usaha."
+      />
 
       {/* Konten */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white bg-opacity-50">
