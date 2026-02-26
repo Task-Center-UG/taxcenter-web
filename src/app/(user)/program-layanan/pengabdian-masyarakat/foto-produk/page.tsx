@@ -1,155 +1,253 @@
-import React from "react";
-import { Metadata } from "next";
+"use client";
+
+import React, { useMemo, useState } from "react";
 import PageHeaderHero from "@/components/PageHeaderHero";
+import { useGetData } from "@/hooks/use-get-data";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Calendar,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Search,
+  User,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
 
-export const metadata: Metadata = {
-  title: "Foto Produk UMKM",
-  description: "Foto Produk UMKM Tax Center",
-};
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
-type FotoProdukProps = {
+type Creator = {
   id: number;
-  category: string;
-  items: {
-    id: number;
-    name: string;
-    description: string;
-  }[];
+  username: string;
+  full_name: string;
 };
 
-// Data dummy dalam format JSON
-const fotoProdukData: FotoProdukProps[] = [
-  {
-    id: 1,
-    category: "Produk Makanan",
-    items: [
-      {
-        id: 1,
-        name: "Fotografi Kue & Pastry",
-        description:
-          "Sesi foto profesional untuk produk kue, pastry, dan bakery dengan teknik pencahayaan khusus untuk menampilkan tekstur dan warna produk secara menarik.",
-      },
-      {
-        id: 2,
-        name: "Fotografi Makanan Siap Saji",
-        description:
-          "Layanan foto untuk makanan siap saji dengan styling yang menggugah selera, cocok untuk promosi restoran dan katering UMKM.",
-      },
-      {
-        id: 3,
-        name: "Fotografi Snack & Kemasan",
-        description:
-          "Foto produk snack dan makanan kemasan dengan fokus pada detail kemasan dan presentasi produk yang menarik untuk marketplace.",
-      },
-    ],
-  },
-  {
-    id: 2,
-    category: "Produk Fashion",
-    items: [
-      {
-        id: 4,
-        name: "Fotografi Pakaian & Garmen",
-        description:
-          "Sesi foto pakaian dengan mannequin atau model, mencakup berbagai angle dan detail jahitan untuk mendukung penjualan online fashion UMKM.",
-      },
-      {
-        id: 5,
-        name: "Fotografi Aksesori",
-        description:
-          "Foto produk aksesori seperti tas, sepatu, dan perhiasan dengan background dan lighting yang menonjolkan detail dan kualitas produk.",
-      },
-      {
-        id: 6,
-        name: "Fotografi Batik & Tekstil",
-        description:
-          "Layanan foto khusus untuk produk batik dan tekstil tradisional dengan teknik khusus menampilkan motif dan kualitas kain.",
-      },
-    ],
-  },
-  {
-    id: 3,
-    category: "Produk Kerajinan",
-    items: [
-      {
-        id: 7,
-        name: "Fotografi Kerajinan Tangan",
-        description:
-          "Sesi foto untuk produk kerajinan tangan seperti rajutan, clay, resin, dan handmade items dengan fokus pada detail dan keunikan produk.",
-      },
-      {
-        id: 8,
-        name: "Fotografi Furniture & Dekorasi",
-        description:
-          "Layanan foto untuk produk furniture dan dekorasi rumah dengan setting yang menampilkan fungsi dan estetika produk.",
-      },
-      {
-        id: 9,
-        name: "Fotografi Souvenir & Gift",
-        description:
-          "Foto produk souvenir dan hampers dengan packaging menarik, ideal untuk promosi produk gift UMKM di berbagai platform.",
-      },
-    ],
-  },
-];
-
-function FotoProdukCard({
-  name,
-  description,
-}: {
-  name: string;
+type UmkmPhotoItem = {
+  id: number;
+  title: string;
   description: string;
-}) {
-  return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      {/* Dummy Image - Gray Background */}
-      <div className="w-full h-40 bg-gray-300"></div>
+  image_url: string;
+  created_at: string;
+  created_by: Creator;
+};
 
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{name}</h3>
-        <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
-      </div>
-    </div>
-  );
+type PagingInfo = {
+  page: number;
+  total_pages: number;
+  total_items: number;
+};
+
+type UmkmPhotoResponse = {
+  umkmProductPhoto: UmkmPhotoItem[];
+  paging: PagingInfo;
+};
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+  React.useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
 }
 
-function CategorySection({ category, items }: FotoProdukProps) {
-  return (
-    <div className="mb-12">
-      <h2 className="text-2xl font-bold mb-6">{category}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => (
-          <FotoProdukCard
-            key={item.id}
-            name={item.name}
-            description={item.description}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
+export default function FotoProdukPage() {
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("terbaru");
+  const [page, setPage] = useState(1);
+  const debouncedQuery = useDebounce(query, 500);
+  const pageSize = 6;
 
-export default function FotoProduk() {
+  const apiParams = useMemo(() => {
+    let sort_by = "created_at";
+    let order = "desc";
+    if (sort === "terlama") order = "asc";
+    if (sort === "az") {
+      sort_by = "title";
+      order = "asc";
+    }
+    if (sort === "za") {
+      sort_by = "title";
+      order = "desc";
+    }
+    return {
+      page,
+      size: pageSize,
+      title: debouncedQuery || undefined,
+      sort_by,
+      order,
+    };
+  }, [page, debouncedQuery, sort]);
+
+  const { data, isLoading, isError } = useGetData<UmkmPhotoResponse>({
+    key: ["umkm-photo-list", JSON.stringify(apiParams)],
+    url: "/umkm-product-photo",
+    params: apiParams,
+  });
+
+  const items = data?.umkmProductPhoto || [];
+  const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
+
+  const getImageUrl = (path: string) => {
+    if (!path) return "";
+    if (path.startsWith("http")) return path;
+    if (path.startsWith("/uploads/")) return `${API_BASE_URL}${path}`;
+    if (path.startsWith("uploads/")) return `${API_BASE_URL}/${path}`;
+    return `${API_BASE_URL}/${path}`;
+  };
+
+  const stripHtml = (value: string) =>
+    value
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
+    <div className="relative w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
       <PageHeaderHero
         title="FOTO PRODUK UMKM"
-        className="pt-0 lg:pt-0"
-        innerClassName="min-h-[200px] md:min-h-[240px]"
+        innerClassName="min-h-[220px] md:min-h-[260px]"
+        subtitle="Dokumentasi hasil foto produk UMKM untuk kebutuhan branding, katalog digital, dan promosi di berbagai platform."
       />
 
-      {/* Konten */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16 bg-white bg-opacity-50">
-        {fotoProdukData.map((category) => (
-          <CategorySection
-            key={category.id}
-            id={category.id}
-            category={category.category}
-            items={category.items}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
+          <input
+            type="text"
+            placeholder="Cari foto produk UMKM..."
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
+            className="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400 w-full"
           />
-        ))}
+
+          <div className="flex items-center w-full sm:w-auto border-t sm:border-t-0 sm:border-l border-gray-200">
+            <div className="relative w-full sm:w-auto">
+              <select
+                value={sort}
+                onChange={(e) => {
+                  setSort(e.target.value);
+                  setPage(1);
+                }}
+                className="appearance-none bg-transparent py-3 pl-4 pr-10 outline-none text-gray-600 cursor-pointer w-full sm:w-auto hover:bg-gray-50 transition-colors"
+              >
+                <option value="terbaru">Terbaru...</option>
+                <option value="terlama">Terlama...</option>
+                <option value="az">A - Z</option>
+                <option value="za">Z - A</option>
+              </select>
+              <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            <div className="bg-[#F97316] text-white p-3 sm:rounded-r-md w-full sm:w-auto flex justify-center items-center">
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Search className="w-5 h-5" />
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {isError && (
+            <div className="col-span-full text-center py-20 text-red-500 bg-white rounded-xl border border-red-100">
+              Gagal memuat data foto produk UMKM.
+            </div>
+          )}
+
+          {!isLoading && !isError && items.length === 0 && (
+            <div className="col-span-full text-center py-20 text-gray-500 bg-white rounded-xl border border-gray-100">
+              Tidak ada data foto produk UMKM.
+            </div>
+          )}
+
+          {items.map((item) => (
+            <Card
+              key={item.id}
+              className="flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group h-full"
+            >
+              <div className="relative h-52 bg-gray-200 overflow-hidden">
+                {item.image_url ? (
+                  <Image
+                    src={getImageUrl(item.image_url)}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">
+                    <span className="text-sm font-medium">No Image</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 flex flex-col flex-1">
+                <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-[#F97316]" />
+                    {new Date(item.created_at).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <User className="w-3 h-3" />
+                    {item.created_by?.full_name}
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#F97316] transition-colors">
+                  {item.title}
+                </h3>
+
+                <div className="mt-auto pt-4 border-t border-gray-50">
+                  <Link
+                    href={`/program-layanan/pengabdian-masyarakat/foto-produk/${item.id}`}
+                    className="inline-flex items-center gap-2 text-[#F97316] font-semibold text-sm hover:text-orange-700 transition-colors"
+                  >
+                    Lihat Detail <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {!isLoading && paging.total_pages > 1 && (
+          <div className="flex items-center justify-center gap-4 mt-12">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Sebelumnya
+            </button>
+
+            <span className="text-sm font-medium text-gray-600">
+              Halaman {page} dari {paging.total_pages}
+            </span>
+
+            <button
+              onClick={() =>
+                setPage((p) => Math.min(paging.total_pages, p + 1))
+              }
+              disabled={page === paging.total_pages}
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              Selanjutnya
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

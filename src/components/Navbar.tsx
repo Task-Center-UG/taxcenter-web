@@ -39,6 +39,7 @@ const menuItems = [
     title: "KEGIATAN & BERITA",
     subItems: [
       { title: "AGENDA KEGIATAN", href: "/kegiatan-berita/agenda-kegiatan" },
+      { title: "SEMINAR", href: "/kegiatan-berita/seminar" },
       { title: "ARTIKEL PAJAK", href: "/kegiatan-berita/artikel-pajak" },
       { title: "PUBLIKASI", href: "/kegiatan-berita/publikasi" },
     ],

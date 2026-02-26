@@ -60,15 +60,15 @@ export default function Riset() {
             label="Kategori Penelitian"
             href="/program-layanan/riset/kategori-penelitian"
           />
-          {/* TODO: KOMENTARIN DULU */}
-          {/* <CategoryItem
+          <CategoryItem
             label="Kerjasama Riset"
             href="/program-layanan/riset/kerjasama-riset"
-          /> */}
-          <CategoryItem
+          />
+          {/* TODO: KOMENTARIN DULU */}
+          {/* <CategoryItem
             label="Program dan Kegiatan Riset"
             href="/program-layanan/riset/program-kegiatan"
-          />
+          /> */}
         </div>
       </section>
     </main>

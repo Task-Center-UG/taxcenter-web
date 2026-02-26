@@ -169,7 +169,7 @@ const MateriPajak = () => {
           {items.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all overflow-hidden flex flex-col h-full"
+              className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
             >
               <div className="w-full h-[150px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
                 <Image
@@ -186,17 +186,10 @@ const MateriPajak = () => {
                 <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-2 line-clamp-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-slate-600 mb-4 leading-relaxed line-clamp-3 flex-1">
-                  {item.description}
-                </p>
                 <div className="flex justify-end mt-auto">
-                  <Link
-                    href={item.file_download_url || item.file_url}
-                    target="_blank"
-                    passHref
-                  >
-                    <Button className="rounded-full cursor-pointer px-6 bg-[#F1C40F] text-black text-sm font-medium hover:bg-[#f7c933]">
-                      Lihat Materi
+                  <Link href={`/edukasi-pajak/materi-pajak/${item.id}`}>
+                    <Button className="rounded-full cursor-pointer px-6 bg-[#F97316] text-white text-sm font-medium hover:bg-orange-600">
+                      Lihat Detail
                     </Button>
                   </Link>
                 </div>
@@ -206,28 +199,28 @@ const MateriPajak = () => {
         </div>
 
         {!isLoading && paging.total_pages > 1 && (
-          <div className="mt-10 flex items-center justify-center gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              disabled={page === 1}
+          <div className="flex items-center justify-center gap-4 mt-12">
+            <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="h-9 w-9 rounded-full"
+              disabled={page === 1}
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
             >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <span className="text-sm font-medium text-slate-600 px-2">
-              Page {page} of {paging.total_pages}
+              <ChevronLeft className="w-4 h-4" />
+              Sebelumnya
+            </button>
+            <span className="text-sm font-medium text-gray-600">
+              Halaman {page} dari {paging.total_pages}
             </span>
-            <Button
-              variant="outline"
-              size="icon"
-              disabled={page >= paging.total_pages}
-              onClick={() => setPage((p) => p + 1)}
-              className="h-9 w-9 rounded-full"
+            <button
+              onClick={() =>
+                setPage((p) => Math.min(paging.total_pages, p + 1))
+              }
+              disabled={page === paging.total_pages}
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
             >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+              Selanjutnya
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         )}
       </div>

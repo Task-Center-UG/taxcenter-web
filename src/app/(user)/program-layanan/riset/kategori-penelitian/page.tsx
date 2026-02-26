@@ -99,7 +99,7 @@ export default function KategoriPenelitian() {
         titleClassName="text-3xl md:text-4xl"
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
           <input
             type="text"
@@ -152,19 +152,10 @@ export default function KategoriPenelitian() {
               key={item.id}
               className="flex flex-col md:flex-row bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="p-4 md:p-6 flex-shrink-0 flex items-center justify-center bg-white">
-                <div className="w-full h-48 md:w-56 md:h-48 bg-[#D9D9D9] rounded-md"></div>
-              </div>
-
               <div className="flex-1 py-4 px-4 md:py-6 md:pr-8 flex flex-col justify-center">
                 <h2 className="text-xl md:text-2xl font-bold mb-3 text-gray-900">
                   {item.title}
                 </h2>
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed text-justify mb-4 line-clamp-3">
-                  {item.description
-                    ? item.description
-                    : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. It has survived not only five centuries, but also the leap into electronic typesetting."}
-                </p>
                 <div>
                   <Link
                     href={`/program-layanan/riset/kategori-penelitian/${item.id}`}

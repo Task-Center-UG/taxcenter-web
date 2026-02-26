@@ -114,6 +114,12 @@ export default function KerjasamaRiset() {
     });
   };
 
+  const stripHtml = (value: string) =>
+    value
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
   return (
     <div className="relative w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
       <PageHeaderHero
@@ -122,7 +128,7 @@ export default function KerjasamaRiset() {
         titleClassName="text-3xl md:text-4xl"
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
           <input
             type="text"
@@ -200,10 +206,6 @@ export default function KerjasamaRiset() {
                 <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#F97316] transition-colors">
                   {item.title}
                 </h2>
-
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-2">
-                  {item.description}
-                </p>
 
                 <div className="mt-auto">
                   <Link

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useGetData } from "@/hooks/use-get-data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAward,
@@ -19,13 +20,55 @@ import {
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 
-const slides = [
-  "/assets/images/carousel-bg.png",
-  "/assets/images/carousel-bg.png",
-  "/assets/images/carousel-bg.png",
-  "/assets/images/carousel-bg.png",
-  "/assets/images/carousel-bg.png",
-  "/assets/images/carousel-bg.png",
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
+
+interface SliderItem {
+  title: string;
+  picture_url: string;
+  cta_url: string;
+  description: string;
+}
+
+interface AwardItem {
+  id: number;
+  title: string;
+  picture_url: string;
+}
+
+interface AwardResponse {
+  awards: AwardItem[];
+  paging: {
+    page: number;
+    total_pages: number;
+    total_items: number;
+  };
+}
+
+interface NewsItem {
+  id: number;
+  title: string;
+  image_url: string;
+  description: string;
+  created_at: string;
+}
+
+interface NewsResponse {
+  news: NewsItem[];
+  paging: {
+    page: number;
+    total_pages: number;
+    total_items: number;
+  };
+}
+
+const fallbackSlides: SliderItem[] = [
+  {
+    title: "Tax Center Gunadarma Bersinergi Membangun Indonesia",
+    description:
+      "Tax Center Universitas Gunadarma merupakan suatu Lembaga yang langsung di bawah rektor yang memiliki fungsi sebagai pusat pengkajian, pendidikan, pelatihan dan sosialisasi perpajakan di lingkungan perguruan tinggi dan masyarakat yang dilakukan secara mandiri.",
+    cta_url: "/",
+    picture_url: "/assets/images/carousel-bg.png",
+  },
 ];
 
 const divisiData = [
@@ -79,69 +122,6 @@ const divisiData = [
   },
 ];
 
-const awardsData = [
-  {
-    src: "/assets/images/",
-    alt: "Penghargaan 1",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    src: "/assets/images/",
-    alt: "Penghargaan 2",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    src: "/assets/images/",
-    alt: "Penghargaan 3",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    src: "/assets/images/",
-    alt: "Penghargaan 4",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    src: "/assets/images/",
-    alt: "Penghargaan 5",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    src: "/assets/images/",
-    alt: "Penghargaan 6",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-];
-
-const beritaData = [
-  {
-    image: "/assets/images/",
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  {
-    image: "/assets/images/",
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  {
-    image: "/assets/images/",
-    date: "12 April 2025",
-    title: "What Is Lorem Ipsum?",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-];
-
 const chunkArray = <T,>(arr: T[], size: number): T[][] => {
   const chunks: T[][] = [];
   for (let i = 0; i < arr.length; i += size) {
@@ -150,19 +130,39 @@ const chunkArray = <T,>(arr: T[], size: number): T[][] => {
   return chunks;
 };
 
-function PenghargaanCarousel() {
+const getImageUrl = (url: string) => {
+  if (!url) return "/assets/images/carousel-bg.png";
+  if (url.startsWith("http")) return url;
+  if (url.startsWith("/assets/")) return url;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
+  if (url.startsWith("/")) return url;
+  return `${API_BASE_URL}/${url}`;
+};
+
+const stripHtml = (html: string) =>
+  html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+function PenghargaanCarousel({ awardsData }: { awardsData: AwardItem[] }) {
   const itemsPerSlide = 3;
   const chunks = chunkArray(awardsData, itemsPerSlide);
   const [currentIndex, setCurrentIndex] = useState(0);
   const slideIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const prevSlide = () => {
+    if (chunks.length <= 1) return;
     setCurrentIndex((prev) => (prev === 0 ? chunks.length - 1 : prev - 1));
   };
   const nextSlide = () => {
+    if (chunks.length <= 1) return;
     setCurrentIndex((prev) => (prev === chunks.length - 1 ? 0 : prev + 1));
   };
+
   useEffect(() => {
+    if (chunks.length <= 1) return;
     if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
     slideIntervalRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev === chunks.length - 1 ? 0 : prev + 1));
@@ -173,7 +173,7 @@ function PenghargaanCarousel() {
   }, [chunks.length]);
 
   return (
-    <section className="bg-[#F5FAFF] w-full h-[560px] md:h-[600px] overflow-hidden">
+    <section className="bg-[#F5FAFF] w-full pb-16 overflow-hidden">
       <div className="flex flex-col justify-center items-center text-center mt-12">
         <h2 className="font-bold text-2xl text-[#2A176F] lg:text-3xl mb-7">
           Penghargaan
@@ -191,56 +191,75 @@ function PenghargaanCarousel() {
             className="flex transition-transform duration-700 ease-in-out"
             style={{
               transform: `translateX(-${currentIndex * 100}%)`,
-              width: `${chunks.length * 50}%`,
+              width: `${Math.max(chunks.length, 1) * 100}%`,
             }}
           >
-            {chunks.map((group, idx) => (
-              <div
-                key={idx}
-                className="flex justify-between min-w-full gap-x-6"
-              >
-                {group.map(({ src, alt, description }, i) => (
-                  <div key={i} className="flex flex-col items-start w-1/3">
-                    <div className="relative w-full h-[140px] sm:h-[160px] md:h-[200px] rounded-md overflow-hidden border border-gray-200">
-                      <Image
-                        src={src}
-                        alt={alt}
-                        fill
-                        style={{ objectFit: "cover" }}
-                        loading="lazy"
-                      />
+            {chunks.length > 0 ? (
+              chunks.map((group, idx) => (
+                <div
+                  key={idx}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6 min-w-full"
+                >
+                  {group.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex flex-col items-start w-full"
+                    >
+                      <div className="relative w-full h-auto rounded-md overflow-hidden border border-gray-200">
+                        <Image
+                          src={getImageUrl(item.picture_url)}
+                          alt={item.title}
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          className="w-full h-auto"
+                          loading="lazy"
+                          unoptimized
+                        />
+                      </div>
+                      <p className="mt-3 text-left text-xs sm:text-sm md:text-base font-normal w-full">
+                        {item.title}
+                      </p>
                     </div>
-                    <p className="mt-3 text-left text-xs sm:text-sm md:text-base font-normal max-w-[550px]">
-                      {description}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              ))
+            ) : (
+              <div className="flex justify-center min-w-full gap-x-6">
+                <p className="text-neutral-500 text-sm md:text-base py-8">
+                  Belum ada data penghargaan.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
-        <button
-          aria-label="Previous Slide"
-          onClick={() => {
-            prevSlide();
-            if (slideIntervalRef.current)
-              clearInterval(slideIntervalRef.current);
-          }}
-          className="absolute top-1/2 -translate-y-1/2 left-2 md:left-4 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-2.5 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300"
-        >
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </button>
-        <button
-          aria-label="Next Slide"
-          onClick={() => {
-            nextSlide();
-            if (slideIntervalRef.current)
-              clearInterval(slideIntervalRef.current);
-          }}
-          className="absolute top-1/2 -translate-y-1/2 right-2 md:right-4 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-2.5 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300"
-        >
-          <FontAwesomeIcon icon={faChevronRight} />
-        </button>
+
+        {chunks.length > 1 && (
+          <>
+            <button
+              aria-label="Previous Slide"
+              onClick={() => {
+                prevSlide();
+                if (slideIntervalRef.current)
+                  clearInterval(slideIntervalRef.current);
+              }}
+              className="absolute top-1/2 -translate-y-1/2 left-2 md:left-4 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-3 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300"
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <button
+              aria-label="Next Slide"
+              onClick={() => {
+                nextSlide();
+                if (slideIntervalRef.current)
+                  clearInterval(slideIntervalRef.current);
+              }}
+              className="absolute top-1/2 -translate-y-1/2 right-2 md:right-4 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-3 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300"
+            >
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </>
+        )}
       </div>
     </section>
   );
@@ -249,16 +268,54 @@ function PenghargaanCarousel() {
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const { data: slidersResponse } = useGetData<SliderItem[]>({
+    key: ["home-sliders"],
+    url: "/sliders",
+  });
+  const { data: awardsResponse } = useGetData<AwardResponse>({
+    key: ["home-awards"],
+    url: "/awards",
+    params: {
+      page: 1,
+      size: 9,
+      sort_by: "created_at",
+      order: "desc",
+    },
+  });
+  const { data: newsResponse } = useGetData<NewsResponse>({
+    key: ["home-news"],
+    url: "/news",
+    params: {
+      page: 1,
+      size: 3,
+      sort_by: "created_at",
+      order: "desc",
+    },
+  });
+
+  const slides = slidersResponse?.length ? slidersResponse : fallbackSlides;
+  const awardsData = awardsResponse?.awards || [];
+  const beritaData = newsResponse?.news || [];
+  const activeSlide = slides[currentSlide];
+
+  useEffect(() => {
+    if (currentSlide >= slides.length) {
+      setCurrentSlide(0);
+    }
+  }, [currentSlide, slides.length]);
 
   const prevSlide = () => {
+    if (slides.length <= 1) return;
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
   const nextSlide = () => {
+    if (slides.length <= 1) return;
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
   useEffect(() => {
+    if (slides.length <= 1) return;
     if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
     slideIntervalRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -267,7 +324,7 @@ export default function HomePage() {
     return () => {
       if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
     };
-  }, [currentSlide]);
+  }, [slides.length]);
 
   return (
     <>
@@ -280,18 +337,19 @@ export default function HomePage() {
             className="flex transition-transform duration-700 ease-in-out w-full h-full xl:gap-[70px]"
             style={{ transform: `translateX(-${currentSlide * 105}%)` }}
           >
-            {slides.map((src, index) => (
+            {slides.map((slide, index) => (
               <div
                 key={index}
                 className="relative w-full min-w-full h-[520px] md:h-[620px] lg:h-[580px]"
               >
                 <Image
-                  src={src}
+                  src={getImageUrl(slide.picture_url)}
                   alt={`Slide ${index + 1}`}
                   fill
                   style={{ objectFit: "cover" }}
                   className="brightness-[0.7] transition-all duration-700"
                   priority={index === 0}
+                  unoptimized
                 />
               </div>
             ))}
@@ -313,16 +371,23 @@ export default function HomePage() {
 
           <div className="absolute inset-0 z-20 max-w-7xl mx-auto px-6 flex flex-col justify-center items-center text-center text-white select-none h-full">
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold drop-shadow-md leading-tight">
-              Tax Center Gunadarma Besinergi <br /> Membangun Indonesia
+              {activeSlide?.title ||
+                "Tax Center Gunadarma Bersinergi Membangun Indonesia"}
             </h2>
             <p className="mt-6 text-sm md:text-lg font-semibold max-w-4xl drop-shadow-lg">
-              Tax Center Universitas Gunadarma merupakan suatu Lembaga yang
-              langsung di bawah rektor yang memiliki fungsi sebagai pusat
-              pengkajian, pendidikan, pelatihan dan sosialisasi perpajakan di
-              lingkungan perguruan tinggi dan masyarakat yang dilakukan secara
-              mandiri.
+              {activeSlide?.description || fallbackSlides[0].description}
             </p>
-            <Link href="/">
+            <Link
+              href={activeSlide?.cta_url || "/"}
+              target={
+                activeSlide?.cta_url?.startsWith("http") ? "_blank" : "_self"
+              }
+              rel={
+                activeSlide?.cta_url?.startsWith("http")
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+            >
               <Button
                 size="lg"
                 className="bg-orange-400 hover:bg-[#e26100] text-white font-bold h-11 px-10 rounded-md mt-6 md:mt-20 cursor-pointer"
@@ -458,7 +523,7 @@ export default function HomePage() {
                 <p className="text-xs md:text-sm mb-4 max-w-[300px]">
                   {description}
                 </p>
-                <Link href="/">
+                <Link href="/tentang-kami/tim-kami">
                   <Button
                     size="sm"
                     className="bg-[#FE8100] hover:bg-[#e26100] text-white font-semibold rounded-full px-5 h-8 cursor-pointer"
@@ -472,7 +537,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <PenghargaanCarousel />
+      <PenghargaanCarousel awardsData={awardsData} />
 
       <section className="w-full pb-12 items-center justify-center">
         <div className="flex flex-col justify-center items-center mx-auto max-w-7xl px-5 mt-12">
@@ -486,28 +551,32 @@ export default function HomePage() {
             and scrambled it to make a type specimen book.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl px-2 xl:px-0">
-            {beritaData.map(({ image, date, title, description }, idx) => (
-              <article key={idx} className="flex flex-col">
+            {beritaData.map((item) => (
+              <article key={item.id} className="flex flex-col">
                 <div className="relative w-full h-56 md:h-64 rounded-md overflow-hidden border border-gray-300">
                   <Image
-                    src={image}
-                    alt={title}
+                    src={getImageUrl(item.image_url)}
+                    alt={item.title}
                     fill
                     style={{ objectFit: "cover" }}
                     loading="lazy"
+                    unoptimized
                   />
                 </div>
-                <p className="mt-3 text-sm text-black">{date}</p>
-                <h3 className="mt-6 font-extrabold text-[#FE8100] text-xl md:text-2xl">
-                  {title}
-                </h3>
-                <p className="mt-3 text-sm md:text-base font-normal text-justify">
-                  {description}
+                <p className="mt-3 text-sm text-black">
+                  {new Date(item.created_at).toLocaleDateString("id-ID", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </p>
+                <h3 className="mt-6 font-extrabold text-[#FE8100] text-xl md:text-2xl">
+                  {item.title}
+                </h3>
               </article>
             ))}
           </div>
-          <Link href="/">
+          <Link href="/kegiatan-berita/agenda-kegiatan">
             <Button
               size="lg"
               className="bg-[#2A176F] hover:opacity-30 text-white font-bold h-11 px-10 rounded-md mt-8 md:mt-11 cursor-pointer"

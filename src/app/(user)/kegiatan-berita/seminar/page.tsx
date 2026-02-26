@@ -2,8 +2,8 @@
 
 import React, { useMemo, useState } from "react";
 import { useGetData } from "@/hooks/use-get-data";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import PageHeaderHero from "@/components/PageHeaderHero";
 import {
@@ -16,23 +16,22 @@ import {
 
 const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
-interface Article {
+type SeminarItem = {
   id: number;
   title: string;
   description: string;
   image_url: string;
   created_at: string;
-  category?: string;
-}
+};
 
-interface ArticleResponse {
-  articles: Article[];
+type SeminarResponse = {
+  seminars: SeminarItem[];
   paging: {
     page: number;
     total_pages: number;
     total_items: number;
   };
-}
+};
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -48,21 +47,15 @@ const getImageUrl = (url: string) => {
   if (url.startsWith("http")) return url;
   if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
   if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
-  return `${API_BASE_URL}/uploads/article/${url}`;
+  return `${API_BASE_URL}/uploads/seminar/${url}`;
 };
 
-const stripHtml = (value: string) =>
-  value
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-export default function ArtikelPajak() {
+export default function SeminarPage() {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("terbaru");
   const [page, setPage] = useState(1);
   const debouncedQuery = useDebounce(query, 500);
-  const pageSize = 8;
+  const pageSize = 6;
 
   const apiParams = useMemo(() => {
     let sort_by = "created_at";
@@ -85,35 +78,35 @@ export default function ArtikelPajak() {
     };
   }, [page, debouncedQuery, sort]);
 
-  const { data, isLoading, isError } = useGetData<ArticleResponse>({
-    key: ["articles-list", JSON.stringify(apiParams)],
-    url: "/article",
+  const { data, isLoading, isError } = useGetData<SeminarResponse>({
+    key: ["seminar-list", JSON.stringify(apiParams)],
+    url: "/seminar",
     params: apiParams,
   });
 
-  const articles = data?.articles || [];
+  const items = data?.seminars || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
 
   return (
     <>
       <PageHeaderHero
-        title="ARTIKEL PAJAK"
+        title="SEMINAR"
         subtitle={
           <>
-            Koleksi artikel perpajakan terkini yang membahas berbagai topik
-            seputar perpajakan di Indonesia. Dapatkan wawasan dan pengetahuan
-            mendalam <br /> dari para ahli pajak.
+            Kumpulan informasi seminar perpajakan yang diselenggarakan oleh Tax
+            Center Universitas Gunadarma sebagai sarana edukasi dan penguatan
+            wawasan perpajakan bagi mahasiswa serta masyarakat.
           </>
         }
-        innerClassName="min-h-[260px] lg:min-h-[300px]"
+        innerClassName="min-h-[220px] lg:min-h-[240px]"
       />
 
-      <section className="px-4 md:px-6 xl:px-20 mb-16">
+      <section className="px-4 md:px-6 xl:px-20 pb-16 py-12">
         <div className="mx-auto max-w-6xl">
           <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
             <input
               type="text"
-              placeholder="Cari artikel pajak..."
+              placeholder="Cari seminar..."
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -152,18 +145,18 @@ export default function ArtikelPajak() {
 
           {isError && (
             <div className="flex justify-center items-center min-h-[300px]">
-              <p className="text-red-500">Gagal memuat data artikel.</p>
+              <p className="text-red-500">Gagal memuat data seminar.</p>
             </div>
           )}
 
-          {!isLoading && !isError && articles.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {articles.map((item) => (
+          {!isLoading && !isError && items.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
+              {items.map((item) => (
                 <div
                   key={item.id}
-                  className="rounded-lg shadow-md overflow-hidden bg-white hover:shadow-lg transition-shadow"
+                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  <div className="bg-[#D9D9D9] w-full h-[220px] relative">
+                  <div className="relative w-full h-[200px] bg-[#D9D9D9]">
                     {item.image_url ? (
                       <Image
                         src={getImageUrl(item.image_url)}
@@ -180,26 +173,18 @@ export default function ArtikelPajak() {
                     )}
                   </div>
                   <div className="p-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-sm text-gray-500">
-                        {new Date(item.created_at).toLocaleDateString("id-ID", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </span>
-                      {item.category && (
-                        <span className="text-xs px-2 py-1 bg-[#2A176F] text-white rounded-full">
-                          {item.category}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-2xl font-bold line-clamp-2">
+                    <p className="text-sm text-gray-500">
+                      {new Date(item.created_at).toLocaleDateString("id-ID", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                    <h3 className="text-xl font-bold mt-2 line-clamp-2">
                       {item.title}
                     </h3>
-
                     <div className="flex justify-end">
-                      <Link href={`/kegiatan-berita/artikel-pajak/${item.id}`}>
+                      <Link href={`/kegiatan-berita/seminar/${item.id}`}>
                         <Button
                           variant="link"
                           className="text-[#2A176F] font-semibold p-0 hover:underline hover:text-[#2A176F] cursor-pointer"
@@ -216,13 +201,13 @@ export default function ArtikelPajak() {
 
           {isLoading && (
             <div className="flex justify-center items-center min-h-[300px]">
-              <p className="text-neutral-500">Memuat data artikel...</p>
+              <p className="text-neutral-500">Memuat data...</p>
             </div>
           )}
 
-          {!isLoading && !isError && articles.length === 0 && (
+          {!isLoading && !isError && items.length === 0 && (
             <div className="flex justify-center items-center min-h-[300px]">
-              <p className="text-neutral-500">Belum ada artikel tersedia.</p>
+              <p className="text-neutral-500">Belum ada data seminar.</p>
             </div>
           )}
 

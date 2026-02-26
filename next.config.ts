@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "stag.api.taxcenterug.com",
+        port: "",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };

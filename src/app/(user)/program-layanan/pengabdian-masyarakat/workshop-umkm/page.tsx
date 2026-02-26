@@ -1,140 +1,253 @@
 "use client";
 
-import React from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
+import React, { useMemo, useState } from "react";
 import PageHeaderHero from "@/components/PageHeaderHero";
+import { useGetData } from "@/hooks/use-get-data";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Calendar,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Search,
+  User,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
 
-type WorkshopItem = {
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
+
+type Creator = {
+  id: number;
+  username: string;
+  full_name: string;
+};
+
+type TrainingItem = {
   id: number;
   title: string;
   description: string;
-  images: number; // jumlah gambar dalam carousel
+  image_url: string;
+  created_at: string;
+  created_by: Creator;
 };
 
-// Data dummy dalam format JSON
-const workshopData: WorkshopItem[] = [
-  {
-    id: 1,
-    title: "Workshop Kepatuhan Pelaporan",
-    description:
-      "Workshop intensif yang membahas tata cara pelaporan pajak dan administrasi keuangan untuk UMKM. Peserta akan mempelajari jenis-jenis laporan yang wajib dibuat, cara pengisian SPT, serta tips menjaga kepatuhan perpajakan usaha kecil dan menengah.",
-    images: 3,
-  },
-  {
-    id: 2,
-    title: "Workshop Manajemen Digital",
-    description:
-      "Pelatihan komprehensif tentang pengelolaan bisnis menggunakan tools digital modern. Mencakup penggunaan aplikasi manajemen stok, sistem POS (Point of Sale), CRM sederhana, dan platform kolaborasi untuk meningkatkan efisiensi operasional UMKM.",
-    images: 3,
-  },
-  {
-    id: 3,
-    title: "Workshop Analisis Pajak",
-    description:
-      "Workshop khusus yang membahas strategi perencanaan pajak untuk UMKM, perhitungan PPh Final, PPN, serta insentif pajak yang tersedia. Peserta akan belajar cara mengoptimalkan kewajiban pajak secara legal dan memahami regulasi perpajakan terbaru.",
-    images: 3,
-  },
-  {
-    id: 4,
-    title: "Workshop Strategi Branding",
-    description:
-      "Pelatihan praktis dalam membangun brand identity untuk produk UMKM. Meliputi desain logo, pemilihan warna brand, storytelling produk, packaging design, dan strategi positioning di pasar. Workshop ini membantu UMKM menciptakan brand yang kuat dan memorable.",
-    images: 3,
-  },
-];
+type PagingInfo = {
+  page: number;
+  total_pages: number;
+  total_items: number;
+};
 
-function CarouselDots({
-  totalSlides,
-  currentIndex,
-}: {
-  totalSlides: number;
-  currentIndex: number;
-}) {
-  return (
-    <div className="flex justify-center gap-2 mt-3">
-      {Array.from({ length: totalSlides }).map((_, index) => (
-        <div
-          key={index}
-          className={cn(
-            "h-2 w-2 rounded-full transition-all",
-            currentIndex === index ? "bg-slate-800 w-6" : "bg-slate-300"
-          )}
-        />
-      ))}
-    </div>
-  );
-}
+type TrainingResponse = {
+  trainings: TrainingItem[];
+  paging: PagingInfo;
+};
 
-function WorkshopCard({ title, description, images }: WorkshopItem) {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
   React.useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setCurrent(api.selectedScrollSnap());
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
-
-  return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      {/* Carousel */}
-      <Carousel setApi={setApi} className="w-full">
-        <CarouselContent>
-          {Array.from({ length: images }).map((_, index) => (
-            <CarouselItem key={index}>
-              <div className="w-full h-48 bg-gray-300"></div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-
-      {/* Dots Indicator */}
-      <CarouselDots totalSlides={images} currentIndex={current} />
-
-      {/* Content */}
-      <div className="p-5">
-        <h3 className="text-lg font-bold mb-3">{title}</h3>
-        <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
-      </div>
-    </div>
-  );
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
 }
 
 export default function WorkshopUMKM() {
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("terbaru");
+  const [page, setPage] = useState(1);
+  const debouncedQuery = useDebounce(query, 500);
+  const pageSize = 6;
+
+  const apiParams = useMemo(() => {
+    let sort_by = "created_at";
+    let order = "desc";
+    if (sort === "terlama") order = "asc";
+    if (sort === "az") {
+      sort_by = "title";
+      order = "asc";
+    }
+    if (sort === "za") {
+      sort_by = "title";
+      order = "desc";
+    }
+    return {
+      page,
+      size: pageSize,
+      title: debouncedQuery || undefined,
+      sort_by,
+      order,
+    };
+  }, [page, debouncedQuery, sort]);
+
+  const { data, isLoading, isError } = useGetData<TrainingResponse>({
+    key: ["umkm-workshop-list", JSON.stringify(apiParams)],
+    url: "/training",
+    params: apiParams,
+  });
+
+  const items = data?.trainings || [];
+  const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
+
+  const getImageUrl = (path: string) => {
+    if (!path) return "";
+    if (path.startsWith("http")) return path;
+    if (path.startsWith("/uploads/")) return `${API_BASE_URL}${path}`;
+    if (path.startsWith("uploads/")) return `${API_BASE_URL}/${path}`;
+    return `${API_BASE_URL}/${path}`;
+  };
+
+  const stripHtml = (value: string) =>
+    value
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none">
+    <div className="relative w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
       <PageHeaderHero
         title="WORKSHOP UMKM"
-        className="pt-0 lg:pt-0"
         innerClassName="min-h-[220px] md:min-h-[260px]"
         subtitle="Berbagai workshop dan pelatihan praktis yang dirancang khusus untuk meningkatkan kompetensi dan keterampilan pelaku UMKM dalam mengelola dan mengembangkan usaha mereka."
       />
 
-      {/* Konten */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white bg-opacity-50">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {workshopData.map((item) => (
-            <WorkshopCard
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
+          <input
+            type="text"
+            placeholder="Cari workshop UMKM..."
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
+            className="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400 w-full"
+          />
+
+          <div className="flex items-center w-full sm:w-auto border-t sm:border-t-0 sm:border-l border-gray-200">
+            <div className="relative w-full sm:w-auto">
+              <select
+                value={sort}
+                onChange={(e) => {
+                  setSort(e.target.value);
+                  setPage(1);
+                }}
+                className="appearance-none bg-transparent py-3 pl-4 pr-10 outline-none text-gray-600 cursor-pointer w-full sm:w-auto hover:bg-gray-50 transition-colors"
+              >
+                <option value="terbaru">Terbaru...</option>
+                <option value="terlama">Terlama...</option>
+                <option value="az">A - Z</option>
+                <option value="za">Z - A</option>
+              </select>
+              <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            <div className="bg-[#F97316] text-white p-3 sm:rounded-r-md w-full sm:w-auto flex justify-center items-center">
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Search className="w-5 h-5" />
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {isError && (
+            <div className="col-span-full text-center py-20 text-red-500 bg-white rounded-xl border border-red-100">
+              Gagal memuat data workshop UMKM.
+            </div>
+          )}
+
+          {!isLoading && !isError && items.length === 0 && (
+            <div className="col-span-full text-center py-20 text-gray-500 bg-white rounded-xl border border-gray-100">
+              Tidak ada data workshop UMKM.
+            </div>
+          )}
+
+          {items.map((item) => (
+            <Card
               key={item.id}
-              id={item.id}
-              title={item.title}
-              description={item.description}
-              images={item.images}
-            />
+              className="flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group h-full"
+            >
+              <div className="relative h-52 bg-gray-200 overflow-hidden">
+                {item.image_url ? (
+                  <Image
+                    src={getImageUrl(item.image_url)}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">
+                    <span className="text-sm font-medium">No Image</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 flex flex-col flex-1">
+                <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-[#F97316]" />
+                    {new Date(item.created_at).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <User className="w-3 h-3" />
+                    {item.created_by?.full_name}
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#F97316] transition-colors">
+                  {item.title}
+                </h3>
+
+                <div className="mt-auto pt-4 border-t border-gray-50">
+                  <Link
+                    href={`/program-layanan/pengabdian-masyarakat/workshop-umkm/${item.id}`}
+                    className="inline-flex items-center gap-2 text-[#F97316] font-semibold text-sm hover:text-orange-700 transition-colors"
+                  >
+                    Lihat Detail <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </Card>
           ))}
         </div>
+
+        {!isLoading && paging.total_pages > 1 && (
+          <div className="flex items-center justify-center gap-4 mt-12">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Sebelumnya
+            </button>
+
+            <span className="text-sm font-medium text-gray-600">
+              Halaman {page} dari {paging.total_pages}
+            </span>
+
+            <button
+              onClick={() =>
+                setPage((p) => Math.min(paging.total_pages, p + 1))
+              }
+              disabled={page === paging.total_pages}
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              Selanjutnya
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

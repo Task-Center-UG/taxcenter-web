@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import PageHeaderHero from "@/components/PageHeaderHero";
 
 export default function BrevetPage() {
@@ -21,6 +22,16 @@ export default function BrevetPage() {
               yang telah menyelesaikan seluruh rangkaian pembelajaran akan
               memperoleh sertifikat.
             </p>
+            <div className="mt-6">
+              <Link
+                href="https://tax-center-brevet-gunadarma.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-full bg-[#2A176F] hover:opacity-90 text-white text-sm md:text-base font-semibold px-6 py-3 transition-colors"
+              >
+                Kunjungi Website Brevet
+              </Link>
+            </div>
           </div>
           <div className="md:w-1/3 flex justify-center">
             <Image

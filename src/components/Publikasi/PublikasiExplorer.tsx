@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Search, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -103,6 +104,11 @@ export default function PublikasiExplorer() {
 
   const items = data?.publications || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
+  const stripHtml = (value: string) =>
+    value
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
 
   return (
     <section className="w-full">
@@ -164,7 +170,7 @@ export default function PublikasiExplorer() {
             key={item.id}
             className={cn(
               "grid grid-cols-1 gap-1 px-5 py-5 md:px-8",
-              idx % 2 === 0 ? "bg-white" : "bg-[#F3F4F6]"
+              idx % 2 === 0 ? "bg-white" : "bg-[#F3F4F6]",
             )}
           >
             <h3 className="text-xl md:text-2xl font-extrabold leading-snug text-slate-900">
@@ -175,11 +181,16 @@ export default function PublikasiExplorer() {
               <div className="font-semibold text-slate-500">
                 {item.created_by?.full_name || "Unknown Author"}
               </div>
-              <p className="max-w-5xl text-slate-600 leading-relaxed line-clamp-3">
-                {item.description}
-              </p>
               <div className="text-[13px] font-semibold text-[#2A176F] mt-2">
                 {item.year}
+              </div>
+              <div className="mt-2">
+                <Link
+                  href={`/kegiatan-berita/publikasi/${item.id}`}
+                  className="text-sm font-semibold text-[#FE8100] hover:underline"
+                >
+                  Lihat Detail
+                </Link>
               </div>
             </div>
           </article>
@@ -226,7 +237,7 @@ export default function PublikasiExplorer() {
               </PageNumber>
             ) : (
               <Ellipsis key={`e-${i}`} />
-            )
+            ),
           )}
 
           <PageButton
@@ -254,7 +265,7 @@ function renderPageNumbers(current: number, total: number): (number | "...")[] {
     range.push(i);
   }
   const withBoundaries = Array.from(new Set([1, ...range, total])).sort(
-    (a, b) => a - b
+    (a, b) => a - b,
   );
   let last = 0;
   for (const p of withBoundaries) {
@@ -287,7 +298,7 @@ function PageButton({
         "h-9 min-w-9 rounded-md border px-3 text-sm transition-colors",
         disabled
           ? "cursor-not-allowed border-slate-200 text-slate-400"
-          : "border-slate-300 text-slate-700 hover:bg-slate-50"
+          : "border-slate-300 text-slate-700 hover:bg-slate-50",
       )}
     >
       {children}
@@ -308,7 +319,7 @@ function PageNumber({
         "h-9 min-w-9 rounded-md border px-3 text-sm transition-colors",
         active
           ? "border-transparent bg-[#FF8A00] text-white"
-          : "border-slate-300 text-slate-700 hover:bg-slate-50"
+          : "border-slate-300 text-slate-700 hover:bg-slate-50",
       )}
     >
       {children}

@@ -152,9 +152,10 @@ export default function DetailKerjasamaRiset() {
               <h3 className="text-xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-100">
                 Deskripsi Lengkap
               </h3>
-              <article className="prose prose-orange max-w-none text-gray-600 leading-relaxed text-justify whitespace-pre-line">
-                {data.description}
-              </article>
+              <article
+                className="prose prose-sm md:prose-base max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-a:text-[#F97316]"
+                dangerouslySetInnerHTML={{ __html: data.description || "-" }}
+              />
             </div>
           </div>
 

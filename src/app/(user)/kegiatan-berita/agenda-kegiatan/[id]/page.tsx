@@ -134,14 +134,12 @@ export default function NewsDetailPage() {
           </div>
         )}
 
-        {/* Descriptions & Content */}
         <div className="mx-auto">
           {news.description && (
-            <div className="p-6 bg-white border-l-4 border-[#2A176F] rounded shadow-sm">
-              <p className="text-sm md:text-base text-gray-700 font-medium leading-relaxed">
-                {news.description}
-              </p>
-            </div>
+            <article
+              className="prose prose-sm md:prose-base max-w-none bg-white p-6 rounded shadow-sm prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-a:text-[#2A176F]"
+              dangerouslySetInnerHTML={{ __html: news.description }}
+            />
           )}
         </div>
       </div>

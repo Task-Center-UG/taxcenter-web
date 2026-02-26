@@ -53,9 +53,18 @@ interface Region {
 }
 
 const formSchema = z.object({
-  namaLengkap: z.string().min(2, { message: "Nama lengkap wajib diisi." }),
-  kelas: z.string().min(1, { message: "Kelas wajib diisi." }),
-  npm: z.string().min(8, { message: "NPM wajib diisi." }),
+  namaLengkap: z
+    .string()
+    .min(2, { message: "Nama lengkap wajib diisi." })
+    .max(255, { message: "Maksimal 255 karakter." }),
+  kelas: z
+    .string()
+    .min(1, { message: "Kelas wajib diisi." })
+    .max(40, { message: "Maksimal 40 karakter." }),
+  npm: z
+    .string()
+    .min(1, { message: "NPM wajib diisi." })
+    .max(40, { message: "Maksimal 40 karakter." }),
   programStudi: z
     .string({ error: "Program studi wajib dipilih." })
     .min(1, "Pilih program studi."),
@@ -64,14 +73,33 @@ const formSchema = z.object({
     .min(1, "Pilih lokasi kampus."),
   alamatDomisili: z
     .string()
-    .min(10, { message: "Alamat domisili terlalu pendek." }),
-  nomorWhatsapp: z.string().min(10, { message: "Nomor WhatsApp tidak valid." }),
-  email: z.string().email({ message: "Email tidak valid." }),
-  pernahIkutRelawan: z.string({ error: "Pilih salah satu opsi." }),
-  diterimaRelawan2023: z.string({ error: "Pilih salah satu opsi." }),
-  ipk: z.string().refine((val) => !isNaN(Number(val)) && Number(val) <= 4.0, {
-    message: "IPK harus berupa angka maksimal 4.00",
-  }),
+    .min(10, { message: "Alamat domisili terlalu pendek." })
+    .max(255, { message: "Maksimal 255 karakter." }),
+  nomorWhatsapp: z
+    .string()
+    .max(40, { message: "Maksimal 40 karakter." })
+    .regex(/^\+?[0-9]+$/, {
+      message: "Nomor WhatsApp hanya boleh angka dan boleh diawali +",
+    }),
+  email: z
+    .string()
+    .email({ message: "Email tidak valid." })
+    .max(255, { message: "Maksimal 255 karakter." }),
+  pernahIkutRelawan: z
+    .string({ error: "Pilih salah satu opsi." })
+    .refine((val) => ["SUDAH", "BELUM"].includes(val), {
+      message: "Pilihan kegiatan relawan tidak valid.",
+    }),
+  diterimaRelawan2023: z
+    .string({ error: "Pilih salah satu opsi." })
+    .refine((val) => ["IYA", "TIDAK"].includes(val), {
+      message: "Pilihan status relawan tidak valid.",
+    }),
+  ipk: z
+    .string()
+    .refine((val) => !isNaN(Number(val)) && Number(val) >= 0 && Number(val) <= 4, {
+      message: "IPK harus berupa angka antara 0.00 - 4.00",
+    }),
   krsFile: z
     .any()
     .refine((files) => files?.length >= 1, "File KRS wajib diupload.")
@@ -404,7 +432,7 @@ const FormRelawanPajakMBKM = () => {
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder="Contoh: 0812-3456-7890"
+                          placeholder="Contoh: 081234567890 atau +6281234567890"
                           {...field}
                         />
                       </FormControl>
@@ -476,7 +504,7 @@ const FormRelawanPajakMBKM = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="IYA">Ya</SelectItem>
+                        <SelectItem value="IYA">Iya</SelectItem>
                         <SelectItem value="TIDAK">Tidak</SelectItem>
                       </SelectContent>
                     </Select>

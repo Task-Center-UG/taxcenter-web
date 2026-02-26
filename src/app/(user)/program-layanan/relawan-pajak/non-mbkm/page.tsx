@@ -55,9 +55,18 @@ interface Region {
 }
 
 const formSchema = z.object({
-  namaLengkap: z.string().min(2, { message: "Nama lengkap wajib diisi." }),
-  kelas: z.string().min(1, { message: "Kelas wajib diisi." }),
-  npm: z.string().min(8, { message: "NPM wajib diisi." }),
+  namaLengkap: z
+    .string()
+    .min(2, { message: "Nama lengkap wajib diisi." })
+    .max(255, { message: "Maksimal 255 karakter." }),
+  kelas: z
+    .string()
+    .min(1, { message: "Kelas wajib diisi." })
+    .max(40, { message: "Maksimal 40 karakter." }),
+  npm: z
+    .string()
+    .min(1, { message: "NPM wajib diisi." })
+    .max(40, { message: "Maksimal 40 karakter." }),
 
   programStudi: z
     .string({ error: "Program studi wajib dipilih." })
@@ -69,14 +78,30 @@ const formSchema = z.object({
 
   alamatDomisili: z
     .string()
-    .min(10, { message: "Alamat domisili terlalu pendek." }),
-  nomorWhatsapp: z.string().min(10, { message: "Nomor WhatsApp tidak valid." }),
-  email: z.string().email({ message: "Email tidak valid." }),
-  pernahIkutRelawan: z.string({ error: "Pilih salah satu opsi." }),
+    .min(10, { message: "Alamat domisili terlalu pendek." })
+    .max(255, { message: "Maksimal 255 karakter." }),
+  nomorWhatsapp: z
+    .string()
+    .max(40, { message: "Maksimal 40 karakter." })
+    .regex(/^\+?[0-9]+$/, {
+      message: "Nomor WhatsApp hanya boleh angka dan boleh diawali +",
+    }),
+  email: z
+    .string()
+    .email({ message: "Email tidak valid." })
+    .max(255, { message: "Maksimal 255 karakter." }),
+  pernahIkutRelawan: z
+    .string({ error: "Pilih salah satu opsi." })
+    .refine(
+      (val) =>
+        ["SUDAH_TAHUN_INI", "SUDAH_TAHUN_LALU", "BELUM_PERNAH"].includes(val),
+      { message: "Pilihan riwayat kegiatan relawan tidak valid." }
+    ),
 
   usernameInstagram: z
     .string()
-    .min(1, { message: "Username Instagram wajib diisi." }),
+    .min(1, { message: "Username Instagram wajib diisi." })
+    .max(255, { message: "Maksimal 255 karakter." }),
 
   krsFile: z
     .any()
@@ -150,7 +175,6 @@ const FormRelawanPajakNonMBKM = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("--- SUBMITTING NON-MBKM ---");
     const formData = new FormData();
 
     formData.append("full_name", values.namaLengkap);
@@ -172,10 +196,6 @@ const FormRelawanPajakNonMBKM = () => {
     }
     if (values.buktiTwibbonFile && values.buktiTwibbonFile[0]) {
       formData.append("screenshot", values.buktiTwibbonFile[0]);
-    }
-
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
     }
 
     mutate(formData as any);
@@ -433,7 +453,7 @@ const FormRelawanPajakNonMBKM = () => {
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder="Contoh: 0812-3456-7890"
+                          placeholder="Contoh: 081234567890 atau +6281234567890"
                           {...field}
                         />
                       </FormControl>
@@ -479,14 +499,14 @@ const FormRelawanPajakNonMBKM = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="BELUM_PERNAH">
-                          Belum Pernah
-                        </SelectItem>
                         <SelectItem value="SUDAH_TAHUN_INI">
                           Sudah (Tahun Ini)
                         </SelectItem>
                         <SelectItem value="SUDAH_TAHUN_LALU">
                           Sudah (Tahun Lalu)
+                        </SelectItem>
+                        <SelectItem value="BELUM_PERNAH">
+                          Belum Pernah
                         </SelectItem>
                       </SelectContent>
                     </Select>
