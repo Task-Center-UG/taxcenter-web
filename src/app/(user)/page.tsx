@@ -76,49 +76,48 @@ const divisiData = [
     icon: faUsers,
     title: "Divisi Inklusi",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Meningkatkan kesadaran pajak mahasiswa melalui integrasi kurikulum dan kolaborasi dengan Direktorat Jenderal Pajak.",
   },
   {
     icon: faAward,
     title: "Divisi Brevet",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Menyelenggarakan kelas dan pelatihan pajak bagi mahasiswa dan masyarakat umum.",
   },
   {
     icon: faHandshake,
     title: "Divisi Relawan Pajak",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Mengoordinasikan pendampingan pelaporan pajak kepada masyarakat.",
   },
   {
     icon: faVideo,
     title: "Divisi Multimedia",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Memproduksi dan mempublikasikan konten edukasi perpajakan melalui berbagai media digital.",
   },
   {
     icon: faLaptop,
     title: "Divisi IT",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    description: "Mengembangkan dan membangun aplikasi yang bermanfaat.",
   },
   {
     icon: faGlobe,
     title: "Divisi Abdimas",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Menyelenggarakan program pendampingan UMKM, foto produk, dan workshop pengembangan usaha.",
   },
   {
     icon: faUserFriends,
     title: "Divisi Humas dan Kerjasama",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Membangun komunikasi dan kemitraan strategis dengan berbagai pihak.",
   },
   {
     icon: faClipboardList,
     title: "Divisi Tax Clinic",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Menyediakan layanan konsultasi dan pendampingan perpajakan profesional.",
   },
 ];
 
@@ -179,10 +178,9 @@ function PenghargaanCarousel({ awardsData }: { awardsData: AwardItem[] }) {
           Penghargaan
         </h2>
         <p className="text-sm md:text-base max-w-5xl mb-14 md:mb-20 mx-5">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industrys standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
+          Menampilkan berbagai penghargaan dan apresiasi sebagai bentuk
+          pengakuan atas kontribusi dan kinerja Tax Center dalam bidang edukasi
+          dan pelayanan perpajakan.
         </p>
       </div>
       <div className="relative w-full select-none overflow-hidden px-8 md:px-16 xl:px-20">
@@ -478,10 +476,10 @@ export default function HomePage() {
             Company Profile
           </h2>
           <p className="text-sm md:text-base max-w-5xl mb-7 mx-5">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Tax Center Universitas Gunadarma merupakan pusat kegiatan edukasi
+            dan pelayanan perpajakan yang berperan dalam meningkatkan literasi,
+            kompetensi, dan kesadaran pajak di lingkungan akademik dan
+            masyarakat.
           </p>
           <div className="px-5">
             <video
@@ -502,10 +500,9 @@ export default function HomePage() {
             Divisi Tax Center Gunadarma
           </h2>
           <p className="text-sm md:text-base max-w-5xl mb-12 mx-5">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Tax Center Universitas Gunadarma memiliki beberapa divisi yang
+            saling mendukung dalam menjalankan program edukasi, pelatihan,
+            pelayanan, dan pengabdian di bidang perpajakan.
           </p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-14 max-w-6xl mx-auto">
             {divisiData.map(({ icon, title, description }, idx) => (
@@ -545,10 +542,8 @@ export default function HomePage() {
             Berita dan Artikel Terbaru
           </h2>
           <p className="text-sm md:text-base max-w-5xl mb-12 mx-5 text-center">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Berisi informasi terbaru mengenai kegiatan, program, dan aktivitas
+            yang diselenggarakan oleh Tax Center Universitas Gunadarma.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl px-2 xl:px-0">
             {beritaData.map((item) => (
@@ -593,10 +588,9 @@ export default function HomePage() {
             Peraturan Perpajakan
           </h2>
           <p className="text-sm md:text-base max-w-5xl mx-5">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Menyediakan akses informasi terkait peraturan perpajakan melalui
+            website khusus yang dikembangkan sebagai referensi bagi mahasiswa
+            dan masyarakat.
           </p>
           <Link href="/" target="_blank">
             <Button

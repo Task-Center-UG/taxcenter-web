@@ -184,21 +184,21 @@ export default function TimKami() {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 md:gap-12 lg:gap-16 justify-items-center">
             <TeamCard
               name="Dr. Feni Andriani, S.Si, M.Si."
-              role="Divisi Riset dan Pengembangan IT"
+              role="Staff Tax Center"
               photo="/assets/images/tentang-kami/tim/03-bu-feni.png"
               bgCapsule={CAPSULE}
               size="lg3"
             />
             <TeamCard
               name="Dr. Dewi Putrie Lestari, S.Si., M.Si."
-              role="Divisi Relawan Pajak"
+              role="Staff Tax Center"
               photo="/assets/images/tentang-kami/tim/04-bu-dewi.png"
               bgCapsule={CAPSULE}
               size="lg3"
             />
             <TeamCard
               name="Dr. Nola Marina, S.Si, M.Si"
-              role="Divisi Pengabdian Masyarakat"
+              role="Staff Tax Center"
               photo="/assets/images/tentang-kami/tim/05-bu-nola.png"
               bgCapsule={CAPSULE}
               size="lg3"
