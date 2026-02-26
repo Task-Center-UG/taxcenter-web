@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 type Creator = {
   id: number;

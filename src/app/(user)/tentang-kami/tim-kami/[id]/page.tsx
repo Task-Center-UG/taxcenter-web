@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import PageHeaderHero from "@/components/PageHeaderHero";
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 interface Division {
   id: number;
@@ -159,7 +159,7 @@ export default function DivisionDetailPage() {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
-                        }
+                        },
                       )}
                     </div>
                   </div>

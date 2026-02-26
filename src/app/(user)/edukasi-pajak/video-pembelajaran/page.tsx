@@ -49,7 +49,7 @@ type TaxLearningVideoResponse = {
   paging: PagingInfo;
 };
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);

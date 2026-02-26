@@ -17,7 +17,7 @@ import { Card } from "@/components/ui/card";
 import { useGetData } from "@/hooks/use-get-data";
 import PageHeaderHero from "@/components/PageHeaderHero";
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 type Creator = {
   id: number;
@@ -256,5 +256,3 @@ export default function SeminarListPage() {
     </div>
   );
 }
-
-

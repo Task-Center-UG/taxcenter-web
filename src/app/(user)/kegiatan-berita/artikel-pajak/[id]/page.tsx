@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 interface Article {
   id: number;
@@ -150,7 +150,6 @@ export default function ArticleDetailPage() {
               </p>
             </div>
           )}
-
         </div>
       </div>
     </div>

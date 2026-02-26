@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import PageHeaderHero from "@/components/PageHeaderHero";
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 const carouselImages = [
   "/assets/images/carousel-bg.png",
@@ -64,8 +64,8 @@ export default function AgendaKegiatan() {
         subtitle={
           <>
             Informasi lengkap mengenai kegiatan dan berita terbaru dari Tax
-            Center Universitas Gunadarma. Ikuti perkembangan dan update
-            terkini seputar <br /> perpajakan dan kegiatan akademik.
+            Center Universitas Gunadarma. Ikuti perkembangan dan update terkini
+            seputar <br /> perpajakan dan kegiatan akademik.
           </>
         }
         innerClassName="min-h-[220px] lg:min-h-[240px]"
@@ -163,4 +163,3 @@ export default function AgendaKegiatan() {
     </>
   );
 }
-

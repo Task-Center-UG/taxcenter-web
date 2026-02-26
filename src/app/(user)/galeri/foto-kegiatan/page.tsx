@@ -33,7 +33,7 @@ type GalleryResponse = {
   paging: PagingInfo;
 };
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 export default function FotoKegiatan() {
   const [page, setPage] = useState(1);

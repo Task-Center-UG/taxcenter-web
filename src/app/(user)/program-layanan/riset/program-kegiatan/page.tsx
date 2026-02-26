@@ -35,7 +35,7 @@ type SeminarResponse = {
   seminars: ProgramItem[];
 };
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 function ProgramCard({ item, href }: { item: ProgramItem; href: string }) {
   const getImageUrl = (path: string) => {

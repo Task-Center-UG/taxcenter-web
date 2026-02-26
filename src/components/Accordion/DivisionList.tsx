@@ -43,7 +43,7 @@ interface AssistantResponse {
   };
 }
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 const DivisionMembers = ({ divisionId }: { divisionId: number }) => {
   const { data, isLoading } = useGetData<AssistantResponse>({

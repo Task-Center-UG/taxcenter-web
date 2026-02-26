@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-const API_BASE_URL = "https://dev.api.taxcenterug.com";
+const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 interface News {
   id: number;
@@ -138,12 +138,11 @@ export default function NewsDetailPage() {
         <div className="mx-auto">
           {news.description && (
             <div className="p-6 bg-white border-l-4 border-[#2A176F] rounded shadow-sm">
-            <p className="text-sm md:text-base text-gray-700 font-medium leading-relaxed">
-              {news.description}
-            </p>
+              <p className="text-sm md:text-base text-gray-700 font-medium leading-relaxed">
+                {news.description}
+              </p>
             </div>
           )}
-
         </div>
       </div>
     </div>
