@@ -198,17 +198,27 @@ export default function TaxClinic() {
         </h2>
         <div className="flex flex-col gap-6">
           <div className="border-[#FE8100] border-2 p-6 lg:px-10 rounded-md text-justify hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold mb-4 text-[#FE8100]">WP OP</h3>
+            <h3 className="text-xl font-semibold mb-4 text-[#FE8100]">
+              Wajib Pajak Orang Pribadi (WP OP)
+            </h3>
             <p className="text-sm md:text-base text-gray-700">
-              Layanan asistensi pelaporan SPT Tahunan...
+              Wajib Pajak Orang Pribadi adalah individu atau perorangan yang
+              memiliki kewajiban untuk membayar, menyetor, dan melaporkan pajak
+              sesuai dengan ketentuan perpajakan yang berlaku di Indonesia. WP
+              OP dapat berupa karyawan, pekerja bebas, maupun pengusaha
+              perorangan yang memperoleh penghasilan.
             </p>
           </div>
           <div className="border-[#FE8100] border-2 p-6 lg:px-10 rounded-md text-justify hover:shadow-md transition-shadow">
             <h3 className="text-xl font-semibold mb-4 text-[#FE8100]">
-              WP Badan
+              Wajib Pajak Badan (WP Badan)
             </h3>
             <p className="text-sm text-gray-700">
-              Konsultasi dan panduan pelaporan SPT Tahunan...
+              Wajib Pajak Badan adalah organisasi atau lembaga yang memiliki
+              kewajiban perpajakan sesuai dengan peraturan yang berlaku. WP
+              Badan dapat berupa perusahaan, koperasi, yayasan, organisasi,
+              maupun bentuk badan usaha lainnya yang memperoleh penghasilan di
+              Indonesia.
             </p>
           </div>
         </div>

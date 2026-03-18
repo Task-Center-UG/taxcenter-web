@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 import PageHeaderHero from "@/components/PageHeaderHero";
+import { resolveMediaUrl } from "@/lib/media-url";
 
 type Creator = {
   id: number;
@@ -46,8 +47,6 @@ type GalleryResponse = {
   gallerys: GalleryItem[];
   paging: PagingInfo;
 };
-
-const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -94,12 +93,6 @@ export default function FotoKegiatan() {
 
   const items = data?.gallerys || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
-
-  const getImageUrl = (path: string) => {
-    if (!path) return "/placeholder-image.jpg";
-    if (path.startsWith("http")) return path;
-    return `${API_BASE_URL}/${path}`;
-  };
 
   return (
     <>
@@ -175,12 +168,13 @@ export default function FotoKegiatan() {
                 >
                   <div className="relative w-full h-[250px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
                     <Image
-                      src={getImageUrl(item.picture_url)}
+                      src={resolveMediaUrl(item.picture_url, "/placeholder-image.jpg")}
                       alt={item.title}
                       className="w-full h-full object-contain"
                       width={300}
                       height={200}
                       loading="lazy"
+                      unoptimized
                     />
                   </div>
 

@@ -45,6 +45,9 @@ type SeminarListResponse = {
   paging: PagingInfo;
 };
 
+const stripHtml = (value: string) =>
+  value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
 
@@ -209,7 +212,7 @@ export default function SeminarListPage() {
                 </h3>
 
                 <p className="text-sm text-gray-600 line-clamp-3 mb-6 flex-1 leading-relaxed">
-                  {item.description}
+                  {stripHtml(item.description || "")}
                 </p>
 
                 <div className="mt-auto pt-4 border-t border-gray-50">

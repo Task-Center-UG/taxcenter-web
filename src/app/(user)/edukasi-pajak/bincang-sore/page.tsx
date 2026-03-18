@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 import PageHeaderHero from "@/components/PageHeaderHero";
+import { resolveMediaUrl } from "@/lib/media-url";
 
 type Creator = {
   id: number;
@@ -48,8 +49,6 @@ type AfternoonTalkResponse = {
   afternoonTalks: AfternoonTalkItem[];
   paging: PagingInfo;
 };
-
-const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -102,12 +101,6 @@ const BincangSore = () => {
 
   const items = data?.afternoonTalks || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
-
-  const getImageUrl = (path: string) => {
-    if (!path) return "/placeholder-video.jpg";
-    if (path.startsWith("http")) return path;
-    return `${API_BASE_URL}/${path}`;
-  };
 
   return (
     <>
@@ -178,12 +171,13 @@ const BincangSore = () => {
             >
               <div className="relative w-full h-[200px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden group">
                 <Image
-                  src={getImageUrl(item.image_url)}
+                  src={resolveMediaUrl(item.image_url, "/placeholder-video.jpg")}
                   alt={item.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   width={400}
                   height={225}
                   loading="lazy"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                   <PlayCircle className="w-12 h-12 text-white/80 group-hover:text-white group-hover:scale-110 transition-transform" />

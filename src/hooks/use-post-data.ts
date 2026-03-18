@@ -21,8 +21,26 @@ export const usePostData = <T, D, TContext = unknown>({
   options,
 }: UsePostDataProps<T, D, TContext>) => {
   const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...restOptions } =
+    options ?? {};
+
+  const getErrorMessage = (error: AxiosError<any>) => {
+    const responseData = error.response?.data;
+    const detailMessage =
+      responseData?.error?.details?.[0]?.message ||
+      responseData?.details?.[0]?.message;
+
+    return (
+      detailMessage ||
+      responseData?.error?.message ||
+      responseData?.message ||
+      error.message ||
+      "Failed to create data"
+    );
+  };
 
   return useMutation<T, Error, D, TContext>({
+    ...restOptions,
     mutationFn: async (payload) => {
       const isFormData = payload instanceof FormData;
 
@@ -44,23 +62,19 @@ export const usePostData = <T, D, TContext = unknown>({
 
       toast.success(successMessage);
 
-      if (options?.onSuccess) {
-        options.onSuccess(...args);
+      if (userOnSuccess) {
+        userOnSuccess(...args);
       }
     },
     onError: (...args) => {
       const error = args[0] as AxiosError<any>;
-      const errorMessage =
-        error.response?.data?.error?.message ||
-        error.message ||
-        "Failed to create data";
+      const errorMessage = getErrorMessage(error);
 
       toast.error(errorMessage);
 
-      if (options?.onError) {
-        options.onError(...args);
+      if (userOnError) {
+        userOnError(...args);
       }
     },
-    ...options,
   });
 };

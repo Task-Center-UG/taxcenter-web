@@ -15,6 +15,7 @@ import {
 import { Search, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 import PageHeaderHero from "@/components/PageHeaderHero";
+import { resolveMediaUrl } from "@/lib/media-url";
 
 type Creator = {
   id: number;
@@ -43,8 +44,6 @@ type TaxMaterialResponse = {
   mappedMaterials: TaxMaterialItem[];
   paging: PagingInfo;
 };
-
-const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -97,12 +96,6 @@ const MateriPajak = () => {
 
   const items = data?.mappedMaterials || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
-
-  const getImageUrl = (path: string) => {
-    if (!path) return "/placeholder.png";
-    if (path.startsWith("http")) return path;
-    return `${API_BASE_URL}/${path}`;
-  };
 
   return (
     <>
@@ -173,12 +166,13 @@ const MateriPajak = () => {
             >
               <div className="w-full h-[150px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
                 <Image
-                  src={getImageUrl(item.image_url)}
+                  src={resolveMediaUrl(item.image_url, "/placeholder.png")}
                   alt={item.title}
                   className="w-auto h-full object-contain"
                   width={150}
                   height={100}
                   loading="lazy"
+                  unoptimized
                 />
               </div>
 

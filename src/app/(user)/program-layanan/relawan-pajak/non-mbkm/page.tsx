@@ -69,12 +69,12 @@ const formSchema = z.object({
     .max(40, { message: "Maksimal 40 karakter." }),
 
   programStudi: z
-    .string({ error: "Program studi wajib dipilih." })
-    .min(1, "Pilih program studi."),
+    .number({ error: "Program studi wajib dipilih." })
+    .int("Program studi tidak valid."),
 
   bagianKampus: z
-    .string({ error: "Pilih lokasi kampus." })
-    .min(1, "Pilih lokasi kampus."),
+    .number({ error: "Pilih lokasi kampus." })
+    .int("Lokasi kampus tidak valid."),
 
   alamatDomisili: z
     .string()
@@ -154,8 +154,8 @@ const FormRelawanPajakNonMBKM = () => {
       namaLengkap: "",
       kelas: "",
       npm: "",
-      programStudi: "",
-      bagianKampus: "",
+      programStudi: undefined,
+      bagianKampus: undefined,
       alamatDomisili: "",
       nomorWhatsapp: "",
       email: "",
@@ -185,8 +185,8 @@ const FormRelawanPajakNonMBKM = () => {
     formData.append("email", values.email);
     formData.append("tax_volunteer_activities", values.pernahIkutRelawan);
     formData.append("username_ig", values.usernameInstagram);
-    formData.append("major_id", values.programStudi);
-    formData.append("region_id", values.bagianKampus);
+    formData.append("major_id", String(values.programStudi));
+    formData.append("region_id", String(values.bagianKampus));
 
     if (values.krsFile && values.krsFile[0]) {
       formData.append("krs", values.krsFile[0]);
@@ -301,7 +301,7 @@ const FormRelawanPajakNonMBKM = () => {
                               </span>
                             ) : field.value ? (
                               majors?.find(
-                                (major) => major.id.toString() === field.value
+                                (major) => major.id === field.value
                               )?.name
                             ) : (
                               "Pilih Program Studi"
@@ -323,17 +323,14 @@ const FormRelawanPajakNonMBKM = () => {
                                   key={major.id}
                                   value={major.name}
                                   onSelect={() => {
-                                    form.setValue(
-                                      "programStudi",
-                                      major.id.toString()
-                                    );
+                                    form.setValue("programStudi", major.id);
                                     setOpenProdi(false);
                                   }}
                                 >
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      field.value === major.id.toString()
+                                      field.value === major.id
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}
@@ -377,7 +374,7 @@ const FormRelawanPajakNonMBKM = () => {
                               </span>
                             ) : field.value ? (
                               regions?.find(
-                                (region) => region.id.toString() === field.value
+                                (region) => region.id === field.value
                               )?.name
                             ) : (
                               "Pilih Lokasi Kampus"
@@ -397,17 +394,14 @@ const FormRelawanPajakNonMBKM = () => {
                                   key={region.id}
                                   value={region.name}
                                   onSelect={() => {
-                                    form.setValue(
-                                      "bagianKampus",
-                                      region.id.toString()
-                                    );
+                                    form.setValue("bagianKampus", region.id);
                                     setOpenRegion(false);
                                   }}
                                 >
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      field.value === region.id.toString()
+                                      field.value === region.id
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}
@@ -518,7 +512,7 @@ const FormRelawanPajakNonMBKM = () => {
               <FormField
                 control={form.control}
                 name="krsFile"
-                render={({ field: { value, onChange, ...fieldProps } }) => (
+                render={({ field: { onChange, ...fieldProps } }) => (
                   <FormItem>
                     <FormLabel>KRS AKTIF (Format PDF)</FormLabel>
                     <FormControl>
@@ -543,7 +537,7 @@ const FormRelawanPajakNonMBKM = () => {
               <FormField
                 control={form.control}
                 name="transkripFile"
-                render={({ field: { value, onChange, ...fieldProps } }) => (
+                render={({ field: { onChange, ...fieldProps } }) => (
                   <FormItem>
                     <FormLabel>Transkrip Nilai Terbaru (Format PDF)</FormLabel>
                     <FormControl>
@@ -582,7 +576,7 @@ const FormRelawanPajakNonMBKM = () => {
               <FormField
                 control={form.control}
                 name="buktiTwibbonFile"
-                render={({ field: { value, onChange, ...fieldProps } }) => (
+                render={({ field: { onChange, ...fieldProps } }) => (
                   <FormItem>
                     <FormLabel>
                       Bukti Screenshot Post Twibbon di Instagram*

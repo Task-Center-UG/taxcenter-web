@@ -37,7 +37,7 @@ type SeminarResponse = {
 
 const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
-function ProgramCard({ item, href }: { item: ProgramItem; href: string }) {
+function ProgramCard({ item }: { item: ProgramItem }) {
   const getImageUrl = (path: string) => {
     if (!path) return null;
     if (path.startsWith("http")) return path;
@@ -51,8 +51,6 @@ function ProgramCard({ item, href }: { item: ProgramItem; href: string }) {
       year: "numeric",
     });
   };
-
-  console.log(getImageUrl(item.image_url));
 
   return (
     <Card className="flex flex-col h-full bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group">
@@ -81,10 +79,6 @@ function ProgramCard({ item, href }: { item: ProgramItem; href: string }) {
         <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#F97316] transition-colors">
           {item.title}
         </h3>
-
-        <p className="text-sm text-gray-600 line-clamp-3 mb-4 flex-1 leading-relaxed">
-          {item.description}
-        </p>
 
         <div className="mt-auto pt-4 border-t border-gray-50">
           <span className="text-xs font-medium text-gray-500">
@@ -182,7 +176,7 @@ export default function ProgramKegiatan() {
         titleClassName="text-3xl md:text-4xl"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 mt-10 md:mt-14">
         <SectionWrapper
           title="Workshop & Pelatihan"
           linkHref="/program-layanan/riset/program-kegiatan/workshop"
@@ -190,11 +184,7 @@ export default function ProgramKegiatan() {
           isEmpty={!trainingData?.trainings?.length}
         >
           {trainingData?.trainings?.map((item) => (
-            <ProgramCard
-              key={item.id}
-              item={item}
-              href="/program-layanan/riset/program-kegiatan/workshop"
-            />
+            <ProgramCard key={item.id} item={item} />
           ))}
         </SectionWrapper>
 
@@ -205,11 +195,7 @@ export default function ProgramKegiatan() {
           isEmpty={!fgdData?.fgds?.length}
         >
           {fgdData?.fgds?.map((item) => (
-            <ProgramCard
-              key={item.id}
-              item={item}
-              href="/program-layanan/riset/program-kegiatan/fgd"
-            />
+            <ProgramCard key={item.id} item={item} />
           ))}
         </SectionWrapper>
 
@@ -220,11 +206,7 @@ export default function ProgramKegiatan() {
           isEmpty={!seminarData?.seminars?.length}
         >
           {seminarData?.seminars?.map((item) => (
-            <ProgramCard
-              key={item.id}
-              item={item}
-              href="/program-layanan/riset/program-kegiatan/seminar"
-            />
+            <ProgramCard key={item.id} item={item} />
           ))}
         </SectionWrapper>
       </div>

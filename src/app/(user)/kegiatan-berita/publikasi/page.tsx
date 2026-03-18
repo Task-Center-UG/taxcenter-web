@@ -14,14 +14,6 @@ export default function Publikasi() {
       <div className="relative max-w-full overflow-hidden select-none">
         <PageHeaderHero
           title="PUBLIKASI"
-          subtitle={
-            <>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. <br /> Lorem Ipsum has been the industry&rsquo;s standard
-              dummy text ever since <br /> the 1500s, when an unknown printer
-              took.
-            </>
-          }
           innerClassName="min-h-[220px] lg:min-h-[240px]"
         />
 

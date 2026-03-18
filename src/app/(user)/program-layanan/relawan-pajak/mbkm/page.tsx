@@ -66,11 +66,11 @@ const formSchema = z.object({
     .min(1, { message: "NPM wajib diisi." })
     .max(40, { message: "Maksimal 40 karakter." }),
   programStudi: z
-    .string({ error: "Program studi wajib dipilih." })
-    .min(1, "Pilih program studi."),
+    .number({ error: "Program studi wajib dipilih." })
+    .int("Program studi tidak valid."),
   bagianKampus: z
-    .string({ error: "Pilih lokasi kampus." })
-    .min(1, "Pilih lokasi kampus."),
+    .number({ error: "Pilih lokasi kampus." })
+    .int("Lokasi kampus tidak valid."),
   alamatDomisili: z
     .string()
     .min(10, { message: "Alamat domisili terlalu pendek." })
@@ -97,9 +97,13 @@ const formSchema = z.object({
     }),
   ipk: z
     .string()
-    .refine((val) => !isNaN(Number(val)) && Number(val) >= 0 && Number(val) <= 4, {
-      message: "IPK harus berupa angka antara 0.00 - 4.00",
-    }),
+    .min(1, { message: "IPK wajib diisi." })
+    .refine(
+      (val) => !isNaN(Number(val)) && Number(val) >= 0 && Number(val) <= 4,
+      {
+        message: "IPK harus berupa angka antara 0.00 - 4.00",
+      },
+    ),
   krsFile: z
     .any()
     .refine((files) => files?.length >= 1, "File KRS wajib diupload.")
@@ -111,6 +115,7 @@ const formSchema = z.object({
   transkripFile: z
     .any()
     .refine((files) => files?.length >= 1, "File Transkrip wajib diupload.")
+    .refine((files) => files?.[0]?.size <= 5000000, "Maksimal ukuran file 5MB.")
     .refine(
       (files) => files?.[0]?.type === "application/pdf",
       "Format harus PDF."
@@ -140,8 +145,8 @@ const FormRelawanPajakMBKM = () => {
       namaLengkap: "",
       kelas: "",
       npm: "",
-      programStudi: "",
-      bagianKampus: "",
+      programStudi: undefined,
+      bagianKampus: undefined,
       alamatDomisili: "",
       nomorWhatsapp: "",
       email: "",
@@ -170,9 +175,9 @@ const FormRelawanPajakMBKM = () => {
     formData.append("email", values.email);
     formData.append("tax_volunteer_activities", values.pernahIkutRelawan);
     formData.append("is_already_tax_volunteer", values.diterimaRelawan2023);
-    formData.append("ipk", values.ipk);
-    formData.append("major_id", values.programStudi);
-    formData.append("region_id", values.bagianKampus);
+    formData.append("ipk", String(values.ipk));
+    formData.append("major_id", String(values.programStudi));
+    formData.append("region_id", String(values.bagianKampus));
 
     if (values.krsFile && values.krsFile[0]) {
       formData.append("krs", values.krsFile[0]);
@@ -280,7 +285,7 @@ const FormRelawanPajakMBKM = () => {
                               </span>
                             ) : field.value ? (
                               majors?.find(
-                                (major) => major.id.toString() === field.value
+                                (major) => major.id === field.value
                               )?.name
                             ) : (
                               "Pilih Program Studi"
@@ -302,17 +307,14 @@ const FormRelawanPajakMBKM = () => {
                                   key={major.id}
                                   value={major.name}
                                   onSelect={() => {
-                                    form.setValue(
-                                      "programStudi",
-                                      major.id.toString()
-                                    );
+                                    form.setValue("programStudi", major.id);
                                     setOpenProdi(false);
                                   }}
                                 >
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      field.value === major.id.toString()
+                                      field.value === major.id
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}
@@ -356,7 +358,7 @@ const FormRelawanPajakMBKM = () => {
                               </span>
                             ) : field.value ? (
                               regions?.find(
-                                (region) => region.id.toString() === field.value
+                                (region) => region.id === field.value
                               )?.name
                             ) : (
                               "Pilih Lokasi Kampus"
@@ -376,17 +378,14 @@ const FormRelawanPajakMBKM = () => {
                                   key={region.id}
                                   value={region.name}
                                   onSelect={() => {
-                                    form.setValue(
-                                      "bagianKampus",
-                                      region.id.toString()
-                                    );
+                                    form.setValue("bagianKampus", region.id);
                                     setOpenRegion(false);
                                   }}
                                 >
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      field.value === region.id.toString()
+                                      field.value === region.id
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}
@@ -520,7 +519,15 @@ const FormRelawanPajakMBKM = () => {
                   <FormItem>
                     <FormLabel>IPK</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="3.50" {...field} />
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="4"
+                        placeholder="3.50"
+                        {...field}
+                        value={field.value ?? ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -530,7 +537,7 @@ const FormRelawanPajakMBKM = () => {
               <FormField
                 control={form.control}
                 name="krsFile"
-                render={({ field: { value, onChange, ...fieldProps } }) => (
+                render={({ field: { onChange, ...fieldProps } }) => (
                   <FormItem>
                     <FormLabel>KRS AKTIF (Format PDF)</FormLabel>
                     <FormControl>
@@ -554,7 +561,7 @@ const FormRelawanPajakMBKM = () => {
               <FormField
                 control={form.control}
                 name="transkripFile"
-                render={({ field: { value, onChange, ...fieldProps } }) => (
+                render={({ field: { onChange, ...fieldProps } }) => (
                   <FormItem>
                     <FormLabel>Transkrip Nilai Terbaru (Format PDF)</FormLabel>
                     <FormControl>

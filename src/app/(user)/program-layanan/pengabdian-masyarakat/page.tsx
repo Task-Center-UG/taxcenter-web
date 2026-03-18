@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -88,12 +89,18 @@ export default function PengabdianMasyarakat() {
               </p>
             </div>
 
-            <div className="relative rounded-2xl bg-[#D9D9D9] h-[240px] md:h-auto md:min-h-[360px]">
-              {/* 
-              Jika ada aset gambar, Anda bisa ganti div ini dengan <Image fill src="/images/abdimas.jpg" className="object-cover rounded-2xl" alt="Pengabdian Masyarakat" />
-              Menggunakan div abu-abu agar sesuai mockup ketika belum ada gambar.
-            */}
-              <div className="absolute inset-0 bg-[#D9D9D9] rounded-2xl"></div>
+            <div className="relative">
+              <div className="relative rounded-2xl bg-white/95 mx-auto sm:max-w-sm md:max-w-md aspect-[4/3] overflow-hidden shadow-sm">
+                <Image
+                  src="/assets/images/program-dan-layanan/pengabdian-masyarakat/01-pengabdian-masyarkat.png"
+                  alt="Pengabdian Masyarakat"
+                  fill
+                  className="object-cover object-center rounded-2xl"
+                  priority
+                  quality={95}
+                  sizes="(min-width: 1024px) 420px, (min-width: 768px) 360px, 90vw"
+                />
+              </div>
             </div>
           </div>
         </section>

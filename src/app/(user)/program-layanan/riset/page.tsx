@@ -64,11 +64,10 @@ export default function Riset() {
             label="Kerjasama Riset"
             href="/program-layanan/riset/kerjasama-riset"
           />
-          {/* TODO: KOMENTARIN DULU */}
-          {/* <CategoryItem
+          <CategoryItem
             label="Program dan Kegiatan Riset"
             href="/program-layanan/riset/program-kegiatan"
-          /> */}
+          />
         </div>
       </section>
     </main>

@@ -1,19 +1,9 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import {
-  ArrowLeft,
-  Calendar,
-  User,
-  Clock,
-  Loader2,
-  AlertCircle,
-  CheckCircle2,
-  Info,
-} from "lucide-react";
+import { ArrowLeft, Calendar, User, Loader2, AlertCircle } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 
 const API_BASE_URL = "https://stag.api.taxcenterug.com";
@@ -35,193 +25,104 @@ type TrainingDetail = {
   updated_by: Creator;
 };
 
+const getImageUrl = (url: string) => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
+  return `${API_BASE_URL}/${url}`;
+};
+
+const stripHtml = (value: string) =>
+  value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
 export default function WorkshopDetailPage() {
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
 
-  const { data, isLoading, isError } = useGetData<TrainingDetail>({
+  const { data, isLoading, error } = useGetData<TrainingDetail>({
     key: ["detail-training", id],
     url: `/training/${id}`,
   });
 
-  const getImageUrl = (path: string) => {
-    if (!path) return null;
-    if (path.startsWith("http")) return path;
-    return `${API_BASE_URL}/${path}`;
-  };
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8F9FA] gap-3">
-        <Loader2 className="w-10 h-10 animate-spin text-[#F97316]" />
-        <p className="text-gray-500 font-medium">Memuat detail workshop...</p>
+      <div className="min-h-screen flex items-center justify-center pt-[100px] lg:pt-[170px]">
+        <Loader2 className="h-8 w-8 animate-spin text-[#F97316]" />
       </div>
     );
   }
 
-  if (isError || !data) {
+  if (error || !data) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8F9FA] px-4 text-center">
-        <div className="bg-red-50 p-4 rounded-full mb-4">
-          <AlertCircle className="w-10 h-10 text-red-500" />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Data Tidak Ditemukan
-        </h2>
+      <div className="min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[200px] gap-4">
+        <AlertCircle className="h-10 w-10 text-red-500" />
+        <p className="text-neutral-500">Data workshop tidak ditemukan.</p>
         <Link
           href="/program-layanan/riset/program-kegiatan/workshop"
-          className="inline-flex items-center gap-2 bg-[#F97316] hover:bg-orange-600 text-white font-medium py-3 px-6 rounded-full transition-colors mt-4"
+          className="text-blue-600 underline"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Kembali ke Daftar
+          Kembali ke Workshop
         </Link>
       </div>
     );
   }
 
+  const plainDescription = stripHtml(data.description || "-");
+
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+    <div className="relative pt-[100px] lg:pt-[170px] pb-16 min-h-screen bg-[#F8F9FD]">
+      <div className="mx-auto max-w-5xl px-4 sm:px-8">
+        <div className="mb-8">
           <Link
             href="/program-layanan/riset/program-kegiatan/workshop"
-            className="inline-flex items-center text-gray-500 hover:text-[#F97316] transition-colors mb-6 text-sm font-medium group"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-[#2A176F] font-medium transition-colors"
           >
-            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft className="h-5 w-5" />
             Kembali ke Workshop
           </Link>
+        </div>
 
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+        <div className="text-center mb-12 max-w-4xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black mb-4">
             {data.title}
           </h1>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 pt-2">
-            <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-[#F97316]" />
-              <span>
-                Oleh:{" "}
-                <span className="font-semibold text-gray-700">
-                  {data.created_by?.full_name}
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-[#F97316]" />
-              <span>{formatDate(data.created_at)}</span>
-            </div>
-            {data.updated_at !== data.created_at && (
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#F97316]" />
-                <span>Diupdate: {formatDate(data.updated_at)}</span>
-              </div>
-            )}
+        <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-8">
+          <div className="flex flex-col">
+            <span className="font-bold text-lg text-black inline-flex items-center gap-2">
+              <User className="h-4 w-4 text-[#F97316]" />
+              {data.created_by?.full_name || "Admin Tax Center"}
+            </span>
+            <span className="text-sm text-gray-500 mt-1 inline-flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-[#F97316]" />
+              {new Date(data.created_at).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-8">
-            <div className="w-full h-[300px] md:h-[400px] bg-gray-200 rounded-2xl relative overflow-hidden shadow-sm border border-gray-100">
-              {data.image_url ? (
-                <Image
-                  src={getImageUrl(data.image_url)!}
-                  alt={data.title}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                  priority
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full text-gray-400">
-                  <span className="text-4xl mb-2">🖼️</span>
-                  <span className="text-sm font-medium">
-                    Gambar Tidak Tersedia
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-100">
-                Deskripsi Kegiatan
-              </h3>
-              <article className="prose prose-orange max-w-none text-gray-600 leading-relaxed whitespace-pre-line text-justify">
-                {data.description}
-              </article>
-            </div>
+        {data.image_url && (
+          <div className="relative w-full aspect-video mb-12 rounded-xl overflow-hidden shadow-sm">
+            <Image
+              src={getImageUrl(data.image_url)}
+              alt={data.title}
+              fill
+              className="object-cover"
+              priority
+              unoptimized
+            />
           </div>
+        )}
 
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sticky top-32">
-              <h4 className="font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100 flex items-center gap-2">
-                <Info className="w-4 h-4 text-[#F97316]" />
-                Informasi Program
-              </h4>
-
-              <div className="space-y-6">
-                <div className="flex items-start gap-3">
-                  <div className="bg-green-100 p-2 rounded-lg">
-                    <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div>
-                    <span className="block text-xs text-gray-400 font-semibold uppercase tracking-wider">
-                      Status
-                    </span>
-                    <span className="text-sm font-bold text-gray-800">
-                      Aktif / Tersedia
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="bg-blue-100 p-2 rounded-lg">
-                    <User className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <span className="block text-xs text-gray-400 font-semibold uppercase tracking-wider">
-                      Penyelenggara
-                    </span>
-                    <span className="text-sm font-bold text-gray-800">
-                      Tax Center Gunadarma
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="bg-orange-100 p-2 rounded-lg">
-                    <Calendar className="w-5 h-5 text-[#F97316]" />
-                  </div>
-                  <div>
-                    <span className="block text-xs text-gray-400 font-semibold uppercase tracking-wider">
-                      Tanggal Publikasi
-                    </span>
-                    <span className="text-sm font-bold text-gray-800">
-                      {formatDate(data.created_at)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <p className="text-xs text-gray-500 leading-relaxed text-center">
-                  Untuk informasi lebih lanjut mengenai kegiatan ini, silakan
-                  hubungi admin atau kunjungi sekretariat Tax Center.
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="mx-auto">
+          <article className="prose prose-sm md:prose-base max-w-none bg-white p-6 rounded shadow-sm prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900">
+            {plainDescription}
+          </article>
         </div>
       </div>
     </div>

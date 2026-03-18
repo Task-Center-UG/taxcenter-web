@@ -13,8 +13,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
-
-const API_BASE_URL = "https://stag.api.taxcenterug.com";
+import { resolveMediaUrl } from "@/lib/media-url";
 
 type Creator = {
   id: number;
@@ -30,12 +29,6 @@ type GalleryDetail = {
   created_at: string;
   updated_at: string;
   created_by: Creator;
-};
-
-const getImageUrl = (path: string) => {
-  if (!path) return "";
-  if (path.startsWith("http")) return path;
-  return `${API_BASE_URL}/${path}`;
 };
 
 export default function FotoKegiatanDetailPage() {
@@ -128,7 +121,7 @@ export default function FotoKegiatanDetailPage() {
         <div className="w-full h-[280px] md:h-[430px] bg-gray-200 rounded-2xl relative overflow-hidden shadow-sm border border-gray-100 mb-8">
           {item.picture_url ? (
             <Image
-              src={getImageUrl(item.picture_url)}
+              src={resolveMediaUrl(item.picture_url)}
               alt={item.title}
               fill
               className="object-cover"

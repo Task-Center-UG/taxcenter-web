@@ -8,6 +8,15 @@ import PageHeaderHero from "@/components/PageHeaderHero";
 
 const API_BASE_URL = "https://stag.api.taxcenterug.com";
 
+const resolveMediaUrl = (url?: string | null) => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
+  if (url.startsWith("/")) return `${API_BASE_URL}${url}`;
+  return `${API_BASE_URL}/${url}`;
+};
+
 interface Division {
   id: number;
   name: string;
@@ -30,10 +39,6 @@ interface ActivityResponse {
     total_pages: number;
     total_items: number;
   };
-}
-
-interface SingleDivisionResponse {
-  division: Division;
 }
 
 export default function DivisionDetailPage() {
@@ -103,10 +108,11 @@ export default function DivisionDetailPage() {
             <div className="relative aspect-video w-full bg-gray-200 rounded-lg overflow-hidden shadow-sm">
               {division.picture_url ? (
                 <Image
-                  src={`${API_BASE_URL}/${division.picture_url}`}
+                  src={resolveMediaUrl(division.picture_url)}
                   alt={division.name}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-400">
@@ -132,10 +138,11 @@ export default function DivisionDetailPage() {
                   <div className="relative h-56 w-full bg-gray-200">
                     {activity.picture_url ? (
                       <Image
-                        src={`${API_BASE_URL}/${activity.picture_url}`}
+                        src={resolveMediaUrl(activity.picture_url)}
                         alt={activity.title}
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full text-gray-400 text-sm">

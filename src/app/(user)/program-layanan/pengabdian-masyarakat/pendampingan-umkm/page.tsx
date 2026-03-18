@@ -25,7 +25,7 @@ type Creator = {
   full_name: string;
 };
 
-type FgdItem = {
+type MsmeAssistanceItem = {
   id: number;
   title: string;
   description: string;
@@ -40,8 +40,8 @@ type PagingInfo = {
   total_items: number;
 };
 
-type FgdResponse = {
-  fgds: FgdItem[];
+type MsmeAssistanceResponse = {
+  msmeAssistance: MsmeAssistanceItem[];
   paging: PagingInfo;
 };
 
@@ -82,13 +82,13 @@ export default function PendampinganUMKM() {
     };
   }, [page, debouncedQuery, sort]);
 
-  const { data, isLoading, isError } = useGetData<FgdResponse>({
+  const { data, isLoading, isError } = useGetData<MsmeAssistanceResponse>({
     key: ["umkm-assistance-list", JSON.stringify(apiParams)],
-    url: "/fgd",
+    url: "/msme-assistance",
     params: apiParams,
   });
 
-  const items = data?.fgds || [];
+  const items = data?.msmeAssistance || [];
   const paging = data?.paging || { page: 1, total_pages: 1, total_items: 0 };
 
   const getImageUrl = (path: string) => {
@@ -98,12 +98,6 @@ export default function PendampinganUMKM() {
     if (path.startsWith("uploads/")) return `${API_BASE_URL}/${path}`;
     return `${API_BASE_URL}/${path}`;
   };
-
-  const stripHtml = (value: string) =>
-    value
-      .replace(/<[^>]*>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
 
   return (
     <div className="relative w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">

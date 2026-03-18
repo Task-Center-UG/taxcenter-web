@@ -22,7 +22,7 @@ type Creator = {
   full_name: string;
 };
 
-type FgdDetail = {
+type MsmeAssistanceDetail = {
   id: number;
   title: string;
   description: string;
@@ -44,9 +44,9 @@ export default function PendampinganUmkmDetailPage() {
   const params = useParams();
   const id = params.id as string;
 
-  const { data, isLoading, isError } = useGetData<FgdDetail>({
+  const { data, isLoading, isError } = useGetData<MsmeAssistanceDetail>({
     key: ["umkm-assistance-detail", id],
-    url: `/fgd/${id}`,
+    url: `/msme-assistance/${id}`,
   });
 
   const formatDate = (dateString: string) => {

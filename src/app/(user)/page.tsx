@@ -5,19 +5,11 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetData } from "@/hooks/use-get-data";
+import { Users } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAward,
-  faBullhorn,
   faChevronLeft,
   faChevronRight,
-  faClipboardList,
-  faGlobe,
-  faHandshake,
-  faLaptop,
-  faUserFriends,
-  faUsers,
-  faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 
 const API_BASE_URL = "https://stag.api.taxcenterug.com";
@@ -61,6 +53,27 @@ interface NewsResponse {
   };
 }
 
+interface CompanyProfileResponse {
+  video_url: string;
+}
+
+interface Division {
+  id: number;
+  name: string;
+  description: string;
+  icon_url: string;
+  picture_url: string;
+}
+
+interface DivisionResponse {
+  divisions: Division[];
+  paging: {
+    page: number;
+    total_pages: number;
+    total_items: number;
+  };
+}
+
 const fallbackSlides: SliderItem[] = [
   {
     title: "Tax Center Gunadarma Bersinergi Membangun Indonesia",
@@ -71,55 +84,7 @@ const fallbackSlides: SliderItem[] = [
   },
 ];
 
-const divisiData = [
-  {
-    icon: faUsers,
-    title: "Divisi Inklusi",
-    description:
-      "Meningkatkan kesadaran pajak mahasiswa melalui integrasi kurikulum dan kolaborasi dengan Direktorat Jenderal Pajak.",
-  },
-  {
-    icon: faAward,
-    title: "Divisi Brevet",
-    description:
-      "Menyelenggarakan kelas dan pelatihan pajak bagi mahasiswa dan masyarakat umum.",
-  },
-  {
-    icon: faHandshake,
-    title: "Divisi Relawan Pajak",
-    description:
-      "Mengoordinasikan pendampingan pelaporan pajak kepada masyarakat.",
-  },
-  {
-    icon: faVideo,
-    title: "Divisi Multimedia",
-    description:
-      "Memproduksi dan mempublikasikan konten edukasi perpajakan melalui berbagai media digital.",
-  },
-  {
-    icon: faLaptop,
-    title: "Divisi IT",
-    description: "Mengembangkan dan membangun aplikasi yang bermanfaat.",
-  },
-  {
-    icon: faGlobe,
-    title: "Divisi Abdimas",
-    description:
-      "Menyelenggarakan program pendampingan UMKM, foto produk, dan workshop pengembangan usaha.",
-  },
-  {
-    icon: faUserFriends,
-    title: "Divisi Humas dan Kerjasama",
-    description:
-      "Membangun komunikasi dan kemitraan strategis dengan berbagai pihak.",
-  },
-  {
-    icon: faClipboardList,
-    title: "Divisi Tax Clinic",
-    description:
-      "Menyediakan layanan konsultasi dan pendampingan perpajakan profesional.",
-  },
-];
+const MAX_DIVISION_PREVIEW = 10;
 
 const chunkArray = <T,>(arr: T[], size: number): T[][] => {
   const chunks: T[][] = [];
@@ -137,6 +102,39 @@ const getImageUrl = (url: string) => {
   if (url.startsWith("uploads/")) return `${API_BASE_URL}/${url}`;
   if (url.startsWith("/")) return url;
   return `${API_BASE_URL}/${url}`;
+};
+
+const getYouTubeEmbedUrl = (url: string) => {
+  try {
+    const parsed = new URL(url.trim());
+    const hostname = parsed.hostname.replace("www.", "");
+
+    if (hostname === "youtu.be") {
+      const videoId = parsed.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    if (hostname === "youtube.com" || hostname === "m.youtube.com") {
+      if (parsed.pathname === "/watch") {
+        const videoId = parsed.searchParams.get("v");
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+      }
+
+      if (parsed.pathname.startsWith("/shorts/")) {
+        const videoId = parsed.pathname.split("/shorts/")[1]?.split("/")[0];
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+      }
+
+      if (parsed.pathname.startsWith("/embed/")) {
+        const videoId = parsed.pathname.split("/embed/")[1]?.split("/")[0];
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
 };
 
 const stripHtml = (html: string) =>
@@ -290,11 +288,36 @@ export default function HomePage() {
       order: "desc",
     },
   });
+  const { data: companyProfile } = useGetData<CompanyProfileResponse>({
+    key: ["home-company-profile"],
+    url: "/company-profile",
+  });
+  const { data: divisionsResponse, isLoading: isLoadingDivisions } =
+    useGetData<DivisionResponse>({
+      key: ["home-divisions"],
+      url: "/divisions",
+      params: {
+        page: 1,
+        size: 100,
+        sort_by: "name",
+        order: "asc",
+      },
+    });
 
   const slides = slidersResponse?.length ? slidersResponse : fallbackSlides;
   const awardsData = awardsResponse?.awards || [];
   const beritaData = newsResponse?.news || [];
+  const divisions = divisionsResponse?.divisions || [];
+  const divisionPreview = divisions.slice(0, MAX_DIVISION_PREVIEW);
   const activeSlide = slides[currentSlide];
+  const companyProfileVideoUrl = companyProfile?.video_url?.trim() || "";
+  const companyProfileEmbedUrl = companyProfileVideoUrl
+    ? getYouTubeEmbedUrl(companyProfileVideoUrl)
+    : null;
+  const companyProfileDirectVideoUrl =
+    companyProfileVideoUrl && !companyProfileEmbedUrl
+      ? getImageUrl(companyProfileVideoUrl)
+      : "";
 
   useEffect(() => {
     if (currentSlide >= slides.length) {
@@ -482,14 +505,29 @@ export default function HomePage() {
             masyarakat.
           </p>
           <div className="px-5">
-            <video
-              controls
-              className="w-2xl md:w-4xl xl:w-5xl h-60 sm:h-67 md:h-102 lg:h-107 rounded-md border border-gray-300 shadow-sm object-cover"
-              preload="lazy"
-            >
-              <source src="#" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {companyProfileEmbedUrl ? (
+              <iframe
+                title="Company Profile Tax Center Gunadarma"
+                src={companyProfileEmbedUrl}
+                className="w-2xl md:w-4xl xl:w-5xl h-60 sm:h-67 md:h-102 lg:h-107 rounded-md border border-gray-300 shadow-sm"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            ) : companyProfileDirectVideoUrl ? (
+              <video
+                controls
+                className="w-2xl md:w-4xl xl:w-5xl h-60 sm:h-67 md:h-102 lg:h-107 rounded-md border border-gray-300 shadow-sm object-cover"
+                preload="metadata"
+              >
+                <source src={companyProfileDirectVideoUrl} />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <div className="w-2xl md:w-4xl xl:w-5xl h-60 sm:h-67 md:h-102 lg:h-107 rounded-md border border-gray-300 shadow-sm bg-white flex items-center justify-center text-sm text-gray-500 px-6">
+                Video company profile belum tersedia.
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -504,23 +542,41 @@ export default function HomePage() {
             saling mendukung dalam menjalankan program edukasi, pelatihan,
             pelayanan, dan pengabdian di bidang perpajakan.
           </p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-14 max-w-6xl mx-auto">
-            {divisiData.map(({ icon, title, description }, idx) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14 max-w-6xl mx-auto justify-items-center">
+            {divisionPreview.map((division) => (
               <div
-                key={idx}
-                className="flex flex-col items-center text-center px-4 w-full sm:w-[45%] md:w-[30%]"
+                key={division.id}
+                className="flex flex-col items-center text-center px-4 w-full max-w-[340px]"
               >
                 <div className="bg-yellow-400 w-20 h-20 flex justify-center items-center rounded-full mb-4 drop-shadow-md">
-                  <FontAwesomeIcon
-                    icon={icon}
-                    className="text-black text-3xl"
-                  />
+                  {division.icon_url ? (
+                    <Image
+                      src={getImageUrl(division.icon_url)}
+                      alt={division.name}
+                      width={40}
+                      height={40}
+                      className="w-10 h-10 object-contain"
+                      unoptimized
+                    />
+                  ) : (
+                    <Users className="w-7 h-7 text-black" />
+                  )}
                 </div>
-                <h3 className="font-bold mb-2 text-md md:text-lg">{title}</h3>
-                <p className="text-xs md:text-sm mb-4 max-w-[300px]">
-                  {description}
+                <h3 className="font-bold mb-2 text-md md:text-lg">
+                  {division.name}
+                </h3>
+                <p
+                  className="text-xs md:text-sm leading-relaxed mb-4 w-full max-w-[320px]"
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {stripHtml(division.description || "-")}
                 </p>
-                <Link href="/tentang-kami/tim-kami">
+                <Link href={`/tentang-kami/tim-kami/${division.id}`}>
                   <Button
                     size="sm"
                     className="bg-[#FE8100] hover:bg-[#e26100] text-white font-semibold rounded-full px-5 h-8 cursor-pointer"
@@ -531,6 +587,22 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+          {isLoadingDivisions && (
+            <p className="text-sm text-gray-500 mt-8">Memuat data divisi...</p>
+          )}
+          {!isLoadingDivisions && divisions.length === 0 && (
+            <p className="text-sm text-gray-500 mt-8">Belum ada data divisi.</p>
+          )}
+          {divisions.length > MAX_DIVISION_PREVIEW && (
+            <Link href="/tentang-kami/tim-kami" className="mt-10">
+              <Button
+                size="lg"
+                className="bg-[#2A176F] hover:bg-[#1f1254] text-white font-bold h-11 px-10 rounded-md cursor-pointer"
+              >
+                Lihat Semua Divisi
+              </Button>
+            </Link>
+          )}
         </div>
       </section>
 
