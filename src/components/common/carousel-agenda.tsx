@@ -48,7 +48,7 @@ const CarouselAgenda: React.FC<CarouselProps> = ({ images }) => {
         </div>
       </div>
 
-      {/* Manual Slide Controls */}
+      
       <div className="absolute top-1/2 left-0 right-0 flex justify-between transform -translate-y-1/2 px-4">
         <button
           className=" -translate-y-1/2 left-2 md:left-4 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-4 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300"

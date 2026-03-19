@@ -77,7 +77,7 @@ function MobileAccordionItem({
 }: MobileItemProps) {
   return (
     <div className="w-full">
-      {/* Header row */}
+      {}
       <button
         className="w-full flex items-center justify-between px-2 sm:px-4 py-3 text-[#2A176F] font-semibold tracking-wide hover:text-[#F1C40F] transition-colors"
         onClick={onToggle}
@@ -121,17 +121,13 @@ export default function Navbar() {
   const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
   const menuRefs = React.useRef<(HTMLLIElement | null)[]>([]);
   const timeoutRefs = React.useRef<NodeJS.Timeout[]>([]);
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  // state untuk accordion mobile
+  const [isOpen, setIsOpen] = React.useState(false);
   const [mobileOpenIndex, setMobileOpenIndex] = React.useState<number | null>(
     null,
   );
   React.useEffect(() => {
     if (!isOpen) setMobileOpenIndex(null);
-  }, [isOpen]);
-
-  // hide top info-bar saat scroll
+  }, [isOpen]);
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -156,7 +152,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 w-full flex flex-col z-50 will-change-transform transition-transform duration-300 ease-out">
-      {/* Info Bar */}
+      
       <div
         className={`w-full text-white hidden lg:flex transition-all duration-100 ease-in-out overflow-hidden ${
           scrolled ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
@@ -181,7 +177,7 @@ export default function Navbar() {
         style={{ zIndex: 40 }}
       />
 
-      {/* Main Bar */}
+      
       <div className="flex justify-center w-full bg-white shadow z-50">
         <div className="container flex items-center justify-between py-3 px-2 lg:px-9">
           <Link href="/">
@@ -222,7 +218,7 @@ export default function Navbar() {
             </Sheet>
           </div>
 
-          {/* Navbar Dekstop */}
+          
           <nav className="hidden xl:block relative">
             <ul className="flex space-x-[60px]">
               {menuItems.map((item, index) => {

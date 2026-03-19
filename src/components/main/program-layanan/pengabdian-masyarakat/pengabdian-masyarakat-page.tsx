@@ -60,7 +60,7 @@ function ProgramCard({
 export default function PengabdianMasyarakatPage() {
   return (
     <>
-      {/* Header Section */}
+      
       <div className="overflow-hidden">
         <PageHeaderHero
           title="PENGABDIAN MASYARAKAT"
@@ -101,7 +101,7 @@ export default function PengabdianMasyarakatPage() {
           </div>
         </section>
 
-        {/* Program ABDIMAS */}
+        
         <section className="w-full bg-[#E5B700]">
           <div className=" flex flex-col mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-16 text-center items-center justify-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 text-center mb-8 md:mb-10">

@@ -61,7 +61,7 @@ export default function AgendaKegiatanDetailPage() {
   return (
     <div className="relative pt-[100px] lg:pt-[170px] pb-16 min-h-screen bg-[#F8F9FD]">
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
-        {/* Back Button - Top Left */}
+        
         <div className="mb-8">
           <Link
             href="/kegiatan-berita/agenda-kegiatan"
@@ -83,14 +83,14 @@ export default function AgendaKegiatanDetailPage() {
           </Link>
         </div>
 
-        {/* Header Title Section */}
+        
         <div className="text-center mb-12 max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black mb-4 capitalize">
             {news.title}
           </h1>
         </div>
 
-        {/* Metadata Section */}
+        
         <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-8">
           <div className="flex flex-col">
             <span className="font-bold text-lg text-black">
@@ -120,7 +120,7 @@ export default function AgendaKegiatanDetailPage() {
           </div>
         </div>
 
-        {/* Featured Image */}
+        
         {news.image_url && (
           <div className="relative w-full aspect-video mb-12 rounded-xl overflow-hidden shadow-sm">
             <Image

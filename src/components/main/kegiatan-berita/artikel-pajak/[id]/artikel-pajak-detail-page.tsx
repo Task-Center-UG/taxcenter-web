@@ -63,7 +63,7 @@ export default function ArtikelPajakDetailPage() {
   return (
     <div className="relative pt-[100px] lg:pt-[170px] pb-16 min-h-screen bg-[#F8F9FD]">
       <div className="mx-auto max-w-5xl px-6 sm:px-8">
-        {/* Back Button - Top Left */}
+        
         <div className="mb-8">
           <Link
             href="/kegiatan-berita/artikel-pajak"
@@ -85,7 +85,7 @@ export default function ArtikelPajakDetailPage() {
           </Link>
         </div>
 
-        {/* Header Title Section */}
+        
         <div className="text-center mb-12 max-w-4xl mx-auto">
           {article.category && (
             <span className="inline-block px-3 py-1 bg-[#2A176F] text-white rounded-full text-xs font-semibold mb-4 tracking-wider uppercase">
@@ -97,7 +97,7 @@ export default function ArtikelPajakDetailPage() {
           </h1>
         </div>
 
-        {/* Metadata Section */}
+        
         <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-8">
           <div className="flex flex-col">
             <span className="font-bold text-lg text-black">
@@ -127,7 +127,7 @@ export default function ArtikelPajakDetailPage() {
           </div>
         </div>
 
-        {/* Featured Image */}
+        
         {article.image_url && (
           <div className="relative w-full aspect-video mb-12 rounded-xl overflow-hidden shadow-sm">
             <Image

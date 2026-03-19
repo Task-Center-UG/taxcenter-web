@@ -27,7 +27,7 @@ function CategoryItem({ label, href }: { label: string; href: string }) {
 export default function RisetPage() {
   return (
     <main className="md:min-h-screen w-full bg-[#EFF4F7]">
-      {/* Header Section */}
+      
       <PageHeaderHero
         title="RISET"
         subtitle={
@@ -42,7 +42,7 @@ export default function RisetPage() {
         innerClassName="min-h-[220px] lg:min-h-[240px]"
       />
 
-      {/* Kategori List */}
+      
       <section
         aria-labelledby="kategori-penelitian"
         className="mx-auto w-full max-w-5xl px-4 md:px-6 py-12 md:py-12"

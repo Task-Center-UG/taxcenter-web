@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="bg-[url('/assets/images/footer-bg.png')] bg-cover bg-center text-white py-8 min-h-[250px] bottom-0 w-full items-center justify-center">
       <div className="container pt-8 px-3 grid grid-cols-1 md:grid-cols-2 gap-10 xl:w-1/2 justify-center md:ml-6 xl:ml-26">
-        {/* Tentang Tax Center */}
+        {}
         <div className="pb-6">
           <h2 className="text-2xl font-bold mb-4">Tentang Tax Center</h2>
           <hr className="border-t-4 border-[#F1C40F] mb-5 w-5"/>
@@ -29,7 +29,7 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-        {/* Alamat */}
+        {}
         <div className="pb-6">
           <h2 className="text-2xl font-bold mb-4">Alamat</h2>
           <hr className="border-t-4 border-[#F1C40F] mb-5 w-5" />
@@ -47,7 +47,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      {/* Copyright */}
+      {}
       <div className="border-t border-gray-700 mt-24 pt-6 text-center text-sm text-gray-400">
         Copyright @{new Date().getFullYear()}{" "}
         <Link href="#" className="hover:text-yellow-400 transition-colors font-bold text-white-400 underline">

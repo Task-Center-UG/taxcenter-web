@@ -74,7 +74,7 @@ function getSortParams(sort: SortKey) {
 }
 
 export default function PublikasiExplorer() {
-  // State UI
+  
   const [query, setQuery] = React.useState("");
   const debouncedQuery = useDebounce(query, 500);
   const [sort, setSort] = React.useState<SortKey>("terbaru");

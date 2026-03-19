@@ -56,7 +56,7 @@ export default function MitraKerjasamaPage() {
         innerClassName="min-h-[200px] md:min-h-[240px]"
       />
 
-      {/* Konten */}
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-16 space-y-6 md:space-y-10 bg-white bg-opacity-50">
         <MitraCard
           imageSrc="/assets/images/mitra/djp.png"

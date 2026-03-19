@@ -588,7 +588,7 @@ const FormRelawanPajakNonMBKM = () => {
                         className="text-black underline font-bold"
                         target="_blank"
                       >
-                        https://twibbo.nz/relpak2026tcug-feed
+                        https:
                       </Link>
                     </FormDescription>
 

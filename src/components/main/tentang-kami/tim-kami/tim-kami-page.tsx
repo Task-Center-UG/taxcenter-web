@@ -22,7 +22,7 @@ type TeamCardProps = {
   }>;
 };
 
-// Pengaturan posisi default
+
 const PRESET: Record<
   SizeKey,
   {
@@ -39,7 +39,7 @@ const PRESET: Record<
     width: 400,
     height: 140,
     avatar: 105,
-    avatarLeftPct: 21, // Posisi horizontal pusat lingkaran
+    avatarLeftPct: 21, 
     textLeftPct: 38,
     nameClass: "text-[14px]",
     roleClass: "text-[12px]",
@@ -78,7 +78,7 @@ function TeamCard({
   return (
     <div className="flex items-center justify-center w-full">
       <div className="relative" style={{ ...widthStyle, height: cfg.height }}>
-        {/* Background Kapsul Ungu/Putih */}
+        
         <Image
           src={bgCapsule}
           alt="Tim Kami"
@@ -87,7 +87,7 @@ function TeamCard({
           loading="lazy"
         />
 
-        {/* --- AREA FOTO --- */}
+        
         <div
           className="absolute top-1/2 z-10"
           style={{
@@ -107,9 +107,9 @@ function TeamCard({
             />
           </div>
         </div>
-        {/* --- AKHIR AREA FOTO --- */}
+        
 
-        {/* Container Teks */}
+        
         <div
           className="absolute top-1/2 -translate-y-1/2 min-w-0 z-10 pr-3"
           style={{

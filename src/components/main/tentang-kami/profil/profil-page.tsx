@@ -9,10 +9,10 @@ import PageHeaderHero from "@/components/common/page-header-hero";
 export default function ProfilPage() {
   return (
     <>
-      {/* Header Section */}
+      {}
       <PageHeaderHero title="PROFIL" imageAlt="Header Profil" />
 
-      {/* Intro Text Section */}
+      {}
       <div className="flex items-center justify-center">
         <p className="text-xs md:text-sm lg:text-base max-w-5xl py-12 px-5 text-center leading-loose">
           Tax Center Universitas Gunadarma merupakan lembaga yang berada di
@@ -25,10 +25,10 @@ export default function ProfilPage() {
         </p>
       </div>
 
-      {/* Section Sejarah */}
+      {}
       <section className="max-w-6xl mx-auto px-7 py-12">
         <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
-          {/* Text Container */}
+          {}
           <div className="md:w-1/2">
             <h2 className="font-bold text-2xl lg:text-3xl mb-6 xl:mb-12">
               Sejarah Tax Center Gunadarma
@@ -47,7 +47,7 @@ export default function ProfilPage() {
             </p>
           </div>
 
-          {/* Image Container */}
+          {}
           <div className="md:w-1/2 mt-8 md:mt-0 border border-gray-300 w-full h-full object-cover rounded-lg max-h-[350px] text-center">
             <Image
               src="/assets/images/tentang-kami/profil/01-sejarah.jpg"
@@ -61,18 +61,18 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      {/* Section Peran Dan Fungsi */}
+      {}
       <div className="bg-[#F5FAFF]">
         <section className="max-w-6xl mx-auto px-7 py-12 mt-6 rounded-lg">
           <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
-            {/* Container untuk judul + gambar + kotak di sm */}
+            {}
             <div className="w-full flex flex-col items-center md:w-1/3">
-              {/* Judul */}
+              {}
               <h2 className="font-bold text-2xl sm:text-3xl mb-6 text-center md:hidden">
                 Peran Dan Fungsi
               </h2>
 
-              {/* Gambar */}
+              {}
               <div className="w-full max-h-[300px] border border-gray-300 rounded-lg overflow-hidden mb-8 flex justify-center">
                 <Image
                   src="/assets/images/tentang-kami/profil/02-peran-dan-fungsi.jpg"
@@ -84,7 +84,7 @@ export default function ProfilPage() {
                 />
               </div>
 
-              {/* Kotak */}
+              {}
               <div className="md:hidden grid grid-cols-2 gap-6 w-full">
                 {[
                   "Memberikan edukasi perpajakan kepada masyarakat.",
@@ -102,14 +102,14 @@ export default function ProfilPage() {
               </div>
             </div>
 
-            {/* Container judul + teks untuk md */}
+            {}
             <div className="hidden md:flex md:flex-col md:w-2/3">
-              {/* Judul */}
+              {}
               <h2 className="font-bold text-3xl mb-12 xl:mb-13 text-left">
                 Peran Dan Fungsi
               </h2>
 
-              {/* Kotak */}
+              {}
               <div className="grid grid-cols-2 gap-6">
                 {[
                   "Memberikan edukasi perpajakan kepada masyarakat.",
@@ -130,7 +130,7 @@ export default function ProfilPage() {
         </section>
       </div>
 
-      {/* Section Layanan */}
+      {}
       <section className="max-w-6xl mx-auto px-7 py-12 mt-6">
         <h2 className="font-bold text-2xl md:text-3xl mb-12">Layanan</h2>
 
@@ -153,7 +153,7 @@ export default function ProfilPage() {
         </div>
       </section>
 
-      {/* Section VISI & MISI */}
+      {}
       <div className="bg-[#F5FAFF]">
         <section className="max-w-6xl mx-auto px-7 py-12 mt-6">
           <h2 className="font-bold text-2xl md:text-3xl text-center mb-12">
@@ -161,7 +161,7 @@ export default function ProfilPage() {
           </h2>
 
           <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
-            {/* Adjust image size and make height auto, not fixed */}
+            {}
             <div className="w-full md:w-2/5 mb-10 md:mb-0 flex-shrink-0 max-h-[400px] border border-gray-300 overflow-hidden rounded-lg">
               <Image
                 src="/assets/images/tentang-kami/profil/03-visi-dan-misi.jpg"
@@ -173,9 +173,9 @@ export default function ProfilPage() {
               />
             </div>
 
-            {/* Text content */}
+            {}
             <div className="w-full md:w-2/3 space-y-10 text-sm md:text-base">
-              {/* Visi */}
+              {}
               <div>
                 <h3 className="font-bold mb-3 text-lg">Visi</h3>
                 <p className="flex items-start gap-3">
@@ -188,7 +188,7 @@ export default function ProfilPage() {
                 </p>
               </div>
 
-              {/* Misi */}
+              {}
               <div>
                 <h3 className="font-bold mb-3 text-lg">Misi</h3>
                 <ul className="list-none space-y-3">
