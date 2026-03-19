@@ -7,11 +7,8 @@ import {
   ArrowLeft,
   Calendar,
   User,
-  Clock,
   Loader2,
   AlertCircle,
-  Hash,
-  FileText,
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 
@@ -24,6 +21,7 @@ type Creator = {
 type ResearchCategoryDetail = {
   id: number;
   title: string;
+  description: string;
   created_at: string;
   updated_at: string;
   created_by_id: number;
@@ -40,17 +38,6 @@ export default function DetailKategoriPenelitian() {
     key: ["research-category-detail", id],
     url: `/research-category/${id}`,
   });
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   if (isLoading) {
     return (
@@ -82,92 +69,46 @@ export default function DetailKategoriPenelitian() {
   }
 
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+    <div className="relative pt-[100px] lg:pt-[170px] pb-16 min-h-screen bg-[#F8F9FD]">
+      <div className="mx-auto max-w-5xl px-4 sm:px-8">
+        <div className="mb-8">
           <Link
             href="/program-layanan/riset/kategori-penelitian"
-            className="inline-flex items-center text-gray-500 hover:text-[#F97316] transition-colors mb-4 text-sm font-medium group"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-[#2A176F] font-medium transition-colors"
           >
-            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Kembali
+            <ArrowLeft className="h-5 w-5" />
+            Kembali ke Kategori Penelitian
           </Link>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            Detail Kategori Penelitian
+        </div>
+
+        <div className="text-center mb-12 max-w-4xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black mb-4">
+            {data.title}
           </h1>
         </div>
-      </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 md:p-8 border-b border-gray-100 bg-gray-50/50">
-            <div className="flex items-start gap-4">
-              <div className="bg-orange-100 p-3 rounded-lg flex-shrink-0">
-                <FileText className="w-6 h-6 text-[#F97316]" />
-              </div>
-              <div>
-                <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
-                  Judul Kategori
-                </span>
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mt-1">
-                  {data.title}
-                </h2>
-              </div>
-            </div>
+        <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-8">
+          <div className="flex flex-col">
+            <span className="font-bold text-lg text-black inline-flex items-center gap-2">
+              <User className="h-4 w-4 text-[#F97316]" />
+              {data.created_by?.full_name || "Admin Tax Center"}
+            </span>
+            <span className="text-sm text-gray-500 mt-1 inline-flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-[#F97316]" />
+              {new Date(data.created_at).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
           </div>
+        </div>
 
-          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2 text-gray-400 mb-1">
-                <Hash className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
-                  ID Kategori
-                </span>
-              </div>
-              <p className="text-gray-900 font-mono font-medium text-lg">
-                {data.id}
-              </p>
-            </div>
-
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2 text-gray-400 mb-1">
-                <User className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
-                  Dibuat Oleh
-                </span>
-              </div>
-              <p className="text-gray-900 font-medium">
-                {data.created_by?.full_name}
-                <span className="text-gray-400 text-sm font-normal ml-1">
-                  (@{data.created_by?.username})
-                </span>
-              </p>
-            </div>
-
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2 text-gray-400 mb-1">
-                <Calendar className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
-                  Tanggal Dibuat
-                </span>
-              </div>
-              <p className="text-gray-900 font-medium">
-                {formatDate(data.created_at)}
-              </p>
-            </div>
-
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2 text-gray-400 mb-1">
-                <Clock className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
-                  Terakhir Update
-                </span>
-              </div>
-              <p className="text-gray-900 font-medium">
-                {formatDate(data.updated_at)}
-              </p>
-            </div>
-          </div>
+        <div className="mx-auto">
+          <article
+            className="prose prose-sm md:prose-base max-w-none bg-white p-6 rounded shadow-sm prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-a:text-[#2A176F]"
+            dangerouslySetInnerHTML={{ __html: data.description || "-" }}
+          />
         </div>
       </div>
     </div>
