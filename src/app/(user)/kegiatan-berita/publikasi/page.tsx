@@ -1,26 +1,15 @@
-import React from "react";
-import { Metadata } from "next";
-import PublikasiExplorer from "@/components/Publikasi/PublikasiExplorer";
-import PageHeaderHero from "@/components/PageHeaderHero";
+import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
+import PageView from "@/components/main/kegiatan-berita/publikasi/publikasi-page";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Publikasi",
-  description: "Publikasi",
-};
+  description: "Informasi publikasi di Tax Center Gunadarma.",
+  path: "/kegiatan-berita/publikasi",
 
-export default function Publikasi() {
-  return (
-    <>
-      <div className="relative max-w-full overflow-hidden select-none">
-        <PageHeaderHero
-          title="PUBLIKASI"
-          innerClassName="min-h-[220px] lg:min-h-[240px]"
-        />
+  keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "publikasi", "kegiatan berita"],
+});
 
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-0 py-8 md:py-10">
-          <PublikasiExplorer />
-        </div>
-      </div>
-    </>
-  );
+export default function Page() {
+  return <PageView />;
 }
