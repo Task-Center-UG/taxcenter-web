@@ -39,6 +39,12 @@ type ResearchCategoryResponse = {
   paging: PagingInfo;
 };
 
+const stripHtml = (value?: string) =>
+  (value || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
   React.useEffect(() => {
@@ -156,6 +162,9 @@ export default function KategoriPenelitianPage() {
                 <h2 className="text-xl md:text-2xl font-bold mb-3 text-gray-900">
                   {item.title}
                 </h2>
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-4 line-clamp-3">
+                  {stripHtml(item.description) || "Belum ada deskripsi kategori penelitian."}
+                </p>
                 <div>
                   <Link
                     href={`/program-layanan/riset/kategori-penelitian/${item.id}`}

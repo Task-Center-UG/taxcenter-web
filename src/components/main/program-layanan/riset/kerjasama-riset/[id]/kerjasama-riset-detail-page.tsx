@@ -12,7 +12,6 @@ import {
   AlertCircle,
   ExternalLink,
   Tag,
-  Share2,
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 
@@ -142,12 +141,6 @@ export default function KerjasamaRisetDetailPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 space-y-8">
-            <div className="w-full h-[300px] md:h-[400px] bg-gray-200 rounded-2xl flex items-center justify-center text-gray-400 shadow-sm overflow-hidden">
-              <div className="text-center">
-                <span className="text-sm font-medium">Gambar Riset</span>
-              </div>
-            </div>
-
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
               <h3 className="text-xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-100">
                 Deskripsi Lengkap
@@ -184,6 +177,46 @@ export default function KerjasamaRisetDetailPage() {
                   Link Tidak Tersedia
                 </button>
               )}
+            </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h4 className="font-bold text-gray-900 mb-4">Informasi Penelitian</h4>
+              <div className="space-y-4 text-sm text-gray-600">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                    Kategori
+                  </p>
+                  <p className="font-medium text-gray-900">
+                    {data.ResearchCategory?.title || "Umum"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                    Penulis
+                  </p>
+                  <p className="font-medium text-gray-900">
+                    {data.created_by?.full_name || "Admin Tax Center"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                    Dipublikasikan
+                  </p>
+                  <p className="font-medium text-gray-900">
+                    {formatDate(data.created_at)}
+                  </p>
+                </div>
+                {data.updated_at !== data.created_at && (
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                      Diperbarui
+                    </p>
+                    <p className="font-medium text-gray-900">
+                      {formatDate(data.updated_at)}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -12,11 +12,20 @@ export async function generateMetadata({
   const { id } = await params;
 
   return createPageMetadata({
-    title: "Detail Kategori Penelitian",
-    description: "Detail Kategori Penelitian di Tax Center Gunadarma.",
+    title: "Daftar Penelitian Berdasarkan Kategori",
+    description:
+      "Daftar penelitian berdasarkan kategori penelitian di Tax Center Gunadarma.",
     path: `/program-layanan/riset/kategori-penelitian/${id}`,
 
-    keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail kategori penelitian", "program layanan", "riset", "kategori penelitian"],
+    keywords: [
+      "tax center gunadarma",
+      "edukasi pajak",
+      "pelayanan pajak",
+      "daftar penelitian kategori",
+      "program layanan",
+      "riset",
+      "kategori penelitian",
+    ],
   });
 }
 

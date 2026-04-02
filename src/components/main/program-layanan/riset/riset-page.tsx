@@ -3,8 +3,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import PageHeaderHero from "@/components/common/page-header-hero";
 
-
-
 function CategoryItem({ label, href }: { label: string; href: string }) {
   return (
     <div className="flex items-center justify-between rounded-lg border border-slate-700 bg-white px-5 md:px-6 py-4 md:py-5 shadow-[0_0_0_1px_rgba(0,0,0,0.01)]">
@@ -27,7 +25,6 @@ function CategoryItem({ label, href }: { label: string; href: string }) {
 export default function RisetPage() {
   return (
     <main className="md:min-h-screen w-full bg-[#EFF4F7]">
-      
       <PageHeaderHero
         title="RISET"
         subtitle={
@@ -42,7 +39,6 @@ export default function RisetPage() {
         innerClassName="min-h-[220px] lg:min-h-[240px]"
       />
 
-      
       <section
         aria-labelledby="kategori-penelitian"
         className="mx-auto w-full max-w-5xl px-4 md:px-6 py-12 md:py-12"
@@ -55,10 +51,6 @@ export default function RisetPage() {
           <CategoryItem
             label="Kategori Penelitian"
             href="/program-layanan/riset/kategori-penelitian"
-          />
-          <CategoryItem
-            label="Kerjasama Riset"
-            href="/program-layanan/riset/kerjasama-riset"
           />
           <CategoryItem
             label="Program dan Kegiatan Riset"

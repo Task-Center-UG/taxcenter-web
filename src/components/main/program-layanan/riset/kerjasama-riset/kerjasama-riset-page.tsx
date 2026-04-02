@@ -179,15 +179,9 @@ export default function KerjasamaRisetPage() {
           {items.map((item) => (
             <Card
               key={item.id}
-              className="group flex flex-col md:flex-row bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+              className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
             >
-              <div className="p-4 md:p-6 flex-shrink-0 flex items-center justify-center bg-gray-50 md:border-r border-gray-100">
-                <div className="w-full h-40 md:w-48 md:h-40 bg-[#D9D9D9] rounded-lg flex items-center justify-center text-gray-400">
-                  <span className="text-xs font-medium">Image Placeholder</span>
-                </div>
-              </div>
-
-              <div className="flex-1 py-5 px-5 md:px-8 flex flex-col">
+              <div className="py-5 px-5 md:px-8 flex flex-col">
                 <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-3">
                   <span className="flex items-center gap-1 bg-orange-50 text-orange-700 px-2 py-1 rounded-md font-medium">
                     <Tag className="w-3 h-3" />
@@ -206,6 +200,10 @@ export default function KerjasamaRisetPage() {
                 <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#F97316] transition-colors">
                   {item.title}
                 </h2>
+
+                <p className="text-sm text-gray-600 leading-relaxed line-clamp-3 mb-5">
+                  {stripHtml(item.description) || "Belum ada deskripsi kerjasama riset."}
+                </p>
 
                 <div className="mt-auto">
                   <Link
