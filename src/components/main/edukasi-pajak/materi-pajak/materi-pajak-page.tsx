@@ -164,13 +164,12 @@ const MateriPajakPage = () => {
               key={item.id}
               className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
             >
-              <div className="w-full h-[150px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
+              <div className="relative w-full aspect-[3/2] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
                 <Image
                   src={resolveMediaUrl(item.image_url, "/placeholder.png")}
                   alt={item.title}
-                  className="w-auto h-full object-contain"
-                  width={150}
-                  height={100}
+                  fill
+                  className="object-contain"
                   loading="lazy"
                   unoptimized
                 />

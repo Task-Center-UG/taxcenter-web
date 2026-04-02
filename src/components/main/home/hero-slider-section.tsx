@@ -50,7 +50,7 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
   return (
     <div className="relative pt-[70px] lg:pt-[117px] xl:pt-[160px] max-w-full overflow-hidden select-none">
       <div
-        className="relative w-full h-[500px] md:h-[600px] lg:h-[660px] xl:h-[580px] overflow-hidden xl:px-16"
+        className="relative w-full aspect-[2/1] overflow-hidden xl:px-16"
         aria-label="Image slider"
       >
         <div
@@ -60,7 +60,7 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="relative w-full min-w-full h-[520px] md:h-[620px] lg:h-[580px]"
+              className="relative w-full min-w-full h-full"
             >
               <Image
                 src={get_image_url(slide.picture_url)}

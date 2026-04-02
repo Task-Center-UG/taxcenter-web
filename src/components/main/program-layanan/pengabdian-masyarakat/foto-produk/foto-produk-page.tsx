@@ -172,7 +172,7 @@ export default function FotoProdukPage() {
               key={item.id}
               className="flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group h-full"
             >
-              <div className="relative h-52 bg-gray-200 overflow-hidden">
+              <div className="relative aspect-[3/2] bg-gray-200 overflow-hidden">
                 {item.image_url ? (
                   <Image
                     src={getImageUrl(item.image_url)}

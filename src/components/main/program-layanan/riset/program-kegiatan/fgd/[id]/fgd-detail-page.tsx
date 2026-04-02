@@ -107,7 +107,7 @@ export default function FgdDetailPage() {
         </div>
 
         {data.image_url && (
-          <div className="relative w-full aspect-video mb-12 rounded-xl overflow-hidden shadow-sm">
+          <div className="relative w-full aspect-[3/2] mb-12 rounded-xl overflow-hidden shadow-sm">
             <Image
               src={getImageUrl(data.image_url)}
               alt={data.title}

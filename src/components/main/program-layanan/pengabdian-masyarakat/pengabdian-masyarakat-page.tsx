@@ -86,7 +86,7 @@ export default function PengabdianMasyarakatPage() {
             </div>
 
             <div className="relative">
-              <div className="relative rounded-2xl bg-white/95 mx-auto sm:max-w-sm md:max-w-md aspect-[4/3] overflow-hidden shadow-sm">
+              <div className="relative rounded-2xl bg-white/95 mx-auto sm:max-w-sm md:max-w-md aspect-[3/2] overflow-hidden shadow-sm">
                 <Image
                   src="/assets/images/program-dan-layanan/pengabdian-masyarakat/01-pengabdian-masyarkat.png"
                   alt="Pengabdian Masyarakat"

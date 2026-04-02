@@ -149,7 +149,7 @@ export default function RelawanPajakDetailPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-        <div className="w-full h-[280px] md:h-[430px] bg-gray-200 rounded-2xl relative overflow-hidden shadow-sm border border-gray-100 mb-8">
+        <div className="w-full aspect-[3/2] bg-gray-200 rounded-2xl relative overflow-hidden shadow-sm border border-gray-100 mb-8">
           {detail.image_url ? (
             <Image
               src={getImageUrl(detail.image_url)}

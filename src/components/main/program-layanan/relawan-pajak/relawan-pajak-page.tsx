@@ -155,7 +155,7 @@ export default function RelawanPajakPage() {
           </div>
 
           <div className="relative">
-            <div className="relative rounded-2xl bg-white/95 mx-auto sm:max-w-sm md:max-w-md aspect-[4/3] lg:-right-9 overflow-hidden">
+            <div className="relative rounded-2xl bg-white/95 mx-auto sm:max-w-sm md:max-w-md aspect-[3/2] lg:-right-9 overflow-hidden">
               <Image
                 src="/assets/images/program-dan-layanan/relawan-pajak/01-relawan-pajak.png"
                 alt="Relawan Pajak"
@@ -228,7 +228,7 @@ export default function RelawanPajakPage() {
                           key={item.id}
                           className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col"
                         >
-                          <div className="relative w-full aspect-[4/3] bg-[#D9D9D9]">
+                          <div className="relative w-full aspect-[3/2] bg-[#D9D9D9]">
                             <Image
                               src={getImageUrl(item.image_url)}
                               alt={item.title}

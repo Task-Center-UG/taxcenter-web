@@ -70,14 +70,13 @@ export default function AwardCarouselSection({
                 >
                   {group.map((item) => (
                     <div key={item.id} className="flex flex-col items-start w-full">
-                      <div className="relative w-full h-auto rounded-md overflow-hidden border border-gray-200">
+                      <div className="relative w-full aspect-[3/2] rounded-md overflow-hidden border border-gray-200">
                         <Image
                           src={get_image_url(item.picture_url)}
                           alt={item.title}
-                          width={0}
-                          height={0}
-                          sizes="100vw"
-                          className="w-full h-auto"
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 33vw, 100vw"
+                          className="object-cover"
                           loading="lazy"
                           unoptimized
                         />

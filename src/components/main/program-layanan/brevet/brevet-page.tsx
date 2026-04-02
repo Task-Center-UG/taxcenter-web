@@ -34,14 +34,15 @@ export default function BrevetPage() {
             </div>
           </div>
           <div className="md:w-1/3 flex justify-center">
-            <Image
-              src="/assets/images/program-dan-layanan/brevet/01-brevet.jpg"
-              alt="Brevet"
-              className="w-auto h-auto"
-              width={350}
-              height={300}
-              priority
-            />
+            <div className="relative w-full max-w-[350px] aspect-[3/2] overflow-hidden rounded-2xl">
+              <Image
+                src="/assets/images/program-dan-layanan/brevet/01-brevet.jpg"
+                alt="Brevet"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>

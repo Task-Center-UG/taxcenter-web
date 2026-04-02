@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
@@ -93,10 +94,13 @@ const DivisionMembers = ({ divisionId }: { divisionId: number }) => {
             className="relative aspect-[3/4] w-full overflow-hidden bg-gray-200 group"
           >
             {member.picture_url ? (
-              <img
+              <Image
                 src={`${API_BASE_URL}/${member.picture_url}`}
                 alt={member.name}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                fill
+                sizes="(min-width: 768px) 25vw, 50vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                unoptimized
               />
             ) : (
               <div className="h-full w-full flex items-center justify-center bg-gray-300 text-gray-500">

@@ -169,11 +169,11 @@ const VideoPembelajaranPage = () => {
               key={item.id}
               className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
             >
-              <div className="relative w-full h-[200px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden group">
+              <div className="relative w-full aspect-[3/2] bg-[#D9D9D9] flex items-center justify-center overflow-hidden group">
                 <Image
                   src={resolveMediaUrl(item.image_url, "/placeholder-video.jpg")}
                   alt={item.title}
-                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   width={400}
                   height={225}
                   loading="lazy"

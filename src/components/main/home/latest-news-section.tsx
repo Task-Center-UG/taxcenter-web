@@ -24,7 +24,7 @@ export default function LatestNewsSection({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl px-2 xl:px-0">
           {beritaData.map((item) => (
             <article key={item.id} className="flex flex-col">
-              <div className="relative w-full h-56 md:h-64 rounded-md overflow-hidden border border-gray-300">
+              <div className="relative w-full aspect-[3/2] rounded-md overflow-hidden border border-gray-300">
                 <Image
                   src={get_image_url(item.image_url)}
                   alt={item.title}

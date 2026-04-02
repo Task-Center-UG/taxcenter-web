@@ -98,7 +98,7 @@ export default function SeminarDetailPage() {
         </div>
 
         {seminar.image_url && (
-          <div className="relative w-full aspect-video mb-12 rounded-xl overflow-hidden shadow-sm">
+          <div className="relative w-full aspect-[3/2] mb-12 rounded-xl overflow-hidden shadow-sm">
             <Image
               src={getImageUrl(seminar.image_url)}
               alt={seminar.title}

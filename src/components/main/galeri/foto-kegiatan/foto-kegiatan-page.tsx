@@ -166,11 +166,11 @@ export default function FotoKegiatanPage() {
                   key={item.id}
                   className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
                 >
-                  <div className="relative w-full h-[250px] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
+                  <div className="relative w-full aspect-[3/2] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
                     <Image
                       src={resolveMediaUrl(item.picture_url, "/placeholder-image.jpg")}
                       alt={item.title}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover"
                       width={300}
                       height={200}
                       loading="lazy"

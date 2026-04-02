@@ -163,7 +163,7 @@ export default function ArtikelPajakPage() {
                   key={item.id}
                   className="rounded-lg shadow-md overflow-hidden bg-white hover:shadow-lg transition-shadow"
                 >
-                  <div className="bg-[#D9D9D9] w-full h-[220px] relative">
+                  <div className="bg-[#D9D9D9] w-full aspect-[3/2] relative">
                     {item.image_url ? (
                       <Image
                         src={getImageUrl(item.image_url)}

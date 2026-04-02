@@ -156,7 +156,7 @@ export default function SeminarPage() {
                   key={item.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  <div className="relative w-full h-[200px] bg-[#D9D9D9]">
+                  <div className="relative w-full aspect-[3/2] bg-[#D9D9D9]">
                     {item.image_url ? (
                       <Image
                         src={getImageUrl(item.image_url)}
