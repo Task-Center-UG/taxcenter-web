@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const SITE_NAME = "Tax Center Gunadarma";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://taxcenter-web.vercel.app";
-export const DEFAULT_OG_IMAGE = "/assets/images/header.jpeg";
+export const DEFAULT_OG_IMAGE = "/og_image.png";
 export const BASE_KEYWORDS = [
   "tax center gunadarma",
   "edukasi pajak",
