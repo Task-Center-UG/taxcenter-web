@@ -1,26 +1,27 @@
 # Tax Center Web
 
-Tax Center Gunadarma web application built with Next.js (App Router), focused on content pages, public information, and SEO-friendly architecture.
+Public-facing website for Tax Center Gunadarma. This repository is used for the main site, public information pages, publications, galleries, tax education content, and other SEO-oriented pages that are accessible to visitors.
 
 ## Overview
 
-This project has been refactored to follow a cleaner structure:
+This project uses Next.js App Router with a fairly strict separation between routes and page implementations. Route files under `app/**/page.tsx` are kept thin, while page UI and logic live in `src/components/main/**`. Shared pieces such as the navbar, footer, accordion components, and common UI primitives live in `src/components/common/**` and `src/components/ui/**`.
 
-- `app/**/page.tsx` is intentionally thin (route entry only).
-- Page UI/logic lives in `components/main/**`.
-- Reusable shared components live in `components/common/**`.
-- Repeated logic/helpers are centralized in `lib/**`, `hooks/**`, and `data/**`.
-- SEO metadata is standardized via `createPageMetadata()` in `src/lib/seo.ts`.
+A few important notes about the current setup:
 
-## Tech Stack
+- SEO metadata is centralized in `src/lib/seo.ts`
+- `robots.txt` and `sitemap.xml` are generated from the app
+- the main OG image now uses `public/og_image.png`
+- several API and media-related paths still point to the staging environment
 
-- Next.js 16 (App Router)
+## Stack
+
+- Next.js 16
 - React 19
 - TypeScript
-- Tailwind CSS
+- Tailwind CSS 4
 - TanStack Query
 - Axios
-- Zod + React Hook Form
+- React Hook Form + Zod
 
 ## Project Structure
 
@@ -31,93 +32,169 @@ src/
     robots.ts
     sitemap.ts
     (user)/
-      ...routes
   components/
-    common/                # shared/reusable components (navbar, footer, etc.)
-    main/                  # page-level components grouped by route/feature
-    ui/                    # base UI primitives
-  hooks/                   # reusable API/query hooks
-  lib/                     # utilities, api client, SEO helpers
-  data/                    # static datasets
-  providers/               # global providers
+    common/
+    main/
+    ui/
+  data/
+  hooks/
+  lib/
+  providers/
   styles/
 public/
   assets/
+  og_image.png
 ```
 
-## Naming & Architecture Conventions
+Project conventions used here:
 
-- File names use **kebab-case**.
-- Route files (`app/**/page.tsx`) should:
-  - import one page component (usually `PageView`),
-  - define metadata (`metadata` or `generateMetadata`),
-  - return the imported component.
-- New page components should be placed under `src/components/main/...`.
-- Shared/reusable components should be placed under `src/components/common/...`.
-- Keep client-only logic scoped to the smallest necessary component.
+- keep route files thin
+- place new page-level components in `src/components/main/**`
+- place reusable components in `src/components/common/**`
+- move reusable utilities out of components and into `src/lib/**` when possible
 
-## SEO Setup
+## Running Locally
 
-### 1) Global SEO helper
+Install dependencies:
 
-- File: `src/lib/seo.ts`
-- Main utility: `createPageMetadata(...)`
-- Includes:
-  - canonical URL,
-  - Open Graph,
-  - Twitter cards,
-  - robots (optional per-page),
-  - keyword composition.
+```bash
+npm install
+```
 
-### 2) Root metadata
+Start the development server:
 
-- File: `src/app/layout.tsx`
-- Defines global defaults:
-  - `metadataBase`,
-  - site title template,
-  - global Open Graph/Twitter,
-  - default robots,
-  - viewport.
+```bash
+npm run dev
+```
 
-### 3) Per-page metadata
+Run a production build locally:
 
-- Static pages use:
-  - `export const metadata = createPageMetadata(...)`
-- Dynamic pages (`[id]`) use:
-  - `export async function generateMetadata(...)`
+```bash
+npm run build
+npm run start
+```
 
-### 4) Technical SEO files
+## Environment Variable
 
-- `src/app/robots.ts` -> generates `/robots.txt`
-- `src/app/sitemap.ts` -> generates `/sitemap.xml`
+The main environment variable currently used by this app is:
 
-### 5) OG image
+```env
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
 
-Current placeholder OG image:
+It is used for:
 
-- `DEFAULT_OG_IMAGE = "/assets/images/header.jpeg"`
+- canonical URLs
+- Open Graph URLs
+- Twitter card metadata
+- `metadataBase` in Next.js
 
-Replace this later with a dedicated OG asset (1200x630 recommended).
+If it is not set, the SEO helper falls back to the default URL defined in code. Before deploying to a real server, make sure this value matches the active domain.
 
-## Environment Variables
+## API and Media Notes
 
-Set these in `.env.local` / Vercel environment variables:
+This website has not fully moved away from staging services yet. Several API and media paths still point to the staging API domain, so when production endpoints are ready, these areas should be reviewed first:
 
-- `NEXT_PUBLIC_SITE_URL`  
-  Base canonical URL used by SEO helpers (example: `https://your-domain.com`).
+- `src/lib/axios.ts`
+- `src/lib/media-url.ts`
+- components that still define `API_BASE_URL` inline
+- `next.config.ts` for `images.remotePatterns`
 
-## Scripts
+If remote images fail to load in production, this is usually where the issue is.
 
-Status: **on hold for now**.  
-We will finalize script conventions later when the VPS workflow is introduced.
+## SEO and Metadata
+
+The main SEO helper lives in `src/lib/seo.ts`.
+
+It currently handles:
+
+- title and description
+- canonical URL
+- Open Graph
+- Twitter cards
+- optional robots settings per page
+- a shared base keyword set
+
+Root metadata is defined in `src/app/layout.tsx`, and page-level metadata should ideally use `createPageMetadata(...)`.
+
+The main OG image for the website is:
+
+```text
+public/og_image.png
+```
 
 ## Deployment
 
-Current deployment target: **Vercel**.  
-Detailed VPS deployment notes are intentionally postponed and will be added when infrastructure migration starts.
+This repository is now set up for VPS deployment on Hostinger using Docker and GitHub Actions, not Vercel.
 
-## Notes for Contributors
+Deployment-related files:
 
-- Keep changes aligned with existing route/component separation.
-- Do not put large page logic directly in `app/**/page.tsx`.
-- Prefer updating SEO metadata whenever adding new routes.
+- `Dockerfile`
+- `docker-compose.prod.yml`
+- `.github/workflows/docker-deploy.yml`
+
+The image is built in GitHub Actions, pushed to GHCR, and then pulled by the VPS before restarting the container.
+
+On the server, the app runs with:
+
+- deploy directory: `/opt/taxcenter-web`
+- host port: `127.0.0.1:3000`
+
+That means public traffic should still go through Nginx as a reverse proxy.
+
+## GitHub Actions Secrets
+
+This repo expects the following secrets:
+
+- `VPS_HOST`
+- `VPS_PORT`
+- `VPS_USER`
+- `VPS_SSH_KEY`
+- `GHCR_USERNAME`
+- `GHCR_TOKEN`
+- `NEXT_PUBLIC_SITE_URL`
+
+## VPS Preparation
+
+Run this once on the server:
+
+```bash
+sudo mkdir -p /opt/taxcenter-web
+sudo chown -R <deploy-user>:<deploy-user> /opt/taxcenter-web
+```
+
+Also make sure:
+
+- the deploy user can log in over SSH
+- the deploy user can run Docker
+- Nginx is available once the public domain is connected
+
+## Post-Deploy Checks
+
+On the VPS:
+
+```bash
+cd /opt/taxcenter-web
+docker compose -f docker-compose.prod.yml ps
+docker logs taxcenter-web --tail 100
+curl http://127.0.0.1:3000
+```
+
+If the container is `Up` and `curl` returns HTML, the app is running correctly.
+
+## Domain and Reverse Proxy
+
+Once the domain points to the VPS, Nginx should proxy requests to:
+
+```text
+http://127.0.0.1:3000
+```
+
+SSL can be added afterward with Certbot.
+
+## Notes for the Team
+
+- avoid placing large page logic directly in `app/**/page.tsx`
+- when adding a new page, review its metadata at the same time
+- if the domain changes, update `NEXT_PUBLIC_SITE_URL`
+- if the API moves from staging to production, review media URL helpers and image host configuration
