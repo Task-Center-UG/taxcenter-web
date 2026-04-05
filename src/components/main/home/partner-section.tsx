@@ -3,17 +3,18 @@ import Image from "next/image";
 export default function PartnerSection() {
   return (
     <>
-      <div className="flex justify-center text-center border-t-1 border-b-3 w-full">
-        <h2 className="font-bold sm:text-xl md:text-2xl lg:text-3xl text-[#FE8100] my-12">
+      <div className="flex w-full justify-center border-t-1 border-b-3 text-center">
+        <h2 className="mx-auto max-w-4xl px-4 py-8 text-lg font-bold leading-snug text-[#FE8100] sm:text-xl md:py-10 md:text-2xl lg:text-3xl">
           Tax Center Gunadarma Bersinergi Membangun Indonesia
         </h2>
       </div>
 
-      <section className="flex flex-col justify-center items-center my-12">
-        <h2 className="font-bold text-center text-2xl lg:text-3xl mb-8">
-          Mitra Kerjasama Tax Center Gunadarma
-        </h2>
-        <div className="flex flex-wrap justify-center items-center gap-x-20 px-2">
+      <section className="section-shell">
+        <div className="page-shell section-stack">
+          <h2 className="section-title mb-8 text-center text-slate-900">
+            Mitra Kerjasama Tax Center Gunadarma
+          </h2>
+          <div className="grid w-full max-w-4xl grid-cols-2 items-center justify-items-center gap-x-6 gap-y-8 sm:grid-cols-3 md:grid-cols-5">
           <Image
             src="/assets/images/mitra/djp.png"
             alt="Tax Center Gunadarma Logo"
@@ -49,6 +50,7 @@ export default function PartnerSection() {
             height={96}
             loading="lazy"
           />
+        </div>
         </div>
       </section>
     </>

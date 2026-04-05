@@ -108,9 +108,9 @@ export default function RelawanPajakDetailPage() {
   }
 
   return (
-    <div className="relative pt-[70px] lg:pt-[120px] w-full min-h-screen bg-[#F8F9FA] pb-20 select-none">
+    <div className="detail-shell select-none">
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <div className="detail-container py-8">
           <Link
             href="/program-layanan/relawan-pajak"
             className="inline-flex items-center text-gray-500 hover:text-[#F97316] transition-colors mb-6 text-sm font-medium group"
@@ -125,11 +125,11 @@ export default function RelawanPajakDetailPage() {
             </span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+          <h1 className="detail-title mb-6">
             {detail.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 pt-2">
+          <div className="detail-meta pt-2">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-[#F97316]" />
               <span>{detail.created_by?.full_name || "Admin Tax Center"}</span>
@@ -148,14 +148,14 @@ export default function RelawanPajakDetailPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-        <div className="w-full aspect-[3/2] bg-gray-200 rounded-2xl relative overflow-hidden shadow-sm border border-gray-100 mb-8">
+      <div className="detail-container py-10">
+        <div className="detail-media">
           {detail.image_url ? (
             <Image
               src={getImageUrl(detail.image_url)}
               alt={detail.title}
               fill
-              className="object-cover"
+              className="object-contain sm:object-cover"
               unoptimized
               priority
             />
@@ -166,7 +166,7 @@ export default function RelawanPajakDetailPage() {
           )}
         </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        <div className="detail-card">
           <h3 className="text-xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-100">
             Deskripsi Kegiatan
           </h3>

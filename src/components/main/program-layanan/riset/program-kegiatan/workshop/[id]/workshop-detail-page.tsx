@@ -47,7 +47,7 @@ export default function WorkshopDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-[100px] lg:pt-[170px]">
+      <div className="detail-shell flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-[#F97316]" />
       </div>
     );
@@ -55,7 +55,7 @@ export default function WorkshopDetailPage() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[200px] gap-4">
+      <div className="detail-shell flex flex-col items-center justify-center gap-4">
         <AlertCircle className="h-10 w-10 text-red-500" />
         <p className="text-neutral-500">Data workshop tidak ditemukan.</p>
         <Link
@@ -71,8 +71,8 @@ export default function WorkshopDetailPage() {
   const plainDescription = stripHtml(data.description || "-");
 
   return (
-    <div className="relative pt-[100px] lg:pt-[170px] pb-16 min-h-screen bg-[#F8F9FD]">
-      <div className="mx-auto max-w-5xl px-4 sm:px-8">
+    <div className="detail-shell bg-[#F8F9FD]">
+      <div className="detail-container">
         <div className="mb-8">
           <Link
             href="/program-layanan/riset/program-kegiatan/workshop"
@@ -83,13 +83,13 @@ export default function WorkshopDetailPage() {
           </Link>
         </div>
 
-        <div className="text-center mb-12 max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black mb-4">
+        <div className="mx-auto mb-10 max-w-4xl text-center">
+          <h1 className="detail-title mb-4">
             {data.title}
           </h1>
         </div>
 
-        <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-8">
+        <div className="mb-8 flex flex-col gap-4 border-b border-gray-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col">
             <span className="font-bold text-lg text-black inline-flex items-center gap-2">
               <User className="h-4 w-4 text-[#F97316]" />
@@ -107,12 +107,12 @@ export default function WorkshopDetailPage() {
         </div>
 
         {data.image_url && (
-          <div className="relative w-full aspect-[3/2] mb-12 rounded-xl overflow-hidden shadow-sm">
+          <div className="detail-media mb-10">
             <Image
               src={getImageUrl(data.image_url)}
               alt={data.title}
               fill
-              className="object-cover"
+              className="object-contain sm:object-cover"
               priority
               unoptimized
             />
@@ -120,7 +120,7 @@ export default function WorkshopDetailPage() {
         )}
 
         <div className="mx-auto">
-          <article className="prose prose-sm md:prose-base max-w-none bg-white p-6 rounded shadow-sm prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900">
+          <article className="detail-card prose prose-sm md:prose-base max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900">
             {plainDescription}
           </article>
         </div>

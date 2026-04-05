@@ -196,13 +196,13 @@ const FormRelawanPajakMBKM = () => {
         subtitle="Silakan lengkapi formulir pendaftaran relawan pajak MBKM di bawah ini."
       />
 
-      <div className="w-full min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <div className="form-shell">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-10">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <div className="mb-10 text-center">
+            <h1 className="mb-4 text-[1.75rem] font-bold leading-tight text-gray-900 sm:text-[2rem]">
               Pendaftaran Relawan Pajak MBKM
             </h1>
-            <p className="text-gray-500 text-sm md:text-base leading-relaxed">
+            <p className="text-sm leading-7 text-gray-500 md:text-base">
               Silakan lengkapi formulir di bawah ini dengan data yang
               sebenar-benarnya.
             </p>
@@ -585,7 +585,7 @@ const FormRelawanPajakMBKM = () => {
               <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full bg-[#4F46E5] hover:bg-[#4338ca] text-white font-semibold py-6 rounded-md transition-all mt-8"
+                className="mt-8 w-full rounded-md bg-[#4F46E5] py-5 text-white font-semibold transition-all hover:bg-[#4338ca]"
               >
                 {isPending ? "Mengirim Data..." : "Submit Pendaftaran"}
               </Button>

@@ -112,13 +112,13 @@ export default function PublikasiExplorer() {
 
   return (
     <section className="w-full">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Pencarian berdasarkan judul penelitian.."
-            className="h-11 rounded-lg border-slate-300 pr-12 text-[13px] md:text-sm placeholder:text-slate-500"
+            className="h-11 rounded-xl border-slate-300 pr-12 text-[13px] placeholder:text-slate-500 md:text-sm"
           />
           <Button
             aria-label="Cari"
@@ -134,7 +134,7 @@ export default function PublikasiExplorer() {
         </div>
 
         <Select value={sort} onValueChange={(v: SortKey) => setSort(v)}>
-          <SelectTrigger className="h-11 w-[140px] rounded-lg border-slate-300 text-[13px] md:text-sm cursor-pointer">
+          <SelectTrigger className="h-11 w-full rounded-xl border-slate-300 text-[13px] cursor-pointer md:w-[140px] md:text-sm">
             <SelectValue placeholder="Terbaru.." />
           </SelectTrigger>
           <SelectContent align="end" className="text-sm">
@@ -146,7 +146,7 @@ export default function PublikasiExplorer() {
         </Select>
       </div>
 
-      <div className="mt-7 overflow-hidden rounded-xl border border-slate-300 min-h-[200px] relative">
+      <div className="relative mt-7 min-h-[200px] overflow-hidden rounded-2xl border border-slate-300">
         {isLoading && (
           <div className="absolute inset-0 bg-white/60 z-10 flex items-center justify-center">
             <Loader2 className="h-8 w-8 text-[#FE8100] animate-spin" />
@@ -169,11 +169,11 @@ export default function PublikasiExplorer() {
           <article
             key={item.id}
             className={cn(
-              "grid grid-cols-1 gap-1 px-5 py-5 md:px-8",
+              "grid grid-cols-1 gap-1 px-4 py-5 sm:px-5 md:px-8",
               idx % 2 === 0 ? "bg-white" : "bg-[#F3F4F6]",
             )}
           >
-            <h3 className="text-xl md:text-2xl font-extrabold leading-snug text-slate-900">
+            <h3 className="text-lg font-extrabold leading-snug text-slate-900 md:text-2xl">
               {item.title}
             </h3>
 
@@ -197,7 +197,7 @@ export default function PublikasiExplorer() {
         ))}
       </div>
 
-      <div className="mt-7 flex items-center justify-between">
+      <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-sm">
           <Select
             value={String(pageSize)}
@@ -217,7 +217,7 @@ export default function PublikasiExplorer() {
           <span className="text-slate-600">per halaman</span>
         </div>
 
-        <nav aria-label="Pagination" className="flex items-center gap-1">
+        <nav aria-label="Pagination" className="flex flex-wrap items-center justify-center gap-1">
           <PageButton
             disabled={page === 1 || isLoading}
             onClick={() => setPage((p) => Math.max(1, p - 1))}

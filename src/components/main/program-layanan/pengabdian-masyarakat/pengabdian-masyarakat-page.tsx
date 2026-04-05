@@ -67,14 +67,14 @@ export default function PengabdianMasyarakatPage() {
           subtitle="Program kontribusi nyata untuk membantu masyarakat melalui edukasi, pendampingan, dan pengembangan UMKM."
           innerClassName="min-h-[220px] md:min-h-[260px]"
         />
-        <section className="w-full bg-[#EFF4F7] py-16 md:py-10 xl:py-18">
-          <div className="mx-auto max-w-6xl px-4 md:px-6 py-9 md:py-16 grid md:grid-cols-2 gap-8 md:gap-12 items-center justify-center text-center">
+        <section className="section-shell w-full bg-[#EFF4F7]">
+          <div className="page-shell-tight grid items-center justify-center gap-8 py-4 text-center md:grid-cols-2 md:gap-12">
             <div className="flex flex-col md:text-left">
-              <h2 className="text-3xl md:text-5xl font-extrabold leading-tight text-slate-900 mb-4 md:mb-6">
+              <h2 className="mb-4 text-[1.9rem] font-extrabold leading-tight text-slate-900 sm:text-[2.2rem] md:mb-6 md:text-5xl">
                 <span className="text-[#F2C100]">Pengabdian</span>{" "}
                 <span>Kepada Masyarakat</span>
               </h2>
-              <p className="text-sm md:text-base text-slate-700 leading-relaxed max-w-lg text-justify">
+              <p className="max-w-lg text-sm leading-7 text-slate-700 md:text-base">
                 Pengabdian kepada Masyarakat (PkM) merupakan kegiatan civitas
                 akademika dalam memberikan kontribusi nyata kepada masyarakat
                 melalui pemanfaatan ilmu pengetahuan, teknologi, dan
@@ -86,7 +86,7 @@ export default function PengabdianMasyarakatPage() {
             </div>
 
             <div className="relative">
-              <div className="relative rounded-2xl bg-white/95 mx-auto sm:max-w-sm md:max-w-md aspect-[3/2] overflow-hidden shadow-sm">
+              <div className="relative mx-auto aspect-[3/2] overflow-hidden rounded-2xl bg-white/95 shadow-sm sm:max-w-sm md:max-w-md">
                 <Image
                   src="/assets/images/program-dan-layanan/pengabdian-masyarakat/01-pengabdian-masyarkat.png"
                   alt="Pengabdian Masyarakat"
@@ -103,7 +103,7 @@ export default function PengabdianMasyarakatPage() {
 
         
         <section className="w-full bg-[#E5B700]">
-          <div className=" flex flex-col mx-auto max-w-7xl px-4 md:px-6 py-12 md:py-16 text-center items-center justify-center">
+          <div className="page-shell flex flex-col items-center justify-center py-2 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 text-center mb-8 md:mb-10">
               Program ABDIMAS
             </h2>
@@ -148,12 +148,12 @@ export default function PengabdianMasyarakatPage() {
           </div>
         </section>
 
-        <section className="bg-[#F5FAFF] w-full py-12">
-          <div className="flex flex-col justify-center items-center text-center">
-            <h2 className="font-bold text-3xl md:text-4xl mb-7">
+        <section className="section-shell w-full bg-[#F5FAFF]">
+          <div className="page-shell section-stack">
+            <h2 className="section-title mb-5">
               Potensi Abdimas
             </h2>
-            <p className="text-sm md:text-base max-w-5xl mx-5">
+            <p className="section-copy max-w-4xl">
               POTENSI adalah Program Asistensi Pengembangan UMKM Universitas
               Gundarma. Bertujuan untuk menghubungkan dan membantu para pelaku
               UMKM dalam mengatasi permasalahannya dengan memberikan asistensi
@@ -162,7 +162,7 @@ export default function PengabdianMasyarakatPage() {
             <Link href="https://potensiug.com/" target="_blank">
               <Button
                 size="lg"
-                className="bg-[#2A176F] hover:opacity-30 text-white font-bold h-11 px-10 rounded-md mt-8 md:mt-12 cursor-pointer"
+                className="mt-8 h-11 rounded-md bg-[#2A176F] px-8 font-bold text-white hover:opacity-80 md:mt-10 cursor-pointer"
               >
                 Website Potensi
               </Button>

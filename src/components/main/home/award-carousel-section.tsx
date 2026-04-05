@@ -42,18 +42,18 @@ export default function AwardCarouselSection({
   }, [chunks.length]);
 
   return (
-    <section className="bg-[#F5FAFF] w-full pb-16 overflow-hidden">
-      <div className="flex flex-col justify-center items-center text-center mt-12">
-        <h2 className="font-bold text-2xl text-[#2A176F] lg:text-3xl mb-7">
+    <section className="section-shell w-full overflow-hidden bg-[#F5FAFF]">
+      <div className="page-shell section-stack">
+        <h2 className="section-title mb-5 text-[#2A176F]">
           Penghargaan
         </h2>
-        <p className="text-sm md:text-base max-w-5xl mb-14 md:mb-20 mx-5">
+        <p className="section-copy mb-10 max-w-4xl md:mb-14">
           Menampilkan berbagai penghargaan dan apresiasi sebagai bentuk
           pengakuan atas kontribusi dan kinerja Tax Center dalam bidang edukasi
           dan pelayanan perpajakan.
         </p>
       </div>
-      <div className="relative w-full select-none overflow-hidden px-8 md:px-16 xl:px-20">
+      <div className="page-shell relative w-full select-none overflow-hidden">
         <div className="relative w-full select-none overflow-hidden">
           <div
             className="flex transition-transform duration-700 ease-in-out"
@@ -70,13 +70,13 @@ export default function AwardCarouselSection({
                 >
                   {group.map((item) => (
                     <div key={item.id} className="flex flex-col items-start w-full">
-                      <div className="relative w-full aspect-[3/2] rounded-md overflow-hidden border border-gray-200">
+                      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl border border-gray-200 bg-white">
                         <Image
                           src={get_image_url(item.picture_url)}
                           alt={item.title}
                           fill
                           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 33vw, 100vw"
-                          className="object-cover"
+                          className="object-contain sm:object-cover"
                           loading="lazy"
                           unoptimized
                         />
@@ -106,7 +106,7 @@ export default function AwardCarouselSection({
                 prevSlide();
                 if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
               }}
-              className="absolute top-1/2 -translate-y-1/2 left-2 md:left-4 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-3 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300"
+              className="absolute left-1 top-1/2 z-30 -translate-y-1/2 rounded-full bg-[#868686] bg-opacity-50 px-2.5 py-2 text-white shadow-md transition-colors duration-300 hover:bg-[#626262] hover:text-yellow-300 sm:left-2 md:left-4 cursor-pointer"
             >
               <FontAwesomeIcon icon={faChevronLeft} />
             </button>
@@ -116,7 +116,7 @@ export default function AwardCarouselSection({
                 nextSlide();
                 if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
               }}
-              className="absolute top-1/2 -translate-y-1/2 right-2 md:right-4 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-3 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300"
+              className="absolute right-1 top-1/2 z-30 -translate-y-1/2 rounded-full bg-[#868686] bg-opacity-50 px-2.5 py-2 text-white shadow-md transition-colors duration-300 hover:bg-[#626262] hover:text-yellow-300 sm:right-2 md:right-4 cursor-pointer"
             >
               <FontAwesomeIcon icon={faChevronRight} />
             </button>

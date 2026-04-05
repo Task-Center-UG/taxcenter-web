@@ -98,9 +98,9 @@ export default function FotoKegiatanPage() {
     <>
       <PageHeaderHero title="FOTO KEGIATAN" />
 
-      <section className="py-16 px-4 md:px-16 xl:px-32">
-        <div className="container mx-auto">
-          <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
+      <section className="section-shell">
+        <div className="page-shell-tight">
+          <div className="toolbar-shell">
             <Input
               placeholder="Cari foto kegiatan..."
               value={query}
@@ -108,10 +108,10 @@ export default function FotoKegiatanPage() {
                 setQuery(e.target.value);
                 setPage(1);
               }}
-              className="flex-1 border-0 shadow-none focus-visible:ring-0 h-12"
+              className="toolbar-input flex-1 border-0 shadow-none focus-visible:ring-0"
             />
 
-            <div className="flex items-center w-full sm:w-auto border-t sm:border-t-0 sm:border-l border-gray-200">
+            <div className="toolbar-control-group">
               <div className="relative w-full sm:w-auto">
                 <Select
                   value={sort}
@@ -120,7 +120,7 @@ export default function FotoKegiatanPage() {
                     setPage(1);
                   }}
                 >
-                  <SelectTrigger className="border-0 shadow-none focus:ring-0 h-12 rounded-none sm:rounded-r-none w-full sm:w-[160px]">
+                  <SelectTrigger className="h-11 w-full border-0 shadow-none focus:ring-0 sm:w-[160px]">
                     <SelectValue placeholder="Urutkan" />
                   </SelectTrigger>
                   <SelectContent>
@@ -133,7 +133,7 @@ export default function FotoKegiatanPage() {
                 <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
 
-              <div className="bg-[#F97316] text-white p-3 sm:rounded-r-md w-full sm:w-auto flex justify-center items-center h-12">
+              <div className="flex min-h-11 w-full items-center justify-center rounded-b-xl bg-[#F97316] p-3 text-white sm:w-auto sm:rounded-b-none sm:rounded-r-xl">
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
@@ -160,17 +160,17 @@ export default function FotoKegiatanPage() {
               <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
+                  className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md"
                 >
-                  <div className="relative w-full aspect-[3/2] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
+                  <div className="relative flex aspect-[3/2] w-full items-center justify-center overflow-hidden bg-white">
                     <Image
                       src={resolveMediaUrl(item.picture_url, "/placeholder-image.jpg")}
                       alt={item.title}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-contain sm:object-cover"
                       width={300}
                       height={200}
                       loading="lazy"
@@ -178,8 +178,8 @@ export default function FotoKegiatanPage() {
                     />
                   </div>
 
-                  <div className="p-4 flex flex-col flex-1">
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                  <div className="flex flex-1 flex-col p-4 sm:p-5">
+                    <h3 className="mb-2 text-lg font-semibold leading-snug text-slate-900">
                       {item.title}
                     </h3>
                     <div className="flex justify-end mt-auto">
@@ -197,11 +197,11 @@ export default function FotoKegiatanPage() {
           )}
 
           {!isLoading && paging.total_pages > 1 && (
-            <div className="flex items-center justify-center gap-4 mt-12">
+            <div className="pagination-shell mt-12">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Sebelumnya
@@ -214,7 +214,7 @@ export default function FotoKegiatanPage() {
                   setPage((p) => Math.min(paging.total_pages, p + 1))
                 }
                 disabled={page === paging.total_pages}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
               >
                 Selanjutnya
                 <ChevronRight className="w-4 h-4" />

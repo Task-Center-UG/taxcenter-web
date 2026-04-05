@@ -87,11 +87,11 @@ const DivisionMembers = ({ divisionId }: { divisionId: number }) => {
 
   return (
     <div className="mt-4 flex flex-col items-center gap-8 px-2">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {members.map((member) => (
           <div
             key={member.id}
-            className="relative aspect-[3/4] w-full overflow-hidden bg-gray-200 group"
+            className="group relative w-full overflow-hidden rounded-2xl bg-gray-200 aspect-[4/5] sm:aspect-[3/4]"
           >
             {member.picture_url ? (
               <Image
@@ -122,7 +122,7 @@ const DivisionMembers = ({ divisionId }: { divisionId: number }) => {
 
       <Link
         href={`/tentang-kami/tim-kami/${divisionId}`}
-        className="px-10 py-3 bg-[#2E2365] text-white text-sm font-semibold rounded-lg hover:bg-[#201848] transition-colors shadow-sm"
+        className="rounded-lg bg-[#2E2365] px-8 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#201848]"
       >
         Lihat Divisi
       </Link>
@@ -156,10 +156,7 @@ export default function DivisionList({ maxWidth = 1024 }: DivisionListProps) {
 
   return (
     <section>
-      <div
-        className="mx-auto w-full px-6 sm:px-8 py-10 md:py-12"
-        style={{ maxWidth }}
-      >
+      <div className="page-shell-tight py-10 md:py-12" style={{ maxWidth }}>
         <h2 className="text-center mb-7 text-2xl md:text-3xl font-bold">
           Anggota Divisi
         </h2>

@@ -17,23 +17,23 @@ export default function DivisionSection({
   isLoadingDivisions,
 }: DivisionSectionProps) {
   return (
-    <section className="w-full overflow-hidden">
-      <div className="flex flex-col justify-center items-center text-center my-12">
-        <h2 className="font-bold text-2xl text-[#2A176F] lg:text-3xl mb-7">
+    <section className="section-shell w-full overflow-hidden">
+      <div className="page-shell section-stack">
+        <h2 className="section-title mb-5 text-[#2A176F]">
           Divisi Tax Center Gunadarma
         </h2>
-        <p className="text-sm md:text-base max-w-5xl mb-12 mx-5">
+        <p className="section-copy mb-10 max-w-4xl">
           Tax Center Universitas Gunadarma memiliki beberapa divisi yang saling
           mendukung dalam menjalankan program edukasi, pelatihan, pelayanan,
           dan pengabdian di bidang perpajakan.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14 max-w-6xl mx-auto justify-items-center">
+        <div className="grid w-full max-w-6xl grid-cols-1 gap-8 justify-items-center sm:grid-cols-2 lg:grid-cols-3">
           {divisionPreview.map((division) => (
             <div
               key={division.id}
-              className="flex flex-col items-center text-center px-4 w-full max-w-[340px]"
+              className="flex w-full max-w-[340px] flex-col items-center rounded-2xl bg-white px-5 py-6 text-center shadow-sm"
             >
-              <div className="bg-yellow-400 w-20 h-20 flex justify-center items-center rounded-full mb-4 drop-shadow-md">
+              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-yellow-400 drop-shadow-md">
                 {division.icon_url ? (
                   <Image
                     src={get_image_url(division.icon_url)}
@@ -47,11 +47,11 @@ export default function DivisionSection({
                   <Users className="w-7 h-7 text-black" />
                 )}
               </div>
-              <h3 className="font-bold mb-2 text-md md:text-lg">
+              <h3 className="mb-2 text-base font-bold md:text-lg">
                 {division.name}
               </h3>
               <p
-                className="text-xs md:text-sm leading-relaxed mb-4 w-full max-w-[320px]"
+                className="mb-4 w-full max-w-[320px] text-sm leading-7 text-slate-700"
                 style={{
                   display: "-webkit-box",
                   WebkitLineClamp: 3,
@@ -80,10 +80,7 @@ export default function DivisionSection({
         )}
         {divisions.length > MAX_DIVISION_PREVIEW && (
           <Link href="/tentang-kami/tim-kami" className="mt-10">
-            <Button
-              size="lg"
-              className="bg-[#2A176F] hover:bg-[#1f1254] text-white font-bold h-11 px-10 rounded-md cursor-pointer"
-            >
+            <Button size="lg" className="h-11 rounded-md bg-[#2A176F] px-8 font-bold text-white hover:bg-[#1f1254] cursor-pointer">
               Lihat Semua Divisi
             </Button>
           </Link>

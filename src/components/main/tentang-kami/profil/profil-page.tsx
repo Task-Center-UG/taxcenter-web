@@ -13,8 +13,8 @@ export default function ProfilPage() {
       <PageHeaderHero title="PROFIL" imageAlt="Header Profil" />
 
       {}
-      <div className="flex items-center justify-center">
-        <p className="text-xs md:text-sm lg:text-base max-w-5xl py-12 px-5 text-center leading-loose">
+      <div className="page-shell-tight flex items-center justify-center py-10 md:py-12">
+        <p className="max-w-5xl text-center text-sm leading-7 text-slate-700 md:text-base">
           Tax Center Universitas Gunadarma merupakan lembaga yang berada di
           bawah koordinasi Rektor dan berfungsi sebagai pusat pengkajian,
           pendidikan, pelatihan, serta sosialisasi perpajakan. Tax Center hadir
@@ -26,14 +26,14 @@ export default function ProfilPage() {
       </div>
 
       {}
-      <section className="max-w-6xl mx-auto px-7 py-12">
-        <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
+      <section className="section-shell">
+        <div className="page-shell-tight flex flex-col md:flex-row md:items-start md:space-x-10">
           {}
           <div className="md:w-1/2">
             <h2 className="font-bold text-2xl lg:text-3xl mb-6 xl:mb-12">
               Sejarah Tax Center Gunadarma
             </h2>
-            <p className="text-sm font-normal leading-relaxed">
+            <p className="text-sm font-normal leading-7 text-slate-700 md:text-base">
               Tax Center Universitas Gunadarma resmi berdiri pada tanggal 19
               Januari 2016. Sejak awal pembentukannya, Tax Center berkomitmen
               untuk mendukung peningkatan pemahaman dan kepatuhan perpajakan
@@ -48,7 +48,7 @@ export default function ProfilPage() {
           </div>
 
           {}
-          <div className="md:w-1/2 mt-8 md:mt-0 border border-gray-300 w-full h-full object-cover rounded-lg max-h-[350px] text-center">
+          <div className="mt-8 h-full w-full max-h-[350px] rounded-lg border border-gray-300 text-center md:mt-0 md:w-1/2">
             <Image
               src="/assets/images/tentang-kami/profil/01-sejarah.jpg"
               alt="Gambar Sejarah Tax Center Gunadarma"
@@ -63,7 +63,7 @@ export default function ProfilPage() {
 
       {}
       <div className="bg-[#F5FAFF]">
-        <section className="max-w-6xl mx-auto px-7 py-12 mt-6 rounded-lg">
+        <section className="page-shell-tight rounded-lg py-12">
           <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
             {}
             <div className="w-full flex flex-col items-center md:w-1/3">
@@ -131,7 +131,7 @@ export default function ProfilPage() {
       </div>
 
       {}
-      <section className="max-w-6xl mx-auto px-7 py-12 mt-6">
+      <section className="page-shell-tight py-12">
         <h2 className="font-bold text-2xl md:text-3xl mb-12">Layanan</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-12">
@@ -155,7 +155,7 @@ export default function ProfilPage() {
 
       {}
       <div className="bg-[#F5FAFF]">
-        <section className="max-w-6xl mx-auto px-7 py-12 mt-6">
+        <section className="page-shell-tight py-12">
           <h2 className="font-bold text-2xl md:text-3xl text-center mb-12">
             VISI & MISI
           </h2>

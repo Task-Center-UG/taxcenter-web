@@ -40,7 +40,7 @@ export default function ArtikelPajakDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-[70px] lg:pt-[120px]">
+      <div className="detail-shell flex items-center justify-center">
         <p className="text-neutral-500">Memuat data artikel...</p>
       </div>
     );
@@ -48,7 +48,7 @@ export default function ArtikelPajakDetailPage() {
 
   if (error || !article) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-[100px] lg:pt-[180px] gap-4">
+      <div className="detail-shell flex flex-col items-center justify-center gap-4">
         <p className="text-neutral-500">Artikel tidak ditemukan.</p>
         <Link
           href="/kegiatan-berita/artikel-pajak"
@@ -61,8 +61,8 @@ export default function ArtikelPajakDetailPage() {
   }
 
   return (
-    <div className="relative pt-[100px] lg:pt-[170px] pb-16 min-h-screen bg-[#F8F9FD]">
-      <div className="mx-auto max-w-5xl px-6 sm:px-8">
+    <div className="detail-shell bg-[#F8F9FD]">
+      <div className="detail-container">
         
         <div className="mb-8">
           <Link
@@ -86,19 +86,19 @@ export default function ArtikelPajakDetailPage() {
         </div>
 
         
-        <div className="text-center mb-12 max-w-4xl mx-auto">
+        <div className="mx-auto mb-10 max-w-4xl text-center">
           {article.category && (
-            <span className="inline-block px-3 py-1 bg-[#2A176F] text-white rounded-full text-xs font-semibold mb-4 tracking-wider uppercase">
+            <span className="mb-4 inline-block rounded-full bg-[#2A176F] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
               {article.category}
             </span>
           )}
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-black mb-4 capitalize">
+          <h1 className="detail-title mb-4 capitalize">
             {article.title}
           </h1>
         </div>
 
         
-        <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-8">
+        <div className="mb-8 flex flex-col gap-4 border-b border-gray-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col">
             <span className="font-bold text-lg text-black">
               {article.author || "Admin Tax Center"}
@@ -112,7 +112,7 @@ export default function ArtikelPajakDetailPage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-gray-600 cursor-pointer hover:text-black transition-colors">
+          <div className="flex items-center gap-2 text-gray-600 transition-colors hover:text-black">
             <span className="text-sm font-medium">Share</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -129,12 +129,12 @@ export default function ArtikelPajakDetailPage() {
 
         
         {article.image_url && (
-          <div className="relative w-full aspect-[3/2] mb-12 rounded-xl overflow-hidden shadow-sm">
+          <div className="detail-media mb-10">
             <Image
               src={getImageUrl(article.image_url)}
               alt={article.title}
               fill
-              className="object-cover"
+              className="object-contain sm:object-cover"
               priority
               unoptimized
             />
@@ -144,7 +144,7 @@ export default function ArtikelPajakDetailPage() {
         <div className="mx-auto">
           {article.description && (
             <article
-              className="prose prose-sm md:prose-base max-w-none bg-white p-6 rounded shadow-sm prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-a:text-[#2A176F]"
+              className="detail-card prose prose-sm md:prose-base max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-a:text-[#2A176F]"
               dangerouslySetInnerHTML={{ __html: article.description }}
             />
           )}

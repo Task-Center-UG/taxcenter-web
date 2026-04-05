@@ -146,7 +146,7 @@ const MateriPajakPage = () => {
         </PageHeaderHero>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pb-16">
+      <div className="page-shell pb-16">
         {isError && (
           <div className="text-center text-red-500 py-10">
             Gagal memuat data.
@@ -158,13 +158,13 @@ const MateriPajakPage = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-8">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
+              className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md"
             >
-              <div className="relative w-full aspect-[3/2] bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
+              <div className="relative flex aspect-[3/2] w-full items-center justify-center overflow-hidden bg-white">
                 <Image
                   src={resolveMediaUrl(item.image_url, "/placeholder.png")}
                   alt={item.title}
@@ -175,8 +175,8 @@ const MateriPajakPage = () => {
                 />
               </div>
 
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-2 line-clamp-2">
+              <div className="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 className="mb-2 text-lg font-bold leading-snug text-slate-900 line-clamp-2 md:text-xl">
                   {item.title}
                 </h3>
                 <div className="flex justify-end mt-auto">
@@ -192,11 +192,11 @@ const MateriPajakPage = () => {
         </div>
 
         {!isLoading && paging.total_pages > 1 && (
-          <div className="flex items-center justify-center gap-4 mt-12">
+          <div className="pagination-shell mt-12">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+              className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
             >
               <ChevronLeft className="w-4 h-4" />
               Sebelumnya
@@ -209,7 +209,7 @@ const MateriPajakPage = () => {
                 setPage((p) => Math.min(paging.total_pages, p + 1))
               }
               disabled={page === paging.total_pages}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+              className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
             >
               Selanjutnya
               <ChevronRight className="w-4 h-4" />

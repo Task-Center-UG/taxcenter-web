@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 
 export default function TaxRegulationSection() {
   return (
-    <section className="bg-[#F5FAFF] w-full py-12">
-      <div className="flex flex-col justify-center items-center text-center">
-        <h2 className="font-bold text-2xl text-[#2A176F] lg:text-3xl mb-7">
+    <section className="section-shell w-full bg-[#F5FAFF]">
+      <div className="page-shell section-stack">
+        <h2 className="section-title mb-5 text-[#2A176F]">
           Peraturan Perpajakan
         </h2>
-        <p className="text-sm md:text-base max-w-5xl mx-5">
+        <p className="section-copy max-w-4xl">
           Menyediakan akses informasi terkait peraturan perpajakan melalui
           website khusus yang dikembangkan sebagai referensi bagi mahasiswa dan
           masyarakat.
@@ -16,7 +16,7 @@ export default function TaxRegulationSection() {
         <Link href="/" target="_blank">
           <Button
             size="lg"
-            className="bg-[#2A176F] hover:opacity-30 text-white font-bold h-11 px-10 rounded-md mt-8 md:mt-12 cursor-pointer"
+            className="mt-8 h-11 rounded-md bg-[#2A176F] px-8 font-bold text-white hover:opacity-80 md:mt-10 cursor-pointer"
           >
             Website Advance Search
           </Button>

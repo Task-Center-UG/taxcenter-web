@@ -138,7 +138,7 @@ export default function TimKamiPage() {
   const HR_STYLE = { width: `min(100%, ${PRESET.xl.width}px)` };
 
   return (
-    <div className="relative pt-[70px] lg:pt-[120px]">
+    <div className="relative pt-[calc(var(--site-header-offset)+0.25rem)]">
       <PageHeaderHero
         title="STRUKTUR ORGANISASI"
         className="pt-0 lg:pt-0"
@@ -146,7 +146,7 @@ export default function TimKamiPage() {
       />
 
       <section>
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-12 md:py-16 space-y-12">
+        <div className="page-shell space-y-12 py-12 md:py-16">
           <div className="grid place-items-center">
             <TeamCard
               name="Prof. Dr. E. S. Margianti, SE., MM."

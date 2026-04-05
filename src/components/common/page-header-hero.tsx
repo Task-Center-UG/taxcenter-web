@@ -26,13 +26,13 @@ export default function PageHeaderHero({
   return (
     <div
       className={cn(
-        "relative pt-[70px] lg:pt-[120px] max-w-full overflow-hidden select-none",
+        "relative max-w-full overflow-hidden pt-[calc(var(--site-header-offset)+0.25rem)] select-none",
         className,
       )}
     >
       <div
         className={cn(
-          "relative w-full min-h-[200px] md:min-h-[300px] flex flex-col items-center justify-center px-4",
+          "relative flex min-h-[180px] w-full flex-col items-center justify-center px-4 py-8 sm:min-h-[220px] sm:px-6 md:min-h-[280px] md:px-8",
           innerClassName,
         )}
       >
@@ -45,10 +45,10 @@ export default function PageHeaderHero({
         />
         <div className="absolute inset-0 bg-black/50" />
 
-        <div className="relative z-10 flex flex-col items-center justify-center text-center text-white w-full max-w-4xl space-y-4">
+        <div className="relative z-10 flex w-full max-w-4xl flex-col items-center justify-center space-y-3 text-center text-white sm:space-y-4">
           <h1
             className={cn(
-              "text-3xl md:text-5xl font-bold tracking-tight uppercase",
+              "text-[1.75rem] font-bold leading-tight tracking-tight uppercase sm:text-[2.25rem] md:text-[3rem]",
               titleClassName,
             )}
           >
@@ -56,7 +56,7 @@ export default function PageHeaderHero({
           </h1>
 
           {subtitle && (
-            <div className="text-sm md:text-base leading-relaxed text-white/90 max-w-2xl">
+            <div className="max-w-2xl text-sm leading-7 text-white/90 sm:text-[15px] md:text-base">
               {subtitle}
             </div>
           )}

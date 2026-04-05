@@ -13,7 +13,7 @@ export default function PublikasiPage() {
           innerClassName="min-h-[220px] lg:min-h-[240px]"
         />
 
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-0 py-8 md:py-10">
+        <div className="page-shell-tight py-8 md:py-10">
           <PublikasiExplorer />
         </div>
       </div>

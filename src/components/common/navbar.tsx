@@ -79,7 +79,7 @@ function MobileAccordionItem({
     <div className="w-full">
       {}
       <button
-        className="w-full flex items-center justify-between px-2 sm:px-4 py-3 text-[#2A176F] font-semibold tracking-wide hover:text-[#F1C40F] transition-colors"
+        className="flex w-full items-center justify-between px-2 py-3.5 text-left text-[#2A176F] font-semibold tracking-wide transition-colors hover:text-[#F1C40F] sm:px-4"
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={`section-${title}`}
@@ -91,7 +91,7 @@ function MobileAccordionItem({
         />
       </button>
 
-      <hr className="border-t border-[#E5E7EB] mx-4" />
+      <hr className="mx-2 border-t border-[#E5E7EB] sm:mx-4" />
 
       <div
         id={`section-${title}`}
@@ -105,7 +105,7 @@ function MobileAccordionItem({
               <Link
                 href={sub.href}
                 onClick={onNavigate}
-                className="block px-4 py-2 text-sm font-medium text-[#2A176F] hover:text-[#F1C40F] hover:bg-[#8D9297]/10 rounded"
+                className="block rounded px-4 py-2.5 text-sm font-medium text-[#2A176F] hover:bg-[#8D9297]/10 hover:text-[#F1C40F]"
               >
                 {sub.title}
               </Link>
@@ -178,14 +178,15 @@ export default function Navbar() {
       />
 
       
-      <div className="flex justify-center w-full bg-white shadow z-50">
-        <div className="container flex items-center justify-between py-3 px-2 lg:px-9">
+      <div className="flex w-full justify-center bg-white shadow z-50">
+        <div className="container flex items-center justify-between px-3 py-2.5 sm:px-4 lg:px-9 lg:py-3">
           <Link href="/">
             <Image
               src="/assets/images/navbar-logo.png"
               alt="Logo tax Center"
               width={156}
               height={48}
+              className="h-auto w-[120px] sm:w-[138px] lg:w-[156px]"
               priority
             />
           </Link>
@@ -199,8 +200,8 @@ export default function Navbar() {
                 </Button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="w-[400px] sm:w-[500px]">
-                <nav className="mt-16 mx-3">
+              <SheetContent side="right" className="w-[min(92vw,420px)] px-0">
+                <nav className="mt-14 px-3 sm:px-4">
                   {menuItems.map((item, idx) => (
                     <MobileAccordionItem
                       key={item.title}

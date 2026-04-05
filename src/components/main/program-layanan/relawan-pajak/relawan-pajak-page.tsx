@@ -128,12 +128,12 @@ export default function RelawanPajakPage() {
       />
 
       <section className="w-full bg-[#2A176F]">
-        <div className="mx-auto max-w-6xl px-4 md:px-6 py-10 md:py-14 grid md:grid-cols-2 gap-10 md:gap-12 items-center">
+        <div className="page-shell-tight grid items-center gap-10 py-10 md:grid-cols-2 md:gap-12 md:py-14">
           <div className="text-white flex flex-col items-center justify-center text-center md:items-start md:text-left">
-            <h2 className="text-3xl md:text-5xl font-extrabold leading-tight tracking-tight mb-4 md:mb-6">
+            <h2 className="mb-4 text-[1.9rem] font-extrabold leading-tight tracking-tight md:mb-6 md:text-5xl">
               KEGIATAN RELAWAN PAJAK
             </h2>
-            <p className="text-sm md:text-base leading-relaxed text-white/90 max-w-xl mb-5 md:mb-7 text-center md:text-justify">
+            <p className="mb-5 max-w-xl text-sm leading-7 text-white/90 md:mb-7 md:text-base md:text-justify">
               Kegiatan Relawan Pajak adalah program yang melibatkan mahasiswa
               untuk membantu masyarakat dalam pelaporan SPT Tahunan.
             </p>
@@ -155,7 +155,7 @@ export default function RelawanPajakPage() {
           </div>
 
           <div className="relative">
-            <div className="relative rounded-2xl bg-white/95 mx-auto sm:max-w-sm md:max-w-md aspect-[3/2] lg:-right-9 overflow-hidden">
+            <div className="relative mx-auto aspect-[3/2] overflow-hidden rounded-2xl bg-white/95 sm:max-w-sm md:max-w-md lg:-right-9">
               <Image
                 src="/assets/images/program-dan-layanan/relawan-pajak/01-relawan-pajak.png"
                 alt="Relawan Pajak"
@@ -170,8 +170,8 @@ export default function RelawanPajakPage() {
         </div>
       </section>
 
-      <section className="py-10 px-4 md:px-6 bg-white border-b border-gray-100">
-        <div className="mx-auto max-w-6xl">
+      <section className="border-b border-gray-100 bg-white py-10">
+        <div className="page-shell-tight">
           <div className="relative">
             <input
               type="text"
@@ -209,12 +209,12 @@ export default function RelawanPajakPage() {
 
             return (
               <section key={category} className={`w-full ${cfg.bg || "bg-white"}`}>
-                <div className="mx-auto max-w-6xl px-4 md:px-6 py-10 md:py-14">
+                <div className="page-shell-tight py-10 md:py-14">
                   <div className="mb-6 md:mb-8">
                     <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 text-center md:text-left">
                       {cfg.title}
                     </h3>
-                    <p className="text-sm md:text-base text-slate-700 leading-relaxed mx-auto md:mx-0 text-center md:text-left">
+                    <p className="mx-auto text-sm leading-7 text-slate-700 md:mx-0 md:text-base md:text-left">
                       {cfg.subtitle}
                     </p>
                   </div>
@@ -226,20 +226,20 @@ export default function RelawanPajakPage() {
                       {sectionItems.map((item) => (
                         <div
                           key={item.id}
-                          className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col"
+                          className="flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"
                         >
-                          <div className="relative w-full aspect-[3/2] bg-[#D9D9D9]">
+                          <div className="relative aspect-[3/2] w-full bg-white">
                             <Image
                               src={getImageUrl(item.image_url)}
                               alt={item.title}
                               fill
-                              className="object-cover"
+                              className="object-contain sm:object-cover"
                               quality={95}
                               sizes="(min-width: 1024px) 33vw, (min-width: 768px) 33vw, 100vw"
                               unoptimized
                             />
                           </div>
-                          <div className="p-4">
+                          <div className="p-4 sm:p-5">
                             <h4 className="font-semibold text-slate-900 line-clamp-2">
                               {item.title}
                             </h4>
@@ -266,11 +266,11 @@ export default function RelawanPajakPage() {
         )}
 
       {!isLoading && paging.total_pages > 1 && (
-        <div className="flex items-center justify-center gap-4 py-10">
+        <div className="pagination-shell py-10">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
           >
             <ChevronLeft className="w-4 h-4" />
             Sebelumnya
@@ -281,7 +281,7 @@ export default function RelawanPajakPage() {
           <button
             onClick={() => setPage((p) => Math.min(paging.total_pages, p + 1))}
             disabled={page === paging.total_pages}
-            className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
           >
             Selanjutnya
             <ChevronRight className="w-4 h-4" />

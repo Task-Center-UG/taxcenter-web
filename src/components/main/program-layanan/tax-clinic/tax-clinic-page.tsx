@@ -88,10 +88,10 @@ export default function TaxClinicPage() {
     <>
       <PageHeaderHero title="TAX CLINIC" />
 
-      <section className="py-12 px-4 md:px-16 xl:px-32">
-        <div className="container mx-auto flex flex-col-reverse md:flex-row items-center gap-10">
+      <section className="section-shell">
+        <div className="page-shell-tight flex flex-col-reverse items-center gap-8 md:flex-row md:gap-10">
           <div className="md:w-3/4">
-            <p className="text-sm md:text-base lg:text-lg text-gray-700 text-justify">
+            <p className="text-sm leading-7 text-gray-700 md:text-base lg:text-lg">
               Tax Clinic merupakan layanan konsultasi dan pendampingan yang
               diselenggarakan oleh Tax Center Universitas Gunadarma bagi dosen,
               mahasiswa serta masyarakat dalam memahami dan melaksanakan
@@ -100,8 +100,8 @@ export default function TaxClinicPage() {
               peningkatan kesadaran dan kepatuhan pajak.
             </p>
           </div>
-          <div className="md:w-1/3 flex justify-center">
-            <div className="relative w-full max-w-[350px] aspect-[3/2] overflow-hidden rounded-2xl">
+          <div className="flex justify-center md:w-1/3">
+            <div className="relative aspect-[3/2] w-full max-w-[350px] overflow-hidden rounded-2xl bg-white">
               <Image
                 src="/assets/images/program-dan-layanan/tax-clinic/01-tax-clinic.jpg"
                 alt="Tax Clinic"
@@ -114,7 +114,8 @@ export default function TaxClinicPage() {
         </div>
       </section>
 
-      <section className="py-12 px-4 md:px-16 xl:px-32 bg-[#F5FAFF]">
+      <section className="section-shell bg-[#F5FAFF]">
+        <div className="page-shell-tight">
         <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
           LAYANAN
         </h2>
@@ -191,9 +192,11 @@ export default function TaxClinicPage() {
             })}
           </Accordion>
         )}
+        </div>
       </section>
 
-      <section className="py-12 px-4 md:px-16 xl:px-32 bg-white">
+      <section className="section-shell bg-white">
+        <div className="page-shell-tight">
         <h2 className="text-xl md:text-2xl font-bold text-[#2A176F] mb-8">
           Asistensi Pelaporan Perpajakan
         </h2>
@@ -222,6 +225,7 @@ export default function TaxClinicPage() {
               Indonesia.
             </p>
           </div>
+        </div>
         </div>
       </section>
     </>

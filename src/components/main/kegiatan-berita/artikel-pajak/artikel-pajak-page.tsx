@@ -108,9 +108,9 @@ export default function ArtikelPajakPage() {
         innerClassName="min-h-[260px] lg:min-h-[300px]"
       />
 
-      <section className="px-4 md:px-6 xl:px-20 mb-16 py-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="bg-white p-1 rounded-md shadow-sm border border-gray-200 mb-8 flex flex-col sm:flex-row items-center">
+      <section className="section-shell">
+        <div className="page-shell-tight">
+          <div className="toolbar-shell">
             <input
               type="text"
               placeholder="Cari artikel pajak..."
@@ -119,10 +119,10 @@ export default function ArtikelPajakPage() {
                 setQuery(e.target.value);
                 setPage(1);
               }}
-              className="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400 w-full"
+              className="toolbar-input flex-1 outline-none"
             />
 
-            <div className="flex items-center w-full sm:w-auto border-t sm:border-t-0 sm:border-l border-gray-200">
+            <div className="toolbar-control-group">
               <div className="relative w-full sm:w-auto">
                 <select
                   value={sort}
@@ -130,7 +130,7 @@ export default function ArtikelPajakPage() {
                     setSort(e.target.value);
                     setPage(1);
                   }}
-                  className="appearance-none bg-transparent py-3 pl-4 pr-10 outline-none text-gray-600 cursor-pointer w-full sm:w-auto hover:bg-gray-50 transition-colors"
+                  className="min-h-11 w-full cursor-pointer appearance-none bg-transparent py-3 pl-4 pr-10 text-sm text-gray-600 outline-none transition-colors hover:bg-gray-50 sm:w-auto"
                 >
                   <option value="terbaru">Terbaru...</option>
                   <option value="terlama">Terlama...</option>
@@ -140,7 +140,7 @@ export default function ArtikelPajakPage() {
                 <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
 
-              <div className="bg-[#F97316] text-white p-3 sm:rounded-r-md w-full sm:w-auto flex justify-center items-center">
+              <div className="flex min-h-11 w-full items-center justify-center rounded-b-xl bg-[#F97316] p-3 text-white sm:w-auto sm:rounded-b-none sm:rounded-r-xl">
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
@@ -157,19 +157,19 @@ export default function ArtikelPajakPage() {
           )}
 
           {!isLoading && !isError && articles.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {articles.map((item) => (
                 <div
                   key={item.id}
-                  className="rounded-lg shadow-md overflow-hidden bg-white hover:shadow-lg transition-shadow"
+                  className="overflow-hidden rounded-2xl bg-white shadow-md transition-shadow hover:shadow-lg"
                 >
-                  <div className="bg-[#D9D9D9] w-full aspect-[3/2] relative">
+                  <div className="relative aspect-[3/2] w-full bg-white">
                     {item.image_url ? (
                       <Image
                         src={getImageUrl(item.image_url)}
                         alt={item.title}
                         fill
-                        className="object-cover rounded-t-lg"
+                        className="object-contain sm:object-cover"
                         loading="lazy"
                         unoptimized
                       />
@@ -179,7 +179,7 @@ export default function ArtikelPajakPage() {
                       </div>
                     )}
                   </div>
-                  <div className="p-6">
+                  <div className="p-5">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-sm text-gray-500">
                         {new Date(item.created_at).toLocaleDateString("id-ID", {
@@ -194,7 +194,7 @@ export default function ArtikelPajakPage() {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-2xl font-bold line-clamp-2">
+                    <h3 className="text-xl font-bold leading-snug line-clamp-2">
                       {item.title}
                     </h3>
 
@@ -227,11 +227,11 @@ export default function ArtikelPajakPage() {
           )}
 
           {!isLoading && paging.total_pages > 1 && (
-            <div className="flex items-center justify-center gap-4 mt-12">
+            <div className="pagination-shell mt-12">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Sebelumnya
@@ -246,7 +246,7 @@ export default function ArtikelPajakPage() {
                   setPage((p) => Math.min(paging.total_pages, p + 1))
                 }
                 disabled={page === paging.total_pages}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
               >
                 Selanjutnya
                 <ChevronRight className="w-4 h-4" />

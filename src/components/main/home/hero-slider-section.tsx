@@ -18,6 +18,11 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const activeSlide = slides[currentSlide];
+  const activeTitle =
+    activeSlide?.title ||
+    "Tax Center Gunadarma Bersinergi Membangun Indonesia";
+  const activeDescription =
+    activeSlide?.description || fallback_slides[0].description;
 
   useEffect(() => {
     if (currentSlide >= slides.length) {
@@ -48,9 +53,9 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
   }, [slides.length]);
 
   return (
-    <div className="relative pt-[70px] lg:pt-[117px] xl:pt-[160px] max-w-full overflow-hidden select-none">
+    <div className="relative max-w-full overflow-hidden pt-[calc(var(--site-header-offset)+0.25rem)] select-none">
       <div
-        className="relative w-full aspect-[2/1] overflow-hidden xl:px-16"
+        className="relative w-full overflow-hidden aspect-[2/1] xl:px-12"
         aria-label="Image slider"
       >
         <div
@@ -75,7 +80,9 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
           ))}
         </div>
 
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 w-auto h-1 rounded-full overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/10" />
+
+        <div className="absolute bottom-4 left-1/2 z-20 flex h-1 w-auto -translate-x-1/2 gap-2 overflow-hidden rounded-full sm:bottom-6">
           {slides.map((_, idx) => (
             <div
               key={idx}
@@ -89,13 +96,12 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
           ))}
         </div>
 
-        <div className="absolute inset-0 z-20 max-w-7xl mx-auto px-6 flex flex-col justify-center items-center text-center text-white select-none h-full">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold drop-shadow-md leading-tight">
-            {activeSlide?.title ||
-              "Tax Center Gunadarma Bersinergi Membangun Indonesia"}
+        <div className="absolute inset-0 z-20 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-12 pb-7 text-center text-white select-none sm:justify-center sm:px-6 sm:pb-0 md:px-8">
+          <h2 className="max-w-[16ch] text-lg font-bold leading-snug drop-shadow-md [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3] overflow-hidden sm:max-w-5xl sm:text-[2.25rem] sm:leading-tight sm:[-webkit-line-clamp:unset] md:text-5xl lg:text-6xl">
+            {activeTitle}
           </h2>
-          <p className="mt-6 text-sm md:text-lg font-semibold max-w-4xl drop-shadow-lg">
-            {activeSlide?.description || fallback_slides[0].description}
+          <p className="mt-2 max-w-[30ch] text-xs font-medium leading-5 text-white/90 drop-shadow-lg [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden sm:mt-4 sm:max-w-3xl sm:text-[15px] sm:leading-7 sm:[-webkit-line-clamp:unset] md:mt-6 md:text-lg">
+            {activeDescription}
           </p>
           <Link
             href={activeSlide?.cta_url || "/"}
@@ -108,7 +114,7 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
           >
             <Button
               size="lg"
-              className="bg-orange-400 hover:bg-[#e26100] text-white font-bold h-11 px-10 rounded-md mt-6 md:mt-20 cursor-pointer"
+              className="mt-5 hidden h-10 rounded-md bg-orange-400 px-6 text-sm font-bold text-white hover:bg-[#e26100] sm:inline-flex sm:px-8 md:mt-8 md:h-11 md:px-10 md:text-base cursor-pointer"
             >
               Selengkapnya
             </Button>
@@ -121,7 +127,7 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
             prevSlide();
             if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
           }}
-          className=" absolute left-4 top-1/2 -translate-y-1/2 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-yellow-300 rounded-full px-2.5 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300 pointer-events-auto"
+          className="absolute left-2 top-1/2 z-30 -translate-y-1/2 rounded-full bg-[#868686] bg-opacity-50 px-2 py-1.5 text-white shadow-md transition-colors duration-300 pointer-events-auto hover:bg-[#626262] hover:text-yellow-300 sm:left-4 sm:px-2.5 sm:py-2 cursor-pointer"
         >
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
@@ -132,7 +138,7 @@ export default function HeroSliderSection({ slides }: HeroSliderSectionProps) {
             nextSlide();
             if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
           }}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-[#868686] bg-opacity-50 hover:bg-[#626262] text-white hover:text-[#F1C40F] rounded-full px-2.5 py-2 shadow-md z-30 cursor-pointer transition-colors duration-300 pointer-events-auto"
+          className="absolute right-2 top-1/2 z-30 -translate-y-1/2 rounded-full bg-[#868686] bg-opacity-50 px-2 py-1.5 text-white shadow-md transition-colors duration-300 pointer-events-auto hover:bg-[#626262] hover:text-[#F1C40F] sm:right-4 sm:px-2.5 sm:py-2 cursor-pointer"
         >
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
