@@ -10,7 +10,7 @@ A few important notes about the current setup:
 
 - SEO metadata is centralized in `src/lib/seo.ts`
 - `robots.txt` and `sitemap.xml` are generated from the app
-- the main OG image now uses `public/og_image.png`
+- the main OG image now uses `public/og_image.jpg`
 - several API and media-related paths still point to the staging environment
 
 ## Stack
@@ -43,7 +43,7 @@ src/
   styles/
 public/
   assets/
-  og_image.png
+  og_image.jpg
 ```
 
 Project conventions used here:
@@ -120,7 +120,7 @@ Root metadata is defined in `src/app/layout.tsx`, and page-level metadata should
 The main OG image for the website is:
 
 ```text
-public/og_image.png
+public/og_image.jpg
 ```
 
 ## Deployment
