@@ -1,5 +1,33 @@
 import Image from "next/image";
 
+const partners = [
+  {
+    src: "/assets/images/mitra/djp.png",
+    width: 60,
+    height: 96,
+  },
+  {
+    src: "/assets/images/mitra/pertapsi.png",
+    width: 95,
+    height: 96,
+  },
+  {
+    src: "/assets/images/mitra/majalah-pajak.png",
+    width: 200,
+    height: 96,
+  },
+  {
+    src: "/assets/images/mitra/hivefive.png",
+    width: 140,
+    height: 48,
+  },
+  {
+    src: "/assets/images/mitra/ddtc.png",
+    width: 140,
+    height: 96,
+  },
+];
+
 export default function PartnerSection() {
   return (
     <>
@@ -14,43 +42,23 @@ export default function PartnerSection() {
           <h2 className="section-title mb-8 text-center text-slate-900">
             Mitra Kerjasama Tax Center Gunadarma
           </h2>
-          <div className="grid w-full max-w-4xl grid-cols-2 items-center justify-items-center gap-x-6 gap-y-8 sm:grid-cols-3 md:grid-cols-5">
-          <Image
-            src="/assets/images/mitra/djp.png"
-            alt="Tax Center Gunadarma Logo"
-            width={60}
-            height={96}
-            loading="lazy"
-          />
-          <Image
-            src="/assets/images/mitra/pertapsi.png"
-            alt="Tax Center Gunadarma Logo"
-            width={95}
-            height={96}
-            loading="lazy"
-          />
-          <Image
-            src="/assets/images/mitra/majalah-pajak.png"
-            alt="Tax Center Gunadarma Logo"
-            width={200}
-            height={96}
-            loading="lazy"
-          />
-          <Image
-            src="/assets/images/mitra/hivefive.png"
-            alt="Tax Center Gunadarma Logo"
-            width={140}
-            height={48}
-            loading="lazy"
-          />
-          <Image
-            src="/assets/images/mitra/ddtc.png"
-            alt="Tax Center Gunadarma Logo"
-            width={140}
-            height={96}
-            loading="lazy"
-          />
-        </div>
+          <div className="flex w-full max-w-4xl flex-wrap items-center justify-center gap-x-8 gap-y-10 sm:gap-x-12 md:gap-x-14">
+            {partners.map((partner) => (
+              <div
+                key={partner.src}
+                className="flex min-h-24 w-[128px] items-center justify-center sm:w-[150px] md:w-[160px]"
+              >
+                <Image
+                  src={partner.src}
+                  alt="Logo mitra Tax Center Gunadarma"
+                  width={partner.width}
+                  height={partner.height}
+                  loading="lazy"
+                  className="h-auto max-h-24 w-auto object-contain"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </>

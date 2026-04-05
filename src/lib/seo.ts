@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 export const SITE_NAME = "Tax Center Gunadarma";
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://taxcenter-web.vercel.app";
-export const DEFAULT_OG_IMAGE = "/og_image.png";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://taxcenterug.com";
+export const DEFAULT_OG_IMAGE = "/og_image.jpg";
 export const BASE_KEYWORDS = [
   "tax center gunadarma",
   "edukasi pajak",
@@ -42,12 +42,14 @@ export function createPageMetadata({
     .split(" ")
     .filter(Boolean)
     .map((part) => part.toLowerCase());
-  const titleKeywords = title
-    .toLowerCase()
-    .split(" ")
-    .filter(Boolean);
+  const titleKeywords = title.toLowerCase().split(" ").filter(Boolean);
   const finalKeywords = Array.from(
-    new Set([...BASE_KEYWORDS, ...titleKeywords, ...routeKeywords, ...keywords]),
+    new Set([
+      ...BASE_KEYWORDS,
+      ...titleKeywords,
+      ...routeKeywords,
+      ...keywords,
+    ]),
   );
 
   return {
