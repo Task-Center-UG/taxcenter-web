@@ -4,7 +4,7 @@ import PageView from "@/components/main/edukasi-pajak/video-pembelajaran/video-p
 
 export const metadata: Metadata = createPageMetadata({
   title: "Video Pembelajaran",
-  description: "Informasi video pembelajaran di Tax Center Gunadarma.",
+  description: "Tonton video pembelajaran Tax Center Gunadarma untuk memahami topik perpajakan melalui materi visual yang ringkas, praktis, dan informatif.",
   path: "/edukasi-pajak/video-pembelajaran",
 
   keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "video pembelajaran"],

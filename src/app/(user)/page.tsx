@@ -4,7 +4,7 @@ import PageView from "@/components/main/home-page";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Beranda",
-  description: "Informasi beranda di Tax Center Gunadarma.",
+  description: "Jelajahi profil, program layanan, kegiatan, publikasi, edukasi pajak, dan kolaborasi Tax Center Gunadarma untuk sivitas akademika dan masyarakat.",
   path: "/",
 
   keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "beranda"],

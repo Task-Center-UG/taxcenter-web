@@ -12,8 +12,8 @@ export async function generateMetadata({
   const { id } = await params;
 
   return createPageMetadata({
-    title: "Detail Seminar",
-    description: "Detail Seminar di Tax Center Gunadarma.",
+    title: "Detail Seminar Riset",
+    description: "Lihat detail seminar riset Tax Center Gunadarma, termasuk topik, narasumber, dan pembahasan isu perpajakan terkini.",
     path: `/program-layanan/riset/program-kegiatan/seminar/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail seminar", "program layanan", "riset", "program kegiatan", "seminar"],

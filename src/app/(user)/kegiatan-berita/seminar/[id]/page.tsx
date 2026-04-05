@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Seminar",
-    description: "Detail Seminar di Tax Center Gunadarma.",
+    description: "Lihat detail seminar Tax Center Gunadarma, termasuk tema, narasumber, jadwal, dan pembahasan isu perpajakan yang diangkat.",
     path: `/kegiatan-berita/seminar/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail seminar", "kegiatan berita", "seminar"],

@@ -12,8 +12,8 @@ export async function generateMetadata({
   const { id } = await params;
 
   return createPageMetadata({
-    title: "Detail Kerjasama Riset",
-    description: "Detail Kerjasama Riset di Tax Center Gunadarma.",
+    title: "Detail Kerja Sama Riset",
+    description: "Lihat detail kerja sama riset Tax Center Gunadarma yang memuat informasi kolaborasi, fokus kajian, dan kontribusi pada pengembangan perpajakan.",
     path: `/program-layanan/riset/kerjasama-riset/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail kerjasama riset", "program layanan", "riset", "kerjasama riset"],

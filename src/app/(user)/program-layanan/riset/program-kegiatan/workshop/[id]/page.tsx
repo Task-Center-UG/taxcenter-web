@@ -12,8 +12,8 @@ export async function generateMetadata({
   const { id } = await params;
 
   return createPageMetadata({
-    title: "Detail Workshop",
-    description: "Detail Workshop di Tax Center Gunadarma.",
+    title: "Detail Workshop Riset",
+    description: "Lihat detail workshop riset Tax Center Gunadarma yang membahas penguatan metodologi, analisis data, dan pengembangan kajian perpajakan.",
     path: `/program-layanan/riset/program-kegiatan/workshop/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail workshop", "program layanan", "riset", "program kegiatan", "workshop"],

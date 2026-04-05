@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Foto Kegiatan",
-    description: "Detail Foto Kegiatan di Tax Center Gunadarma.",
+    description: "Lihat detail dokumentasi foto kegiatan Tax Center Gunadarma untuk mengetahui momen pelaksanaan acara, peserta, dan aktivitas di lapangan.",
     path: `/galeri/foto-kegiatan/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail foto kegiatan", "galeri", "foto kegiatan"],

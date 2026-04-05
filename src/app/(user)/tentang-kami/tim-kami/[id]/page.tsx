@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Tim Kami",
-    description: "Detail Tim Kami di Tax Center Gunadarma.",
+    description: "Lihat profil lengkap anggota tim Tax Center Gunadarma, termasuk peran, kontribusi, dan keterlibatannya dalam program serta layanan perpajakan.",
     path: `/tentang-kami/tim-kami/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail tim kami", "tentang kami", "tim kami"],

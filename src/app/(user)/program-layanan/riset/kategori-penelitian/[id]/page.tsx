@@ -13,8 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Daftar Penelitian Berdasarkan Kategori",
-    description:
-      "Daftar penelitian berdasarkan kategori penelitian di Tax Center Gunadarma.",
+    description: "Lihat daftar penelitian berdasarkan kategori di Tax Center Gunadarma untuk menemukan topik, kajian, dan publikasi perpajakan yang relevan.",
     path: `/program-layanan/riset/kategori-penelitian/${id}`,
 
     keywords: [

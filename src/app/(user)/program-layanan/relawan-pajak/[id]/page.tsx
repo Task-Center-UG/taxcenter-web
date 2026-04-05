@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Relawan Pajak",
-    description: "Detail Relawan Pajak di Tax Center Gunadarma.",
+    description: "Lihat detail program atau kegiatan Relawan Pajak Tax Center Gunadarma, termasuk informasi pelaksanaan, manfaat, dan peran peserta di lapangan.",
     path: `/program-layanan/relawan-pajak/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail relawan pajak", "program layanan", "relawan pajak"],

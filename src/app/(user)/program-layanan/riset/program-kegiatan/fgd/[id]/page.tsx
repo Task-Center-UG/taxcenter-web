@@ -12,8 +12,8 @@ export async function generateMetadata({
   const { id } = await params;
 
   return createPageMetadata({
-    title: "Detail Fgd",
-    description: "Detail Fgd di Tax Center Gunadarma.",
+    title: "Detail FGD",
+    description: "Lihat detail kegiatan FGD Tax Center Gunadarma yang merangkum tema diskusi, peserta, dan hasil pembahasan terkait perpajakan.",
     path: `/program-layanan/riset/program-kegiatan/fgd/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail fgd", "program layanan", "riset", "program kegiatan", "fgd"],

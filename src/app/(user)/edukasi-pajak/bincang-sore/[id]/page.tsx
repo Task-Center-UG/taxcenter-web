@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Bincang Sore",
-    description: "Detail Bincang Sore di Tax Center Gunadarma.",
+    description: "Lihat detail sesi Bincang Sore Tax Center Gunadarma, termasuk topik diskusi, narasumber, dan poin edukasi perpajakan yang dibahas.",
     path: `/edukasi-pajak/bincang-sore/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail bincang sore", "bincang sore"],

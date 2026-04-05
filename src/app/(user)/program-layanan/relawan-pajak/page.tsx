@@ -4,7 +4,7 @@ import PageView from "@/components/main/program-layanan/relawan-pajak/relawan-pa
 
 export const metadata: Metadata = createPageMetadata({
   title: "Relawan Pajak",
-  description: "Informasi relawan pajak di Tax Center Gunadarma.",
+  description: "Temukan informasi program Relawan Pajak Tax Center Gunadarma, mulai dari kegiatan, pendaftaran, hingga kontribusi edukasi perpajakan kepada masyarakat.",
   path: "/program-layanan/relawan-pajak",
 
   keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "relawan pajak", "program layanan"],

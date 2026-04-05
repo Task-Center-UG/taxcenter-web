@@ -12,8 +12,8 @@ export async function generateMetadata({
   const { id } = await params;
 
   return createPageMetadata({
-    title: "Detail Workshop Umkm",
-    description: "Detail Workshop Umkm di Tax Center Gunadarma.",
+    title: "Detail Workshop UMKM",
+    description: "Lihat detail workshop UMKM Tax Center Gunadarma yang membahas pengembangan usaha, strategi pemasaran, dan literasi perpajakan.",
     path: `/program-layanan/pengabdian-masyarakat/workshop-umkm/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail workshop umkm", "program layanan", "pengabdian masyarakat", "workshop umkm"],

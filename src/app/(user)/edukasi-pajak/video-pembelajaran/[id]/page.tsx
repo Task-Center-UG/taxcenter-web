@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Video Pembelajaran",
-    description: "Detail Video Pembelajaran di Tax Center Gunadarma.",
+    description: "Lihat detail video pembelajaran Tax Center Gunadarma yang membahas materi, contoh kasus, dan penjelasan praktis seputar perpajakan.",
     path: `/edukasi-pajak/video-pembelajaran/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail video pembelajaran", "video pembelajaran"],

@@ -4,7 +4,7 @@ import PageView from "@/components/main/program-layanan/riset/riset-page";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Riset",
-  description: "Informasi riset di Tax Center Gunadarma.",
+  description: "Eksplorasi program riset Tax Center Gunadarma yang mendorong kajian, publikasi, dan kolaborasi ilmiah di bidang perpajakan serta kebijakan fiskal.",
   path: "/program-layanan/riset",
 
   keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "riset", "program layanan"],

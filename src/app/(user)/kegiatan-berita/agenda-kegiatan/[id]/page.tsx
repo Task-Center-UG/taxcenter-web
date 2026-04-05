@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Agenda Kegiatan",
-    description: "Detail Agenda Kegiatan di Tax Center Gunadarma.",
+    description: "Lihat detail agenda kegiatan Tax Center Gunadarma, termasuk jadwal, lokasi, narasumber, dan informasi pelaksanaan acara.",
     path: `/kegiatan-berita/agenda-kegiatan/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail agenda kegiatan", "kegiatan berita", "agenda kegiatan"],

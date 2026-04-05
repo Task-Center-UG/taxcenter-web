@@ -12,8 +12,8 @@ export async function generateMetadata({
   const { id } = await params;
 
   return createPageMetadata({
-    title: "Detail Pendampingan Umkm",
-    description: "Detail Pendampingan Umkm di Tax Center Gunadarma.",
+    title: "Detail Pendampingan UMKM",
+    description: "Lihat detail kegiatan pendampingan UMKM Tax Center Gunadarma yang berfokus pada penguatan usaha, administrasi, dan pemahaman perpajakan.",
     path: `/program-layanan/pengabdian-masyarakat/pendampingan-umkm/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail pendampingan umkm", "program layanan", "pengabdian masyarakat", "pendampingan umkm"],

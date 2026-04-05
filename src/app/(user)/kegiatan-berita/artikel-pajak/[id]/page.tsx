@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   return createPageMetadata({
     title: "Detail Artikel Pajak",
-    description: "Detail Artikel Pajak di Tax Center Gunadarma.",
+    description: "Baca detail artikel pajak Tax Center Gunadarma yang memuat pembahasan mendalam seputar isu, regulasi, dan edukasi perpajakan.",
     path: `/kegiatan-berita/artikel-pajak/${id}`,
 
     keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "detail artikel pajak", "kegiatan berita", "artikel pajak"],

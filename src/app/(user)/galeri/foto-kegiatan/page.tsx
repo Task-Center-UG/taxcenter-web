@@ -4,7 +4,7 @@ import PageView from "@/components/main/galeri/foto-kegiatan/foto-kegiatan-page"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Foto Kegiatan",
-  description: "Informasi foto kegiatan di Tax Center Gunadarma.",
+  description: "Lihat galeri foto kegiatan Tax Center Gunadarma yang mendokumentasikan seminar, pelatihan, pengabdian, dan aktivitas edukasi perpajakan.",
   path: "/galeri/foto-kegiatan",
 
   keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "foto kegiatan", "galeri"],

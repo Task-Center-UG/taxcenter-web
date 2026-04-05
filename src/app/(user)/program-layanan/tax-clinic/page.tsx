@@ -4,7 +4,7 @@ import PageView from "@/components/main/program-layanan/tax-clinic/tax-clinic-pa
 
 export const metadata: Metadata = createPageMetadata({
   title: "Tax Clinic",
-  description: "Informasi tax clinic di Tax Center Gunadarma.",
+  description: "Informasi layanan Tax Clinic Tax Center Gunadarma untuk konsultasi, pendampingan, dan edukasi perpajakan bagi sivitas akademika serta masyarakat.",
   path: "/program-layanan/tax-clinic",
 
   keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "tax clinic", "program layanan"],

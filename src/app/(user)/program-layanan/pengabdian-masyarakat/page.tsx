@@ -4,7 +4,7 @@ import PageView from "@/components/main/program-layanan/pengabdian-masyarakat/pe
 
 export const metadata: Metadata = createPageMetadata({
   title: "Pengabdian Masyarakat",
-  description: "Informasi pengabdian masyarakat di Tax Center Gunadarma.",
+  description: "Jelajahi program pengabdian masyarakat Tax Center Gunadarma yang menghadirkan edukasi, pendampingan, dan pemberdayaan perpajakan berbasis kebutuhan lapangan.",
   path: "/program-layanan/pengabdian-masyarakat",
 
   keywords: ["tax center gunadarma", "edukasi pajak", "pelayanan pajak", "pengabdian masyarakat", "program layanan"],
