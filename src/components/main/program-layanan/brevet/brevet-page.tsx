@@ -24,7 +24,7 @@ export default function BrevetPage() {
             </p>
             <div className="mt-6">
               <Link
-                href="https://tax-center-brevet-gunadarma.vercel.app/"
+                href="https://brevet.taxcenterug.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center rounded-full bg-[#2A176F] hover:opacity-90 text-white text-sm md:text-base font-semibold px-6 py-3 transition-colors"
