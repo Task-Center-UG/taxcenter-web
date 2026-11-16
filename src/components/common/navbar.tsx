@@ -33,6 +33,7 @@ const menuItems = [
       { title: "RISET", href: "/program-layanan/riset" },
       { title: "TAX CLINIC", href: "/program-layanan/tax-clinic" },
       { title: "BREVET", href: "/program-layanan/brevet" },
+      {title: "TAXBOT", href: "/program-layanan/taxbot" },
     ],
   },
   {
@@ -77,7 +78,6 @@ function MobileAccordionItem({
 }: MobileItemProps) {
   return (
     <div className="w-full">
-      {}
       <button
         className="flex w-full items-center justify-between px-2 py-3.5 text-left text-[#2A176F] font-semibold tracking-wide transition-colors hover:text-[#F1C40F] sm:px-4"
         onClick={onToggle}
@@ -118,16 +118,24 @@ function MobileAccordionItem({
 }
 
 export default function Navbar() {
+  // Tambahkan state untuk mengatasi Hydration Mismatch pada komponen Client-side/Radix
+  const [isMounted, setIsMounted] = React.useState(false);
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
   const menuRefs = React.useRef<(HTMLLIElement | null)[]>([]);
   const timeoutRefs = React.useRef<NodeJS.Timeout[]>([]);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const [mobileOpenIndex, setMobileOpenIndex] = React.useState<number | null>(
     null,
   );
   React.useEffect(() => {
     if (!isOpen) setMobileOpenIndex(null);
-  }, [isOpen]);
+  }, [isOpen]);
+
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -150,9 +158,15 @@ export default function Navbar() {
     }
   };
 
+  // Jangan render elemen UI yang sensitif terhadap SSR sebelum komponen di-mount di client
+  if (!isMounted) {
+    return (
+      <header className="fixed top-0 left-0 w-full flex flex-col z-50 bg-white shadow h-20" />
+    );
+  }
+
   return (
     <header className="fixed top-0 left-0 w-full flex flex-col z-50 will-change-transform transition-transform duration-300 ease-out">
-      
       <div
         className={`w-full text-white hidden lg:flex transition-all duration-100 ease-in-out overflow-hidden ${
           scrolled ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
@@ -177,7 +191,6 @@ export default function Navbar() {
         style={{ zIndex: 40 }}
       />
 
-      
       <div className="flex w-full justify-center bg-white shadow z-50">
         <div className="container flex items-center justify-between px-3 py-2.5 sm:px-4 lg:px-9 lg:py-3">
           <Link href="/">
@@ -219,12 +232,10 @@ export default function Navbar() {
             </Sheet>
           </div>
 
-          
           <nav className="hidden xl:block relative">
             <ul className="flex space-x-[60px]">
               {menuItems.map((item, index) => {
                 const open = activeMenu === item.title;
-                const isOpen = activeMenu === item.title;
                 return (
                   <li
                     key={index}
@@ -240,7 +251,7 @@ export default function Navbar() {
                         "inline-flex items-center gap-1",
                         "font-bold text-sm cursor-default",
                         "transition-colors duration-200",
-                        isOpen
+                        open
                           ? "text-[#F1C40F]"
                           : "text-[#2A176F] hover:text-[#F1C40F]",
                         "group-hover:text-[#F1C40F] group-focus-within:text-[#F1C40F]",
@@ -252,7 +263,7 @@ export default function Navbar() {
                         className={[
                           "h-3.5 w-3.5 transition-transform duration-500 ease-out",
                           "transform-gpu will-change-transform",
-                          isOpen ? "rotate-180" : "",
+                          open ? "rotate-180" : "",
                           "group-hover:rotate-180 group-focus-within:rotate-180",
                           "motion-reduce:transition-none",
                         ].join(" ")}
