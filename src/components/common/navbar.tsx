@@ -150,7 +150,14 @@ export default function Navbar() {
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLLIElement>) => {
-    const related = e.relatedTarget as Node;
+    const related = e.relatedTarget as Node | null;
+    
+    // Tambahkan pengaman ini agar tidak error jika related bernilai null/bukan Node
+    if (!related || !(related instanceof Node)) {
+      setActiveMenu(null);
+      return;
+    }
+
     const current = menuRefs.current.find((ref) => ref?.contains(related));
     if (!current) {
       const id = setTimeout(() => setActiveMenu(null), 200);
